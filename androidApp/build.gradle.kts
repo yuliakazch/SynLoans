@@ -56,6 +56,7 @@ dependencies {
     //Compose Utils
     implementation("io.coil-kt:coil-compose:1.4.0")
     implementation("androidx.activity:activity-compose:1.3.1")
+    implementation("androidx.navigation:navigation-compose:2.4.0-beta01")
     implementation("com.google.accompanist:accompanist-insets:0.20.0")
     implementation("com.google.accompanist:accompanist-swiperefresh:0.20.0")
     //Coroutines
@@ -65,6 +66,5 @@ dependencies {
     //DI
     implementation("io.insert-koin:koin-core:3.1.2")
     implementation("io.insert-koin:koin-android:3.1.2")
-    //Navigation
-    implementation("cafe.adriel.voyager:voyager-navigator:1.0.0-beta13")
+    implementation("io.insert-koin:koin-androidx-compose:3.1.2")
 }

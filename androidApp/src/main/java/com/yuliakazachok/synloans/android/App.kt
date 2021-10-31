@@ -1,15 +1,11 @@
 package com.yuliakazachok.synloans.android
 
 import android.app.Application
+import com.yuliakazachok.synloans.android.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import org.koin.dsl.module
 
 class App : Application() {
-
-    private val appModule = module {
-
-    }
 
     override fun onCreate() {
         super.onCreate()
