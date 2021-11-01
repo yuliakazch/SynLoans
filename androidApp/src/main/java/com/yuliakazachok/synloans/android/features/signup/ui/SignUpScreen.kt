@@ -84,7 +84,10 @@ fun SignUpContentView(
 
     Scaffold(
         topBar = {
-            TopBarBackView(title = stringResource(R.string.registration))
+            TopBarBackView(
+                title = stringResource(R.string.registration),
+                onIconClicked = { onActionSent(SignUpAction.BackClicked) },
+            )
         }
     ) {
         LazyColumn(

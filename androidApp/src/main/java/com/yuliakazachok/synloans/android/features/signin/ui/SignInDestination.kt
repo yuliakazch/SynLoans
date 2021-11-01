@@ -6,6 +6,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavHostController
 import com.yuliakazachok.synloans.android.features.signin.presentation.SignInEffect
 import com.yuliakazachok.synloans.android.features.signin.presentation.SignInViewModel
+import com.yuliakazachok.synloans.android.util.NavigationKeys.SIGN_UP
 import org.koin.androidx.compose.getViewModel
 
 @ExperimentalComposeUiApi
@@ -23,7 +24,9 @@ fun SignInDestination(navController: NavHostController) {
             when (navigationEffect) {
                 is SignInEffect.Navigation.ToProfile -> {}
 
-                is SignInEffect.Navigation.ToRegistration -> {}
+                is SignInEffect.Navigation.ToRegistration -> {
+                    navController.navigate(SIGN_UP)
+                }
             }
         }
     )
