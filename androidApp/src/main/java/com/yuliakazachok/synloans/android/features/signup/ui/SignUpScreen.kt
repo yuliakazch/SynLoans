@@ -1,6 +1,5 @@
-package com.yuliakazachok.synloans.android.features.signin.ui
+package com.yuliakazachok.synloans.android.features.signup.ui
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -17,15 +16,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.yuliakazachok.synloans.android.R
 import com.yuliakazachok.synloans.android.components.progress.LoadingView
 import com.yuliakazachok.synloans.android.components.textfield.EmailView
 import com.yuliakazachok.synloans.android.components.textfield.PasswordDoneView
-import com.yuliakazachok.synloans.android.features.signin.presentation.SignInAction
-import com.yuliakazachok.synloans.android.features.signin.presentation.SignInEffect
-import com.yuliakazachok.synloans.android.features.signin.presentation.SignInState
+import com.yuliakazachok.synloans.android.components.textfield.PasswordNextView
+import com.yuliakazachok.synloans.android.features.signup.presentation.SignUpAction
+import com.yuliakazachok.synloans.android.features.signup.presentation.SignUpEffect
+import com.yuliakazachok.synloans.android.features.signup.presentation.SignUpState
 import com.yuliakazachok.synloans.android.util.LAUNCH_LISTEN_FOR_EFFECTS
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -34,11 +33,11 @@ import kotlinx.coroutines.launch
 
 @ExperimentalComposeUiApi
 @Composable
-fun SignInScreen(
-    state: SignInState,
-    effectFlow: Flow<SignInEffect>?,
-    onActionSent: (action: SignInAction) -> Unit,
-    onNavigationRequested: (navigationEffect: SignInEffect.Navigation) -> Unit
+fun SignUpScreen(
+    state: SignUpState,
+    effectFlow: Flow<SignUpEffect>?,
+    onActionSent: (action: SignUpAction) -> Unit,
+    onNavigationRequested: (navigationEffect: SignUpEffect.Navigation) -> Unit
 ) {
     val scaffoldState: ScaffoldState = rememberScaffoldState()
 
@@ -47,12 +46,12 @@ fun SignInScreen(
     LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
         effectFlow?.onEach { effect ->
             when (effect) {
-                is SignInEffect.Error ->
+                is SignUpEffect.Error ->
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = effect.message ?: textError,
                         duration = SnackbarDuration.Short
                     )
-                is SignInEffect.Navigation ->
+                is SignUpEffect.Navigation ->
                     onNavigationRequested(effect)
             }
         }?.collect()
@@ -64,18 +63,19 @@ fun SignInScreen(
         if (state.loading) {
             LoadingView()
         } else {
-            SignInContentView(state, onActionSent)
+            SignUpContentView(state, onActionSent)
         }
     }
 }
 
 @ExperimentalComposeUiApi
 @Composable
-fun SignInContentView(
-    state: SignInState,
-    onActionSent: (action: SignInAction) -> Unit,
+fun SignUpContentView(
+    state: SignUpState,
+    onActionSent: (action: SignUpAction) -> Unit,
 ) {
-    val focusRequester = remember { FocusRequester() }
+    val focusRequesterOne = remember { FocusRequester() }
+    val focusRequesterTwo = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val listState = rememberLazyListState()
@@ -89,41 +89,46 @@ fun SignInContentView(
     ) {
         item {
             EmailView(
-                email = state.credentials.email,
-                focusRequester = focusRequester,
+                email = state.content.email,
+                focusRequester = focusRequesterOne,
                 onAnimateScrolled = {
                     coroutineScope.launch {
                         listState.animateScrollToItem(index = 1)
                     }
                 },
-                onEmailChange = { onActionSent(SignInAction.EmailChanged(it)) },
+                onEmailChange = { onActionSent(SignUpAction.EmailChanged(it)) },
+            )
+        }
+        item {
+            PasswordNextView(
+                password = state.content.password,
+                label = stringResource(R.string.password),
+                focusRequesterOne = focusRequesterOne,
+                focusRequesterTwo = focusRequesterTwo,
+                onAnimateScrolled = {
+                    coroutineScope.launch {
+                        listState.animateScrollToItem(index = 2)
+                    }
+                },
+                onPasswordChange = { onActionSent(SignUpAction.PasswordChanged(it)) }
             )
         }
         item {
             PasswordDoneView(
-                password = state.credentials.password,
-                label = stringResource(R.string.password),
+                password = state.content.passwordAgain,
+                label = stringResource(R.string.password_again),
                 keyboardController = keyboardController,
-                focusRequester = focusRequester,
-                onPasswordChange = { onActionSent(SignInAction.PasswordChanged(it)) },
+                focusRequester = focusRequesterTwo,
+                onPasswordChange = { onActionSent(SignUpAction.PasswordAgainChanged(it)) },
             )
         }
         item {
             Button(
-                onClick = { onActionSent(SignInAction.SignInClicked) },
-                modifier = Modifier.padding(vertical = 8.dp),
+                onClick = { onActionSent(SignUpAction.SignUpClicked) },
+                modifier = Modifier.padding(vertical = 8.dp)
             ) {
-                Text(stringResource(R.string.sign_in))
+                Text(stringResource(R.string.sign_up))
             }
-        }
-        item {
-            Text(
-                text = stringResource(R.string.registration),
-                textDecoration = TextDecoration.Underline,
-                modifier = Modifier.clickable {
-                    onActionSent(SignInAction.RegistrationClicked)
-                },
-            )
         }
     }
 }

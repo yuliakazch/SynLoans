@@ -15,8 +15,10 @@ import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.yuliakazachok.synloans.android.features.signin.ui.SignInDestination
+import com.yuliakazachok.synloans.android.features.signup.ui.SignUpDestination
 import com.yuliakazachok.synloans.android.theme.AppTheme
 import com.yuliakazachok.synloans.android.util.NavigationKeys.SIGN_IN
+import com.yuliakazachok.synloans.android.util.NavigationKeys.SIGN_UP
 
 class AppActivity : ComponentActivity() {
 
@@ -47,8 +49,9 @@ fun SynLoansApp() {
                     )
                 )
             ) {
-                NavHost(navController = navController, startDestination = SIGN_IN) {
+                NavHost(navController = navController, startDestination = SIGN_UP) {
                     composable(SIGN_IN) { SignInDestination(navController) }
+                    composable(SIGN_UP) { SignUpDestination(navController) }
                 }
             }
         }

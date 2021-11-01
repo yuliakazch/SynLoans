@@ -3,7 +3,7 @@ package com.yuliakazachok.synloans.android.features.signin.presentation
 import com.yuliakazachok.synloans.android.util.Action
 import com.yuliakazachok.synloans.android.util.Effect
 import com.yuliakazachok.synloans.android.util.State
-import com.yuliakazachok.synloans.signin.domain.entity.Credentials
+import com.yuliakazachok.synloans.features.signin.domain.entity.Credentials
 
 sealed class SignInAction : Action {
 
@@ -11,7 +11,7 @@ sealed class SignInAction : Action {
 
     object RegistrationClicked : SignInAction()
 
-    data class LoginChanged(val newValue: String) : SignInAction()
+    data class EmailChanged(val newValue: String) : SignInAction()
 
     data class PasswordChanged(val newValue: String) : SignInAction()
 }

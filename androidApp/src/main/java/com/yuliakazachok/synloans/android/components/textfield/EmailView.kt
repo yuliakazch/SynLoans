@@ -11,16 +11,16 @@ import androidx.compose.ui.text.input.ImeAction
 import com.yuliakazachok.synloans.android.R
 
 @Composable
-fun LoginView(
-    login: String,
+fun EmailView(
+    email: String,
     focusRequester: FocusRequester,
     onAnimateScrolled: () -> Unit = {},
-    onLoginChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
 ) {
     OutlinedTextField(
-        value = login,
-        onValueChange = onLoginChange,
-        label = { Text(stringResource(R.string.login)) },
+        value = email,
+        onValueChange = onEmailChange,
+        label = { Text(stringResource(R.string.email)) },
         singleLine = true,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         keyboardActions = KeyboardActions(

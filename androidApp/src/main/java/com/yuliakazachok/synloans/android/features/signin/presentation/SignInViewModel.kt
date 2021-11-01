@@ -2,8 +2,7 @@ package com.yuliakazachok.synloans.android.features.signin.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.util.BaseViewModel
-import com.yuliakazachok.synloans.signin.domain.entity.Credentials
-import com.yuliakazachok.synloans.signin.domain.repository.SignInRepository
+import com.yuliakazachok.synloans.features.signin.domain.entity.Credentials
 import kotlinx.coroutines.launch
 
 class SignInViewModel(
@@ -11,7 +10,7 @@ class SignInViewModel(
 ) : BaseViewModel<SignInAction, SignInState, SignInEffect>() {
 
     override fun setInitialState(): SignInState =
-        SignInState(credentials = Credentials(login = "", password = ""), loading = false)
+        SignInState(credentials = Credentials(email = "", password = ""), loading = false)
 
     override fun handleActions(action: SignInAction) {
         when (action) {
@@ -23,9 +22,9 @@ class SignInViewModel(
                 setEffect { SignInEffect.Navigation.ToRegistration }
             }
 
-            is SignInAction.LoginChanged -> {
+            is SignInAction.EmailChanged -> {
                 setState {
-                    copy(credentials = credentials.copy(login = action.newValue))
+                    copy(credentials = credentials.copy(email = action.newValue))
                 }
             }
 
