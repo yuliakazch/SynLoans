@@ -1,5 +1,6 @@
 package com.yuliakazachok.synloans.android.components.textfield
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
@@ -37,6 +38,6 @@ fun PasswordNextView(
                 focusRequesterTwo.requestFocus()
             }
         ),
-        modifier = Modifier.focusRequester(focusRequesterOne),
+        modifier = Modifier.fillMaxWidth().focusRequester(focusRequesterOne),
     )
 }

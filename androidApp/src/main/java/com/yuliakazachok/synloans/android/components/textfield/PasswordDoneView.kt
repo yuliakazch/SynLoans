@@ -1,5 +1,6 @@
 package com.yuliakazachok.synloans.android.components.textfield
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
@@ -36,6 +37,6 @@ fun PasswordDoneView(
         keyboardActions = KeyboardActions(
             onDone = { keyboardController?.hide() }
         ),
-        modifier = Modifier.focusRequester(focusRequester),
+        modifier = Modifier.fillMaxWidth().focusRequester(focusRequester),
     )
 }

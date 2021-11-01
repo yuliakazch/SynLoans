@@ -19,6 +19,48 @@ class SignUpViewModel() : BaseViewModel<SignUpAction, SignUpState, SignUpEffect>
                 setEffect { SignUpEffect.Navigation.ToBack }
             }
 
+            is SignUpAction.FullNameChanged -> {
+                setState {
+                    copy(content = content.copy(fullName = action.newValue))
+                }
+            }
+
+            is SignUpAction.ShortNameChanged -> {
+                setState {
+                    copy(content = content.copy(shortName = action.newValue))
+                }
+            }
+
+            is SignUpAction.TinChanged -> {
+                setState {
+                    copy(content = content.copy(tin = action.newValue))
+                }
+            }
+
+            is SignUpAction.IecChanged -> {
+                setState {
+                    copy(content = content.copy(iec = action.newValue))
+                }
+            }
+
+            is SignUpAction.LegalAddressChanged -> {
+                setState {
+                    copy(content = content.copy(legalAddress = action.newValue))
+                }
+            }
+
+            is SignUpAction.ActualAddressChanged -> {
+                setState {
+                    copy(content = content.copy(actualAddress = action.newValue))
+                }
+            }
+
+            is SignUpAction.CreditOrganisationCheckChanged -> {
+                setState {
+                    copy(content = content.copy(creditOrganisation = action.newValue))
+                }
+            }
+
             is SignUpAction.EmailChanged -> {
                 setState {
                     copy(content = content.copy(email = action.newValue))

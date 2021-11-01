@@ -4,16 +4,23 @@
 
     <string name="error">Произошла ошибка</string>
 
-    <string name="email">Электронная почта</string>
-    <string name="password">Пароль</string>
-    <string name="password_again">Повторите пароль</string>
     <string name="sign_in">Войти</string>
     <string name="registration">Регистрация</string>
     <string name="sign_up">Зарегистрироваться</string>
-    <string name="already_have_account">Уже есть аккаунт</string>
 
     <string name="requests_title">Заявки</string>
 
     <string name="profile_title">Профиль</string>
     <string name="profile_logout">Выйти из аккаунта</string>
+
+    <string name="field_email">Электронная почта</string>
+    <string name="field_password">Пароль</string>
+    <string name="field_password_again">Повторите пароль</string>
+    <string name="field_full_name_company">Полное наименование</string>
+    <string name="field_short_name_company">Сокращенное наименование</string>
+    <string name="field_tin">ИНН</string>
+    <string name="field_iec">КПП</string>
+    <string name="field_legal_address">Юридический адрес</string>
+    <string name="field_actual_address">Фактический адрес</string>
+    <string name="field_credit_organisation">Кредитная организация</string>
 </resources>

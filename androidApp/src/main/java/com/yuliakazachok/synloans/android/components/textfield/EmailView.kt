@@ -1,10 +1,12 @@
 package com.yuliakazachok.synloans.android.components.textfield
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -20,7 +22,7 @@ fun EmailView(
     OutlinedTextField(
         value = email,
         onValueChange = onEmailChange,
-        label = { Text(stringResource(R.string.email)) },
+        label = { Text(stringResource(R.string.field_email)) },
         singleLine = true,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         keyboardActions = KeyboardActions(
@@ -29,5 +31,6 @@ fun EmailView(
                 focusRequester.requestFocus()
             }
         ),
+        modifier = Modifier.fillMaxWidth(),
     )
 }

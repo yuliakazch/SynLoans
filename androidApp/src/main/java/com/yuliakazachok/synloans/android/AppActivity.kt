@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -45,7 +46,9 @@ fun SynLoansApp() {
                         applyStart = true,
                         applyTop = false,
                         applyEnd = true,
-                        applyBottom = false
+                        applyBottom = false,
+                        additionalStart = 12.dp,
+                        additionalEnd = 12.dp,
                     )
                 )
             ) {
