@@ -23,6 +23,7 @@ import com.yuliakazachok.synloans.android.R
 import com.yuliakazachok.synloans.android.components.progress.LoadingView
 import com.yuliakazachok.synloans.android.components.textfield.EmailView
 import com.yuliakazachok.synloans.android.components.textfield.PasswordDoneView
+import com.yuliakazachok.synloans.android.components.topbar.TopBarView
 import com.yuliakazachok.synloans.android.features.signin.presentation.SignInAction
 import com.yuliakazachok.synloans.android.features.signin.presentation.SignInEffect
 import com.yuliakazachok.synloans.android.features.signin.presentation.SignInState
@@ -81,49 +82,57 @@ fun SignInContentView(
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
-    LazyColumn(
-        state = listState,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize(),
+    Scaffold(
+        topBar = {
+            TopBarView(title = stringResource(R.string.authorization))
+        }
     ) {
-        item {
-            EmailView(
-                email = state.credentials.email,
-                focusRequester = focusRequester,
-                onAnimateScrolled = {
-                    coroutineScope.launch {
-                        listState.animateScrollToItem(index = 1)
-                    }
-                },
-                onEmailChange = { onActionSent(SignInAction.EmailChanged(it)) },
-            )
-        }
-        item {
-            PasswordDoneView(
-                password = state.credentials.password,
-                label = stringResource(R.string.field_password),
-                keyboardController = keyboardController,
-                focusRequester = focusRequester,
-                onPasswordChange = { onActionSent(SignInAction.PasswordChanged(it)) },
-            )
-        }
-        item {
-            Button(
-                onClick = { onActionSent(SignInAction.SignInClicked) },
-                modifier = Modifier.padding(vertical = 8.dp).fillMaxWidth(),
-            ) {
-                Text(stringResource(R.string.sign_in))
+        LazyColumn(
+            state = listState,
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            item {
+                EmailView(
+                    email = state.credentials.email,
+                    focusRequester = focusRequester,
+                    onAnimateScrolled = {
+                        coroutineScope.launch {
+                            listState.animateScrollToItem(index = 1)
+                        }
+                    },
+                    onEmailChange = { onActionSent(SignInAction.EmailChanged(it)) },
+                )
             }
-        }
-        item {
-            Text(
-                text = stringResource(R.string.registration),
-                color = MaterialTheme.colors.primary,
-                modifier = Modifier.clickable {
-                    onActionSent(SignInAction.RegistrationClicked)
-                },
-            )
+            item {
+                PasswordDoneView(
+                    password = state.credentials.password,
+                    label = stringResource(R.string.field_password),
+                    keyboardController = keyboardController,
+                    focusRequester = focusRequester,
+                    onPasswordChange = { onActionSent(SignInAction.PasswordChanged(it)) },
+                )
+            }
+            item {
+                Button(
+                    onClick = { onActionSent(SignInAction.SignInClicked) },
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                        .fillMaxWidth(),
+                ) {
+                    Text(stringResource(R.string.sign_in))
+                }
+            }
+            item {
+                Text(
+                    text = stringResource(R.string.registration),
+                    color = MaterialTheme.colors.primary,
+                    modifier = Modifier.clickable {
+                        onActionSent(SignInAction.RegistrationClicked)
+                    },
+                )
+            }
         }
     }
 }

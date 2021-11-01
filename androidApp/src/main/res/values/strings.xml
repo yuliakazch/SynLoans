@@ -5,6 +5,7 @@
     <string name="error">Произошла ошибка</string>
 
     <string name="sign_in">Войти</string>
+    <string name="authorization">Авторизация</string>
     <string name="registration">Регистрация</string>
     <string name="sign_up">Зарегистрироваться</string>
 

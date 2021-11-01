@@ -52,7 +52,7 @@ fun SynLoansApp() {
                     )
                 )
             ) {
-                NavHost(navController = navController, startDestination = SIGN_UP) {
+                NavHost(navController = navController, startDestination = SIGN_IN) {
                     composable(SIGN_IN) { SignInDestination(navController) }
                     composable(SIGN_UP) { SignUpDestination(navController) }
                 }

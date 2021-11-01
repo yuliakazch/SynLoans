@@ -22,6 +22,7 @@ import com.yuliakazachok.synloans.android.components.textfield.EditTextView
 import com.yuliakazachok.synloans.android.components.textfield.EmailView
 import com.yuliakazachok.synloans.android.components.textfield.PasswordDoneView
 import com.yuliakazachok.synloans.android.components.textfield.PasswordNextView
+import com.yuliakazachok.synloans.android.components.topbar.TopBarBackView
 import com.yuliakazachok.synloans.android.features.signup.presentation.SignUpAction
 import com.yuliakazachok.synloans.android.features.signup.presentation.SignUpEffect
 import com.yuliakazachok.synloans.android.features.signup.presentation.SignUpState
@@ -81,99 +82,108 @@ fun SignUpContentView(
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
-    LazyColumn(state = listState) {
-        item {
-            EmailView(
-                email = state.content.email,
-                focusRequester = focusRequesterOne,
-                onAnimateScrolled = {
-                    coroutineScope.launch {
-                        listState.animateScrollToItem(index = 1)
-                    }
-                },
-                onEmailChange = { onActionSent(SignUpAction.EmailChanged(it)) },
-            )
+    Scaffold(
+        topBar = {
+            TopBarBackView(title = stringResource(R.string.registration))
         }
-        item {
-            PasswordNextView(
-                password = state.content.password,
-                label = stringResource(R.string.field_password),
-                focusRequesterOne = focusRequesterOne,
-                focusRequesterTwo = focusRequesterTwo,
-                onAnimateScrolled = {
-                    coroutineScope.launch {
-                        listState.animateScrollToItem(index = 2)
-                    }
-                },
-                onPasswordChange = { onActionSent(SignUpAction.PasswordChanged(it)) }
-            )
-        }
-        item {
-            PasswordDoneView(
-                password = state.content.passwordAgain,
-                label = stringResource(R.string.field_password_again),
-                keyboardController = keyboardController,
-                focusRequester = focusRequesterTwo,
-                onPasswordChange = { onActionSent(SignUpAction.PasswordAgainChanged(it)) },
-            )
-        }
-        item {
-            EditTextView(
-                text = state.content.fullName,
-                label = stringResource(R.string.field_full_name_company),
-                onTextChange = { onActionSent(SignUpAction.FullNameChanged(it)) },
-            )
-        }
-        item {
-            EditTextView(
-                text = state.content.shortName,
-                label = stringResource(R.string.field_short_name_company),
-                onTextChange = { onActionSent(SignUpAction.ShortNameChanged(it)) },
-            )
-        }
-        item {
-            EditTextView(
-                text = state.content.tin,
-                label = stringResource(R.string.field_tin),
-                onTextChange = { onActionSent(SignUpAction.TinChanged(it)) },
-            )
-        }
-        item {
-            EditTextView(
-                text = state.content.iec,
-                label = stringResource(R.string.field_iec),
-                onTextChange = { onActionSent(SignUpAction.IecChanged(it)) },
-            )
-        }
-        item {
-            EditTextView(
-                text = state.content.legalAddress,
-                label = stringResource(R.string.field_legal_address),
-                onTextChange = { onActionSent(SignUpAction.LegalAddressChanged(it)) },
-            )
-        }
-        item {
-            EditTextView(
-                text = state.content.actualAddress,
-                label = stringResource(R.string.field_actual_address),
-                onTextChange = { onActionSent(SignUpAction.ActualAddressChanged(it)) },
-            )
-        }
-        item {
-            TextWithCheckboxView(
-                text = stringResource(R.string.field_credit_organisation),
-                checked = state.content.creditOrganisation,
-                onCheckedChange = { onActionSent(SignUpAction.CreditOrganisationCheckChanged(it)) },
-            )
-        }
-        item {
-            Button(
-                onClick = { onActionSent(SignUpAction.SignUpClicked) },
-                modifier = Modifier
-                    .padding(vertical = 12.dp)
-                    .fillMaxWidth()
-            ) {
-                Text(stringResource(R.string.sign_up))
+    ) {
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.padding(top = 4.dp)
+        ) {
+            item {
+                EmailView(
+                    email = state.content.email,
+                    focusRequester = focusRequesterOne,
+                    onAnimateScrolled = {
+                        coroutineScope.launch {
+                            listState.animateScrollToItem(index = 1)
+                        }
+                    },
+                    onEmailChange = { onActionSent(SignUpAction.EmailChanged(it)) },
+                )
+            }
+            item {
+                PasswordNextView(
+                    password = state.content.password,
+                    label = stringResource(R.string.field_password),
+                    focusRequesterOne = focusRequesterOne,
+                    focusRequesterTwo = focusRequesterTwo,
+                    onAnimateScrolled = {
+                        coroutineScope.launch {
+                            listState.animateScrollToItem(index = 2)
+                        }
+                    },
+                    onPasswordChange = { onActionSent(SignUpAction.PasswordChanged(it)) }
+                )
+            }
+            item {
+                PasswordDoneView(
+                    password = state.content.passwordAgain,
+                    label = stringResource(R.string.field_password_again),
+                    keyboardController = keyboardController,
+                    focusRequester = focusRequesterTwo,
+                    onPasswordChange = { onActionSent(SignUpAction.PasswordAgainChanged(it)) },
+                )
+            }
+            item {
+                EditTextView(
+                    text = state.content.fullName,
+                    label = stringResource(R.string.field_full_name_company),
+                    onTextChange = { onActionSent(SignUpAction.FullNameChanged(it)) },
+                )
+            }
+            item {
+                EditTextView(
+                    text = state.content.shortName,
+                    label = stringResource(R.string.field_short_name_company),
+                    onTextChange = { onActionSent(SignUpAction.ShortNameChanged(it)) },
+                )
+            }
+            item {
+                EditTextView(
+                    text = state.content.tin,
+                    label = stringResource(R.string.field_tin),
+                    onTextChange = { onActionSent(SignUpAction.TinChanged(it)) },
+                )
+            }
+            item {
+                EditTextView(
+                    text = state.content.iec,
+                    label = stringResource(R.string.field_iec),
+                    onTextChange = { onActionSent(SignUpAction.IecChanged(it)) },
+                )
+            }
+            item {
+                EditTextView(
+                    text = state.content.legalAddress,
+                    label = stringResource(R.string.field_legal_address),
+                    onTextChange = { onActionSent(SignUpAction.LegalAddressChanged(it)) },
+                )
+            }
+            item {
+                EditTextView(
+                    text = state.content.actualAddress,
+                    label = stringResource(R.string.field_actual_address),
+                    onTextChange = { onActionSent(SignUpAction.ActualAddressChanged(it)) },
+                )
+            }
+            item {
+                TextWithCheckboxView(
+                    text = stringResource(R.string.field_credit_organisation),
+                    checked = state.content.creditOrganisation,
+                    onCheckedChange = { onActionSent(SignUpAction.CreditOrganisationCheckChanged(it)) },
+                )
+            }
+            item {
+                Button(
+                    onClick = { onActionSent(SignUpAction.SignUpClicked) },
+                    modifier = Modifier
+                        .padding(vertical = 12.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text(stringResource(R.string.sign_up))
+                }
             }
         }
     }
