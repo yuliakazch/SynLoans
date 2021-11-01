@@ -1,4 +1,4 @@
-package com.yuliakazachok.synloans.android.util
+package com.yuliakazachok.synloans.android.core
 
 object NavigationKeys {
 

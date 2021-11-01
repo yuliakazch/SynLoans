@@ -1,4 +1,4 @@
-package com.yuliakazachok.synloans.android.util
+package com.yuliakazachok.synloans.android.core
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

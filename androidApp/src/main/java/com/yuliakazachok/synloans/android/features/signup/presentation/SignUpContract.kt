@@ -1,8 +1,8 @@
 package com.yuliakazachok.synloans.android.features.signup.presentation
 
-import com.yuliakazachok.synloans.android.util.Action
-import com.yuliakazachok.synloans.android.util.Effect
-import com.yuliakazachok.synloans.android.util.State
+import com.yuliakazachok.synloans.android.core.Action
+import com.yuliakazachok.synloans.android.core.Effect
+import com.yuliakazachok.synloans.android.core.State
 
 sealed class SignUpAction : Action {
 

@@ -1,7 +1,7 @@
 package com.yuliakazachok.synloans.android.features.signin.presentation
 
 import androidx.lifecycle.viewModelScope
-import com.yuliakazachok.synloans.android.util.BaseViewModel
+import com.yuliakazachok.synloans.android.core.BaseViewModel
 import com.yuliakazachok.synloans.features.signin.domain.entity.Credentials
 import kotlinx.coroutines.launch
 

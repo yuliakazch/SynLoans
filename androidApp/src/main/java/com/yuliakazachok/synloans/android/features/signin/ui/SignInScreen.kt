@@ -27,7 +27,7 @@ import com.yuliakazachok.synloans.android.components.topbar.TopBarView
 import com.yuliakazachok.synloans.android.features.signin.presentation.SignInAction
 import com.yuliakazachok.synloans.android.features.signin.presentation.SignInEffect
 import com.yuliakazachok.synloans.android.features.signin.presentation.SignInState
-import com.yuliakazachok.synloans.android.util.LAUNCH_LISTEN_FOR_EFFECTS
+import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach

@@ -18,8 +18,8 @@ import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.yuliakazachok.synloans.android.features.signin.ui.SignInDestination
 import com.yuliakazachok.synloans.android.features.signup.ui.SignUpDestination
 import com.yuliakazachok.synloans.android.theme.AppTheme
-import com.yuliakazachok.synloans.android.util.NavigationKeys.SIGN_IN
-import com.yuliakazachok.synloans.android.util.NavigationKeys.SIGN_UP
+import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_IN
+import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_UP
 
 class AppActivity : ComponentActivity() {
 

@@ -1,7 +1,7 @@
 package com.yuliakazachok.synloans.android.features.signup.presentation
 
 import androidx.lifecycle.viewModelScope
-import com.yuliakazachok.synloans.android.util.BaseViewModel
+import com.yuliakazachok.synloans.android.core.BaseViewModel
 import kotlinx.coroutines.launch
 
 class SignUpViewModel() : BaseViewModel<SignUpAction, SignUpState, SignUpEffect>() {

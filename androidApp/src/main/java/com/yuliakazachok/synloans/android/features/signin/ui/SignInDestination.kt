@@ -6,7 +6,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavHostController
 import com.yuliakazachok.synloans.android.features.signin.presentation.SignInEffect
 import com.yuliakazachok.synloans.android.features.signin.presentation.SignInViewModel
-import com.yuliakazachok.synloans.android.util.NavigationKeys.SIGN_UP
+import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_UP
 import org.koin.androidx.compose.getViewModel
 
 @ExperimentalComposeUiApi
