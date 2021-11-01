@@ -7,7 +7,7 @@ import com.yuliakazachok.synloans.signin.domain.repository.SignInRepository
 import kotlinx.coroutines.launch
 
 class SignInViewModel(
-    private val repository: SignInRepository,
+    //private val repository: SignInRepository,
 ) : BaseViewModel<SignInAction, SignInState, SignInEffect>() {
 
     override fun setInitialState(): SignInState =
@@ -42,7 +42,7 @@ class SignInViewModel(
             setState { copy(loading = true) }
 
             try {
-                repository.signIn(viewState.value.credentials)
+                //repository.signIn(viewState.value.credentials)
                 setEffect { SignInEffect.Navigation.ToProfile }
             } catch (e: Throwable) {
                 setState { copy(credentials = credentials.copy(password = ""), loading = false) }

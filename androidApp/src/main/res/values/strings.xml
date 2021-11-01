@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Синдицированные кредиты</string>
+
+    <string name="error">Произошла ошибка</string>
+
+    <string name="login">Логин</string>
+    <string name="password">Пароль</string>
+    <string name="password_again">Еще раз пароль</string>
+    <string name="sign_in">Войти</string>
+    <string name="registration">Регистрация</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="already_have_account">Уже есть аккаунт</string>
+
+    <string name="requests_title">Заявки</string>
+
+    <string name="profile_title">Профиль</string>
+    <string name="profile_logout">Выйти из аккаунта</string>
+</resources>

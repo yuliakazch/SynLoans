@@ -26,9 +26,22 @@ kotlin {
         frameworkName = "shared"
         podfile = project.file("../iosApp/Podfile")
     }
-    
+
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                //Network
+                implementation("io.ktor:ktor-client-core:${findProperty("version.ktor")}")
+                //Coroutines
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${findProperty("version.kotlinx.coroutines")}")
+                //JSON
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${findProperty("version.kotlinx.serialization")}")
+                //Key-Value storage
+                implementation("com.russhwolf:multiplatform-settings:0.8.1")
+                //DI
+                implementation("io.insert-koin:koin-core:${findProperty("version.koin")}")
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
@@ -48,10 +61,11 @@ kotlin {
 }
 
 android {
-    compileSdkVersion(31)
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    compileSdk = (findProperty("android.compileSdk") as String).toInt()
+
     defaultConfig {
-        minSdkVersion(24)
-        targetSdkVersion(31)
+        minSdk = (findProperty("android.minSdk") as String).toInt()
+        targetSdk = (findProperty("android.targetSdk") as String).toInt()
     }
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 }
