@@ -5,16 +5,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.*
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
+import com.yuliakazachok.synloans.android.components.bottombar.BottomBarView
+import com.yuliakazachok.synloans.android.core.CoreBottomScreen
 import com.yuliakazachok.synloans.android.core.NavigationKeys.EDIT_PROFILE
 import com.yuliakazachok.synloans.android.core.NavigationKeys.PROFILE
 import com.yuliakazachok.synloans.android.core.NavigationKeys.REQUESTS
@@ -41,27 +43,53 @@ class AppActivity : ComponentActivity() {
 fun SynLoansApp() {
     AppTheme {
         val navController = rememberNavController()
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
+        val currentRoute = currentDestination?.route
 
-        ProvideWindowInsets {
-            Box(
-                Modifier.padding(
-                    rememberInsetsPaddingValues(
-                        insets = LocalWindowInsets.current.systemBars,
-                        applyStart = true,
-                        applyTop = false,
-                        applyEnd = true,
-                        applyBottom = false,
-                        additionalStart = 12.dp,
-                        additionalEnd = 12.dp,
+        Scaffold(
+            bottomBar = {
+                if (currentRoute == PROFILE || currentRoute == REQUESTS) {
+                    BottomBarView(
+                        tabs = listOf(CoreBottomScreen.Requests, CoreBottomScreen.Profile),
+                        navController = navController,
+                        currentDestination = currentDestination,
+                        currentRoute = currentRoute,
                     )
-                )
-            ) {
-                NavHost(navController = navController, startDestination = SIGN_IN) {
-                    composable(SIGN_IN) { SignInDestination(navController) }
-                    composable(SIGN_UP) { SignUpDestination(navController) }
-                    composable(PROFILE) { ProfileDestination(navController) }
-                    composable(EDIT_PROFILE) { /* TODO destination */  }
-                    composable(REQUESTS) { /* TODO destination */ }
+                }
+            }
+        ) {
+            ProvideWindowInsets {
+                Box(
+                    Modifier.padding(
+                        rememberInsetsPaddingValues(
+                            insets = LocalWindowInsets.current.systemBars,
+                            applyStart = true,
+                            applyTop = false,
+                            applyEnd = true,
+                            applyBottom = false,
+                            additionalStart = 16.dp,
+                            additionalEnd = 16.dp,
+                        )
+                    )
+                ) {
+                    NavHost(navController = navController, startDestination = SIGN_IN) {
+                        composable(SIGN_IN) { SignInDestination(navController) }
+                        composable(SIGN_UP) { SignUpDestination(navController) }
+                        navigation(
+                            startDestination = REQUESTS,
+                            route = CoreBottomScreen.Requests.route,
+                        ) {
+                            composable(REQUESTS) { /* TODO destination */ }
+                        }
+                        navigation(
+                            startDestination = PROFILE,
+                            route = CoreBottomScreen.Profile.route,
+                        ) {
+                            composable(PROFILE) { ProfileDestination(navController) }
+                            composable(EDIT_PROFILE) { /* TODO destination */ }
+                        }
+                    }
                 }
             }
         }
