@@ -3,18 +3,11 @@ package com.yuliakazachok.synloans.android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.*
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.ProvideWindowInsets
-import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.yuliakazachok.synloans.android.components.bottombar.BottomBarView
 import com.yuliakazachok.synloans.android.core.CoreBottomScreen
 import com.yuliakazachok.synloans.android.core.NavigationKeys.EDIT_PROFILE
@@ -59,37 +52,21 @@ fun SynLoansApp() {
                 }
             }
         ) {
-            ProvideWindowInsets {
-                Box(
-                    Modifier.padding(
-                        rememberInsetsPaddingValues(
-                            insets = LocalWindowInsets.current.systemBars,
-                            applyStart = true,
-                            applyTop = false,
-                            applyEnd = true,
-                            applyBottom = false,
-                            additionalStart = 16.dp,
-                            additionalEnd = 16.dp,
-                        )
-                    )
+            NavHost(navController = navController, startDestination = SIGN_IN) {
+                composable(SIGN_IN) { SignInDestination(navController) }
+                composable(SIGN_UP) { SignUpDestination(navController) }
+                navigation(
+                    startDestination = REQUESTS,
+                    route = CoreBottomScreen.Requests.route,
                 ) {
-                    NavHost(navController = navController, startDestination = SIGN_IN) {
-                        composable(SIGN_IN) { SignInDestination(navController) }
-                        composable(SIGN_UP) { SignUpDestination(navController) }
-                        navigation(
-                            startDestination = REQUESTS,
-                            route = CoreBottomScreen.Requests.route,
-                        ) {
-                            composable(REQUESTS) { /* TODO destination */ }
-                        }
-                        navigation(
-                            startDestination = PROFILE,
-                            route = CoreBottomScreen.Profile.route,
-                        ) {
-                            composable(PROFILE) { ProfileDestination(navController) }
-                            composable(EDIT_PROFILE) { /* TODO destination */ }
-                        }
-                    }
+                    composable(REQUESTS) { /* TODO destination */ }
+                }
+                navigation(
+                    startDestination = PROFILE,
+                    route = CoreBottomScreen.Profile.route,
+                ) {
+                    composable(PROFILE) { ProfileDestination(navController) }
+                    composable(EDIT_PROFILE) { /* TODO destination */ }
                 }
             }
         }

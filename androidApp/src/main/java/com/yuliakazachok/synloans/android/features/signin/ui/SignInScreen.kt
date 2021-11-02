@@ -91,7 +91,7 @@ fun SignInContentView(
             state = listState,
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
         ) {
             item {
                 EmailView(

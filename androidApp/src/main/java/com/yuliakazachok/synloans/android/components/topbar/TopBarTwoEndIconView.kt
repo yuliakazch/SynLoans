@@ -28,13 +28,15 @@ fun TopBarTwoEndIconView(
                 imageVector = iconOne,
                 contentDescription = null,
                 modifier = Modifier
-                    .padding(end = 12.dp)
+                    .padding(end = 16.dp)
                     .clickable { onOneIconClicked() },
             )
             Icon(
                 imageVector = iconTwo,
                 contentDescription = null,
-                modifier = Modifier.clickable { onTwoIconClicked() },
+                modifier = Modifier
+                    .padding(end = 12.dp)
+                    .clickable { onTwoIconClicked() },
             )
         },
     )

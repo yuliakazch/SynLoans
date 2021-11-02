@@ -2,6 +2,7 @@ package com.yuliakazachok.synloans.android.components.bottombar
 
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
@@ -30,6 +31,8 @@ fun BottomBarView(
                 icon = screen.icon,
                 label = { Text(stringResource(screen.stringId)) },
                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                selectedContentColor = MaterialTheme.colors.primary,
+                unselectedContentColor = Color.Gray,
                 onClick = {
                     val availableRoute = (screen.route == REQUESTS_TAB && currentRoute != REQUESTS)
                             || (screen.route == PROFILE_TAB && currentRoute != PROFILE)

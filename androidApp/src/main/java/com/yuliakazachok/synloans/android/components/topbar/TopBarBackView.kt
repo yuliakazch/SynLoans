@@ -1,6 +1,7 @@
 package com.yuliakazachok.synloans.android.components.topbar
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -24,7 +25,9 @@ fun TopBarBackView(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = null,
                 tint = MaterialTheme.colors.primary,
-                modifier = Modifier.clickable { onIconClicked() },
+                modifier = Modifier
+                    .padding(start = 10.dp)
+                    .clickable { onIconClicked() },
             )
         },
         elevation = 0.dp,
