@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavHostController
+import com.yuliakazachok.synloans.android.core.NavigationKeys.PROFILE
+import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_IN
 import com.yuliakazachok.synloans.android.features.signin.presentation.SignInEffect
 import com.yuliakazachok.synloans.android.features.signin.presentation.SignInViewModel
 import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_UP
@@ -22,7 +24,11 @@ fun SignInDestination(navController: NavHostController) {
         onActionSent = { action -> viewModel.setEvent(action) },
         onNavigationRequested = { navigationEffect ->
             when (navigationEffect) {
-                is SignInEffect.Navigation.ToProfile -> {}
+                is SignInEffect.Navigation.ToProfile -> {
+                    navController.navigate(PROFILE) {
+                        popUpTo(SIGN_IN) { inclusive = true }
+                    }
+                }
 
                 is SignInEffect.Navigation.ToRegistration -> {
                     navController.navigate(SIGN_UP)

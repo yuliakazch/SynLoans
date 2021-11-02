@@ -15,11 +15,15 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
+import com.yuliakazachok.synloans.android.core.NavigationKeys.EDIT_PROFILE
+import com.yuliakazachok.synloans.android.core.NavigationKeys.PROFILE
+import com.yuliakazachok.synloans.android.core.NavigationKeys.REQUESTS
 import com.yuliakazachok.synloans.android.features.signin.ui.SignInDestination
 import com.yuliakazachok.synloans.android.features.signup.ui.SignUpDestination
 import com.yuliakazachok.synloans.android.theme.AppTheme
 import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_IN
 import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_UP
+import com.yuliakazachok.synloans.android.features.profile.ui.ProfileDestination
 
 class AppActivity : ComponentActivity() {
 
@@ -55,6 +59,9 @@ fun SynLoansApp() {
                 NavHost(navController = navController, startDestination = SIGN_IN) {
                     composable(SIGN_IN) { SignInDestination(navController) }
                     composable(SIGN_UP) { SignUpDestination(navController) }
+                    composable(PROFILE) { ProfileDestination(navController) }
+                    composable(EDIT_PROFILE) { /* TODO destination */  }
+                    composable(REQUESTS) { /* TODO destination */ }
                 }
             }
         }
