@@ -19,6 +19,7 @@ import com.yuliakazachok.synloans.android.theme.AppTheme
 import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_IN
 import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_UP
 import com.yuliakazachok.synloans.android.features.profile.ui.ProfileDestination
+import com.yuliakazachok.synloans.android.features.requests.ui.RequestsDestination
 
 class AppActivity : ComponentActivity() {
 
@@ -59,7 +60,7 @@ fun SynLoansApp() {
                     startDestination = REQUESTS,
                     route = CoreBottomScreen.Requests.route,
                 ) {
-                    composable(REQUESTS) { /* TODO destination */ }
+                    composable(REQUESTS) { RequestsDestination(navController) }
                 }
                 navigation(
                     startDestination = PROFILE,

@@ -10,4 +10,6 @@ object NavigationKeys {
     const val PROFILE = "profile"
     const val EDIT_PROFILE = "editProfile"
     const val REQUESTS = "requests"
+    const val CREATE_REQUEST = "createRequest"
+    const val REQUEST_DETAIL = "requestDetail"
 }

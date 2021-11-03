@@ -24,4 +24,9 @@
     <string name="field_legal_address">Юридический адрес</string>
     <string name="field_actual_address">Фактический адрес</string>
     <string name="field_credit_organisation">Кредитная организация</string>
+
+    <string name="requests_date_create">Дата создания\u0020</string>
+    <string name="requests_date_issue">Дата выдачи\u0020</string>
+    <string name="requests_sum_units">\u0020млрд руб</string>
+    <string name="requests_empty">У вас нет текущих заявок!</string>
 </resources>
