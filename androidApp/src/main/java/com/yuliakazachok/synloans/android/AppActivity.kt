@@ -8,68 +8,74 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.compose.*
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.yuliakazachok.synloans.android.components.bottombar.BottomBarView
 import com.yuliakazachok.synloans.android.core.CoreBottomScreen
 import com.yuliakazachok.synloans.android.core.NavigationKeys.EDIT_PROFILE
 import com.yuliakazachok.synloans.android.core.NavigationKeys.PROFILE
 import com.yuliakazachok.synloans.android.core.NavigationKeys.REQUESTS
+import com.yuliakazachok.synloans.android.core.NavigationKeys.REQUEST_DETAIL
 import com.yuliakazachok.synloans.android.features.signin.ui.SignInDestination
 import com.yuliakazachok.synloans.android.features.signup.ui.SignUpDestination
 import com.yuliakazachok.synloans.android.theme.AppTheme
 import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_IN
 import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_UP
 import com.yuliakazachok.synloans.android.features.profile.ui.ProfileDestination
+import com.yuliakazachok.synloans.android.features.requestdetail.ui.RequestDetailDestination
 import com.yuliakazachok.synloans.android.features.requests.ui.RequestsDestination
 
 class AppActivity : ComponentActivity() {
 
-    @ExperimentalComposeUiApi
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            SynLoansApp()
-        }
-    }
+	@ExperimentalPagerApi
+	@ExperimentalComposeUiApi
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		setContent {
+			SynLoansApp()
+		}
+	}
 }
 
+@ExperimentalPagerApi
 @ExperimentalComposeUiApi
 @Composable
 fun SynLoansApp() {
-    AppTheme {
-        val navController = rememberNavController()
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination
-        val currentRoute = currentDestination?.route
+	AppTheme {
+		val navController = rememberNavController()
+		val navBackStackEntry by navController.currentBackStackEntryAsState()
+		val currentDestination = navBackStackEntry?.destination
+		val currentRoute = currentDestination?.route
 
-        Scaffold(
-            bottomBar = {
-                if (currentRoute == PROFILE || currentRoute == REQUESTS) {
-                    BottomBarView(
-                        tabs = listOf(CoreBottomScreen.Requests, CoreBottomScreen.Profile),
-                        navController = navController,
-                        currentDestination = currentDestination,
-                        currentRoute = currentRoute,
-                    )
-                }
-            }
-        ) {
-            NavHost(navController = navController, startDestination = SIGN_IN) {
-                composable(SIGN_IN) { SignInDestination(navController) }
-                composable(SIGN_UP) { SignUpDestination(navController) }
-                navigation(
-                    startDestination = REQUESTS,
-                    route = CoreBottomScreen.Requests.route,
-                ) {
-                    composable(REQUESTS) { RequestsDestination(navController) }
-                }
-                navigation(
-                    startDestination = PROFILE,
-                    route = CoreBottomScreen.Profile.route,
-                ) {
-                    composable(PROFILE) { ProfileDestination(navController) }
-                    composable(EDIT_PROFILE) { /* TODO destination */ }
-                }
-            }
-        }
-    }
+		Scaffold(
+			bottomBar = {
+				if (currentRoute == PROFILE || currentRoute == REQUESTS) {
+					BottomBarView(
+						tabs = listOf(CoreBottomScreen.Requests, CoreBottomScreen.Profile),
+						navController = navController,
+						currentDestination = currentDestination,
+						currentRoute = currentRoute,
+					)
+				}
+			}
+		) {
+			NavHost(navController = navController, startDestination = SIGN_IN) {
+				composable(SIGN_IN) { SignInDestination(navController) }
+				composable(SIGN_UP) { SignUpDestination(navController) }
+				navigation(
+					startDestination = REQUESTS,
+					route = CoreBottomScreen.Requests.route,
+				) {
+					composable(REQUESTS) { RequestsDestination(navController) }
+					composable(REQUEST_DETAIL) { RequestDetailDestination(navController) }
+				}
+				navigation(
+					startDestination = PROFILE,
+					route = CoreBottomScreen.Profile.route,
+				) {
+					composable(PROFILE) { ProfileDestination(navController) }
+					composable(EDIT_PROFILE) { /* TODO destination */ }
+				}
+			}
+		}
+	}
 }

@@ -28,66 +28,68 @@ import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun RequestsScreen(
-    state: RequestsState,
-    effectFlow: Flow<RequestsEffect>?,
-    onActionSent: (action: RequestsAction) -> Unit,
-    onNavigationRequested: (navigationEffect: RequestsEffect.Navigation) -> Unit
+	state: RequestsState,
+	effectFlow: Flow<RequestsEffect>?,
+	onActionSent: (action: RequestsAction) -> Unit,
+	onNavigationRequested: (navigationEffect: RequestsEffect.Navigation) -> Unit
 ) {
 
-    LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
-        effectFlow?.onEach { effect ->
-            when (effect) {
-                is RequestsEffect.Navigation ->
-                    onNavigationRequested(effect)
-            }
-        }?.collect()
-    }
+	LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
+		effectFlow?.onEach { effect ->
+			when (effect) {
+				is RequestsEffect.Navigation ->
+					onNavigationRequested(effect)
+			}
+		}?.collect()
+	}
 
-    Scaffold(
-        topBar = {
-            TopBarEndIconView(
-                title = stringResource(R.string.requests_title),
-                icon = Icons.Filled.AddCircle,
-                onIconClicked = { onActionSent(RequestsAction.CreateRequestClicked) },
-            )
-        }
-    ) {
-        when {
-            state.loading            -> LoadingView()
+	Scaffold(
+		topBar = {
+			TopBarEndIconView(
+				title = stringResource(R.string.requests_title),
+				icon = Icons.Filled.AddCircle,
+				onIconClicked = { onActionSent(RequestsAction.CreateRequestClicked) },
+			)
+		}
+	) {
+		when {
+			state.loading            -> LoadingView()
 
-            state.requests == null   -> ErrorView()
+			state.requests == null   -> ErrorView()
 
-            state.requests.isEmpty() -> TextFullScreenView(stringResource(R.string.requests_empty))
+			state.requests.isEmpty() -> TextFullScreenView(stringResource(R.string.requests_empty))
 
-            else                     -> RequestsView(state.requests)
-        }
-    }
+			else                     -> RequestsView(state.requests) { onActionSent(RequestsAction.RequestClicked) }
+		}
+	}
 }
 
 @Composable
 fun RequestsView(
-    requests: List<BorrowRequest>,
+	requests: List<BorrowRequest>,
+	onRequestClicked: () -> Unit,
 ) {
-    val listState = rememberLazyListState()
-    val textDateCreate = stringResource(R.string.requests_date_create)
-    val textDateIssue = stringResource(R.string.requests_date_issue)
-    val textSumUnit = stringResource(R.string.requests_sum_units)
+	val listState = rememberLazyListState()
+	val textDateCreate = stringResource(R.string.requests_date_create)
+	val textDateIssue = stringResource(R.string.requests_date_issue)
+	val textSumUnit = stringResource(R.string.requests_sum_units)
 
-    LazyColumn(
-        state = listState,
-        modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
-    ) {
-        requests.forEach { request ->
-            item {
-                TextTwoLinesView(
-                    textOne = if (request.dateIssue.isNullOrEmpty()) {
-                        textDateCreate + request.dateCreate
-                    } else {
-                        textDateIssue + request.dateIssue
-                    },
-                    textTwo = request.sum.toString() + textSumUnit,
-                )
-            }
-        }
-    }
+	LazyColumn(
+		state = listState,
+		modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+	) {
+		requests.forEach { request ->
+			item {
+				TextTwoLinesView(
+					textOne = if (request.dateIssue.isNullOrEmpty()) {
+						textDateCreate + request.dateCreate
+					} else {
+						textDateIssue + request.dateIssue
+					},
+					textTwo = request.sum.toString() + textSumUnit,
+					onClicked = { onRequestClicked() }
+				)
+			}
+		}
+	}
 }
