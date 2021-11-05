@@ -13,31 +13,31 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun TopBarTwoEndIconView(
-    title: String,
-    iconOne: ImageVector,
-    iconTwo: ImageVector,
-    onOneIconClicked: () -> Unit,
-    onTwoIconClicked: () -> Unit,
+	title: String,
+	iconOne: ImageVector,
+	iconTwo: ImageVector,
+	onOneIconClicked: () -> Unit,
+	onTwoIconClicked: () -> Unit,
 ) {
-    TopAppBar(
-        title = { Text(title) },
-        backgroundColor = MaterialTheme.colors.background,
-        elevation = 0.dp,
-        actions = {
-            Icon(
-                imageVector = iconOne,
-                contentDescription = null,
-                modifier = Modifier
+	TopAppBar(
+		title = { Text(title) },
+		backgroundColor = MaterialTheme.colors.background,
+		elevation = 0.dp,
+		actions = {
+			Icon(
+				imageVector = iconOne,
+				contentDescription = null,
+				modifier = Modifier
                     .padding(end = 16.dp)
                     .clickable { onOneIconClicked() },
-            )
-            Icon(
-                imageVector = iconTwo,
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(end = 12.dp)
+			)
+			Icon(
+				imageVector = iconTwo,
+				contentDescription = null,
+				modifier = Modifier
+                    .padding(end = 16.dp)
                     .clickable { onTwoIconClicked() },
-            )
-        },
-    )
+			)
+		},
+	)
 }
