@@ -2,6 +2,9 @@ package com.yuliakazachok.synloans.android.features.requestdetail.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
+import com.yuliakazachok.synloans.features.requestdetail.domain.entity.Bank
+import com.yuliakazachok.synloans.features.requestdetail.domain.entity.Borrower
+import com.yuliakazachok.synloans.features.requestdetail.domain.entity.RequestCommon
 import com.yuliakazachok.synloans.features.requestdetail.domain.entity.RequestInfo
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -29,24 +32,88 @@ class RequestDetailViewModel :
 		}
 	}
 
-	private fun getRequestMock(): RequestInfo =
-		RequestInfo(
-			id = 23,
-			sum = 5,
-			maxRate = 11,
-			term = 7,
-			dateIssue = null,
-			dateCreate = "01.03.2021"
+	private fun getRequestMock(): RequestCommon =
+		RequestCommon(
+			info = RequestInfo(
+				id = 23,
+				sum = 5,
+				maxRate = 11,
+				term = 8,
+				dateIssue = null,
+				dateCreate = "01.03.2021"
+			),
+			banks = listOf(
+				Bank(
+					id = 1,
+					name = "Банк Западный",
+					sum = 1,
+					approveBankAgent = true,
+				),
+				Bank(
+					id = 6,
+					name = "Банк Северный",
+					sum = 4,
+					approveBankAgent = true,
+				),
+				Bank(
+					id = 3,
+					name = "Банк Южный",
+					sum = 2,
+					approveBankAgent = false,
+				),
+			),
+			borrower = Borrower(
+				id = 43,
+				fullName = "Публичное акционерное общество “Компания”",
+				shortName = "ПАО “Компания”",
+				tin = "7708004761",
+				iec = "43653462219",
+				legalAddress = "101000, Москва, Бульвар Сретенский, 11",
+				actualAddress = "117420, Москва, Наметкина, 16",
+				email = "company@companymai.ru",
+			),
 		)
 
-	private fun getIssuedRequestMock(): RequestInfo =
-		RequestInfo(
-			id = 23,
-			sum = 5,
-			maxRate = 11,
-			term = 7,
-			dateIssue = "12.04.2021",
-			dateCreate = "01.03.2021"
+	private fun getIssuedRequestMock(): RequestCommon =
+		RequestCommon(
+			info = RequestInfo(
+				id = 23,
+				sum = 5,
+				maxRate = 11,
+				term = 8,
+				dateIssue = "12.04.2021",
+				dateCreate = "01.03.2021"
+			),
+			banks = listOf(
+				Bank(
+					id = 1,
+					name = "Банк Западный",
+					sum = 1,
+					approveBankAgent = true,
+				),
+				Bank(
+					id = 6,
+					name = "Банк Северный",
+					sum = 4,
+					approveBankAgent = true,
+				),
+				Bank(
+					id = 3,
+					name = "Банк Южный",
+					sum = 2,
+					approveBankAgent = false,
+				),
+			),
+			borrower = Borrower(
+				id = 43,
+				fullName = "Публичное акционерное общество “Компания”",
+				shortName = "ПАО “Компания”",
+				tin = "7708004761",
+				iec = "43653462219",
+				legalAddress = "101000, Москва, Бульвар Сретенский, 11",
+				actualAddress = "117420, Москва, Наметкина, 16",
+				email = "company@companymai.ru",
+			),
 		)
 
 	override fun handleActions(action: RequestDetailAction) {

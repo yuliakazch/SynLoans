@@ -22,9 +22,13 @@ import com.yuliakazachok.synloans.android.components.progress.LoadingView
 import com.yuliakazachok.synloans.android.components.text.TextTwoLinesView
 import com.yuliakazachok.synloans.android.components.topbar.TopBarBackView
 import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
+import com.yuliakazachok.synloans.android.core.getIndexYearText
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailAction
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailEffect
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailState
+import com.yuliakazachok.synloans.features.requestdetail.domain.entity.Bank
+import com.yuliakazachok.synloans.features.requestdetail.domain.entity.Borrower
+import com.yuliakazachok.synloans.features.requestdetail.domain.entity.RequestCommon
 import com.yuliakazachok.synloans.features.requestdetail.domain.entity.RequestInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -78,7 +82,7 @@ fun RequestDetailScreen(
 @ExperimentalPagerApi
 @Composable
 fun RequestDetailView(
-	request: RequestInfo,
+	request: RequestCommon,
 	onActionSent: (action: RequestDetailAction) -> Unit,
 ) {
 	val tabData = listOf(
@@ -121,9 +125,11 @@ fun RequestDetailView(
 			state = pagerState,
 		) { index ->
 			when (index) {
-				0    -> RequestInfoView(request, onActionSent)
+				0 -> RequestInfoView(request.info, onActionSent)
 
-				else -> Text("page = $index")
+				1 -> BanksView(request.banks, onActionSent)
+
+				2 -> BorrowerView(request.borrower)
 			}
 		}
 	}
@@ -205,10 +211,85 @@ fun RequestInfoView(
 	}
 }
 
-private fun getIndexYearText(count: Int): Int =
-	when {
-		count.rem(100) in 11..14 -> 2
-		count.rem(10) == 1       -> 0
-		count.rem(10) in 2..4    -> 1
-		else                     -> 2
+@Composable
+fun BanksView(
+	banks: List<Bank>,
+	onActionSent: (action: RequestDetailAction) -> Unit,
+) {
+	val listState = rememberLazyListState()
+	val textSumUnit = stringResource(R.string.requests_sum_units)
+
+	LazyColumn(
+		state = listState,
+		modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+	) {
+		banks.forEach { bank ->
+			item {
+				TextTwoLinesView(
+					textOne = bank.name,
+					textTwo = if (bank.approveBankAgent) {
+						bank.sum.toString() + textSumUnit + stringResource(R.string.request_divider) + stringResource(R.string.request_approve_bank_agent)
+					} else {
+						bank.sum.toString() + textSumUnit
+					},
+					onClicked = { onActionSent(RequestDetailAction.BankItemClicked) }
+				)
+			}
+		}
 	}
+}
+
+@Composable
+fun BorrowerView(
+	borrower: Borrower,
+) {
+	val listState = rememberLazyListState()
+
+	LazyColumn(
+		state = listState,
+		modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+	) {
+		item {
+			TextTwoLinesView(
+				textOne = stringResource(R.string.field_full_name_company),
+				textTwo = borrower.fullName,
+			)
+		}
+		item {
+			TextTwoLinesView(
+				textOne = stringResource(R.string.field_short_name_company),
+				textTwo = borrower.shortName,
+			)
+		}
+		item {
+			TextTwoLinesView(
+				textOne = stringResource(R.string.field_tin),
+				textTwo = borrower.tin,
+			)
+		}
+		item {
+			TextTwoLinesView(
+				textOne = stringResource(R.string.field_iec),
+				textTwo = borrower.iec,
+			)
+		}
+		item {
+			TextTwoLinesView(
+				textOne = stringResource(R.string.field_legal_address),
+				textTwo = borrower.legalAddress,
+			)
+		}
+		item {
+			TextTwoLinesView(
+				textOne = stringResource(R.string.field_actual_address),
+				textTwo = borrower.actualAddress,
+			)
+		}
+		item {
+			TextTwoLinesView(
+				textOne = stringResource(R.string.field_email),
+				textTwo = borrower.email,
+			)
+		}
+	}
+}

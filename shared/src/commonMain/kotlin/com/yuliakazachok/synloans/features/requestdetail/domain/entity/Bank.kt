@@ -4,5 +4,5 @@ data class Bank(
 	val id: Int,
 	val name: String,
 	val sum: Int,
-	val creditOrganisation: Boolean,
+	val approveBankAgent: Boolean,
 )

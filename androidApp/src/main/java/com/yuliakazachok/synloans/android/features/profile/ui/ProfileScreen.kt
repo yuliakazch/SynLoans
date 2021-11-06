@@ -28,87 +28,93 @@ import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun ProfileScreen(
-    state: ProfileState,
-    effectFlow: Flow<ProfileEffect>?,
-    onActionSent: (action: ProfileAction) -> Unit,
-    onNavigationRequested: (navigationEffect: ProfileEffect.Navigation) -> Unit
+	state: ProfileState,
+	effectFlow: Flow<ProfileEffect>?,
+	onActionSent: (action: ProfileAction) -> Unit,
+	onNavigationRequested: (navigationEffect: ProfileEffect.Navigation) -> Unit
 ) {
 
-    LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
-        effectFlow?.onEach { effect ->
-            when (effect) {
-                is ProfileEffect.Navigation ->
-                    onNavigationRequested(effect)
-            }
-        }?.collect()
-    }
+	LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
+		effectFlow?.onEach { effect ->
+			when (effect) {
+				is ProfileEffect.Navigation ->
+					onNavigationRequested(effect)
+			}
+		}?.collect()
+	}
 
-    Scaffold(
-        topBar = {
-            TopBarTwoEndIconView(
-                title = stringResource(R.string.profile_title),
-                iconOne = Icons.Filled.Edit,
-                iconTwo = Icons.Filled.ExitToApp,
-                onOneIconClicked = { onActionSent(ProfileAction.EditProfileClicked) },
-                onTwoIconClicked = { onActionSent(ProfileAction.LogoutClicked) },
-            )
-        }
-    ) {
-        when {
-            state.loading         -> LoadingView()
+	Scaffold(
+		topBar = {
+			TopBarTwoEndIconView(
+				title = stringResource(R.string.profile_title),
+				iconOne = Icons.Filled.Edit,
+				iconTwo = Icons.Filled.ExitToApp,
+				onOneIconClicked = { onActionSent(ProfileAction.EditProfileClicked) },
+				onTwoIconClicked = { onActionSent(ProfileAction.LogoutClicked) },
+			)
+		}
+	) {
+		when {
+			state.loading -> LoadingView()
 
-            state.profile == null -> ErrorView()
+			state.profile == null -> ErrorView()
 
-            else                  -> ProfileView(state.profile)
-        }
-    }
+			else -> ProfileView(state.profile)
+		}
+	}
 }
 
 @Composable
 fun ProfileView(
-    profile: Profile,
+	profile: Profile,
 ) {
-    val listState = rememberLazyListState()
+	val listState = rememberLazyListState()
 
-    LazyColumn(
-        state = listState,
-        modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
-    ) {
-        item {
-            TextTwoLinesView(
-                textOne = stringResource(R.string.field_full_name_company),
-                textTwo = profile.fullName,
-            )
-        }
-        item {
-            TextTwoLinesView(
-                textOne = stringResource(R.string.field_short_name_company),
-                textTwo = profile.shortName,
-            )
-        }
-        item {
-            TextTwoLinesView(
-                textOne = stringResource(R.string.field_tin),
-                textTwo = profile.tin,
-            )
-        }
-        item {
-            TextTwoLinesView(
-                textOne = stringResource(R.string.field_iec),
-                textTwo = profile.iec,
-            )
-        }
-        item {
-            TextTwoLinesView(
-                textOne = stringResource(R.string.field_legal_address),
-                textTwo = profile.legalAddress,
-            )
-        }
-        item {
-            TextTwoLinesView(
-                textOne = stringResource(R.string.field_actual_address),
-                textTwo = profile.actualAddress,
-            )
-        }
-    }
+	LazyColumn(
+		state = listState,
+		modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+	) {
+		item {
+			TextTwoLinesView(
+				textOne = stringResource(R.string.field_full_name_company),
+				textTwo = profile.fullName,
+			)
+		}
+		item {
+			TextTwoLinesView(
+				textOne = stringResource(R.string.field_short_name_company),
+				textTwo = profile.shortName,
+			)
+		}
+		item {
+			TextTwoLinesView(
+				textOne = stringResource(R.string.field_tin),
+				textTwo = profile.tin,
+			)
+		}
+		item {
+			TextTwoLinesView(
+				textOne = stringResource(R.string.field_iec),
+				textTwo = profile.iec,
+			)
+		}
+		item {
+			TextTwoLinesView(
+				textOne = stringResource(R.string.field_legal_address),
+				textTwo = profile.legalAddress,
+			)
+		}
+		item {
+			TextTwoLinesView(
+				textOne = stringResource(R.string.field_actual_address),
+				textTwo = profile.actualAddress,
+			)
+		}
+		item {
+			TextTwoLinesView(
+				textOne = stringResource(R.string.field_email),
+				textTwo = profile.email,
+			)
+		}
+	}
 }
