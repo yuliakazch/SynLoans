@@ -47,4 +47,7 @@
 		<item>\u0020года</item>
 		<item>\u0020лет</item>
 	</string-array>
+
+	<string name="request_create_title">Создание заявки</string>
+	<string name="request_create_send">Отправить заявку</string>
 </resources>

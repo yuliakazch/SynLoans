@@ -11,6 +11,7 @@ import androidx.navigation.compose.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.yuliakazachok.synloans.android.components.bottombar.BottomBarView
 import com.yuliakazachok.synloans.android.core.CoreBottomScreen
+import com.yuliakazachok.synloans.android.core.NavigationKeys.CREATE_REQUEST
 import com.yuliakazachok.synloans.android.core.NavigationKeys.EDIT_PROFILE
 import com.yuliakazachok.synloans.android.core.NavigationKeys.PROFILE
 import com.yuliakazachok.synloans.android.core.NavigationKeys.REQUESTS
@@ -21,6 +22,7 @@ import com.yuliakazachok.synloans.android.theme.AppTheme
 import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_IN
 import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_UP
 import com.yuliakazachok.synloans.android.features.profile.ui.ProfileDestination
+import com.yuliakazachok.synloans.android.features.requestcreate.ui.RequestCreateDestination
 import com.yuliakazachok.synloans.android.features.requestdetail.ui.RequestDetailDestination
 import com.yuliakazachok.synloans.android.features.requests.ui.RequestsDestination
 
@@ -66,6 +68,7 @@ fun SynLoansApp() {
 					route = CoreBottomScreen.Requests.route,
 				) {
 					composable(REQUESTS) { RequestsDestination(navController) }
+					composable(CREATE_REQUEST) { RequestCreateDestination(navController) }
 					composable(REQUEST_DETAIL) { RequestDetailDestination(navController) }
 				}
 				navigation(
