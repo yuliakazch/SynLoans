@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.yuliakazachok.synloans.android.core.NavigationKeys.JOIN_SYNDICATE
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailEffect
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailViewModel
 import org.koin.androidx.compose.getViewModel
@@ -21,7 +22,7 @@ fun RequestDetailDestination(navController: NavHostController) {
 		onActionSent = { action -> viewModel.setEvent(action) },
 		onNavigationRequested = { navigationEffect ->
 			when (navigationEffect) {
-				is RequestDetailEffect.Navigation.ToBack            -> {
+				is RequestDetailEffect.Navigation.ToBack -> {
 					navController.popBackStack()
 				}
 
@@ -29,11 +30,11 @@ fun RequestDetailDestination(navController: NavHostController) {
 					// TODO navigate
 				}
 
-				is RequestDetailEffect.Navigation.ToJoinSyndicate   -> {
-					// TODO navigate
+				is RequestDetailEffect.Navigation.ToJoinSyndicate -> {
+					navController.navigate(JOIN_SYNDICATE)
 				}
 
-				is RequestDetailEffect.Navigation.ToBankItem        -> {
+				is RequestDetailEffect.Navigation.ToBankItem -> {
 					// TODO navigate
 				}
 			}

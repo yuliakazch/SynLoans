@@ -50,4 +50,7 @@
 
 	<string name="request_create_title">Создание заявки</string>
 	<string name="request_create_send">Отправить заявку</string>
+
+	<string name="join_syndicate_title">Вступить в синдикат</string>
+	<string name="join_syndicate_button">Присоединиться</string>
 </resources>
