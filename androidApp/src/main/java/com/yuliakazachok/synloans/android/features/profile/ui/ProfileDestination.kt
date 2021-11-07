@@ -14,29 +14,29 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun ProfileDestination(navController: NavHostController) {
 
-    val viewModel = getViewModel<ProfileViewModel>()
-    val state = viewModel.viewState.collectAsState().value
+	val viewModel = getViewModel<ProfileViewModel>()
+	val state = viewModel.viewState.collectAsState().value
 
-    ProfileScreen(
-        state = state,
-        effectFlow = viewModel.effect,
-        onActionSent = { action -> viewModel.setEvent(action) },
-        onNavigationRequested = { navigationEffect ->
-            when (navigationEffect) {
-                is ProfileEffect.Navigation.ToRequests -> {
-                    navController.navigate(REQUESTS)
-                }
+	ProfileScreen(
+		state = state,
+		effectFlow = viewModel.effect,
+		onActionSent = { action -> viewModel.setEvent(action) },
+		onNavigationRequested = { navigationEffect ->
+			when (navigationEffect) {
+				is ProfileEffect.Navigation.ToRequests -> {
+					navController.navigate(REQUESTS)
+				}
 
-                is ProfileEffect.Navigation.ToEditProfile -> {
-                    navController.navigate(EDIT_PROFILE)
-                }
+				is ProfileEffect.Navigation.ToEditProfile -> {
+					navController.navigate(EDIT_PROFILE)
+				}
 
-                is ProfileEffect.Navigation.ToLogout -> {
-                    navController.navigate(SIGN_IN) {
-                        popUpTo(PROFILE) { inclusive = true }
-                    }
-                }
-            }
-        }
-    )
+				is ProfileEffect.Navigation.ToLogout -> {
+					navController.navigate(SIGN_IN) {
+						popUpTo(PROFILE) { inclusive = true }
+					}
+				}
+			}
+		}
+	)
 }

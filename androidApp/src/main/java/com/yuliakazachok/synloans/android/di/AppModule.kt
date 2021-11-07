@@ -1,6 +1,7 @@
 package com.yuliakazachok.synloans.android.di
 
 import com.yuliakazachok.synloans.android.features.bankdetail.presentation.BankDetailViewModel
+import com.yuliakazachok.synloans.android.features.editprofile.presentation.EditProfileViewModel
 import com.yuliakazachok.synloans.android.features.joinsyndicate.presentation.JoinSyndicateViewModel
 import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.PaymentScheduleViewModel
 import com.yuliakazachok.synloans.android.features.profile.presentation.ProfileViewModel
@@ -17,6 +18,7 @@ val appModule = module {
 	viewModel { SignInViewModel() }
 	viewModel { SignUpViewModel() }
 	viewModel { ProfileViewModel() }
+	viewModel { EditProfileViewModel() }
 	viewModel { RequestsViewModel() }
 	viewModel { RequestDetailViewModel() }
 	viewModel { RequestCreateViewModel() }

@@ -25,6 +25,7 @@ import com.yuliakazachok.synloans.android.theme.AppTheme
 import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_IN
 import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_UP
 import com.yuliakazachok.synloans.android.features.bankdetail.ui.BankDetailDestination
+import com.yuliakazachok.synloans.android.features.editprofile.ui.EditProfileDestination
 import com.yuliakazachok.synloans.android.features.joinsyndicate.ui.JoinSyndicateDestination
 import com.yuliakazachok.synloans.android.features.paymentschedule.ui.PaymentScheduleDestination
 import com.yuliakazachok.synloans.android.features.profile.ui.ProfileDestination
@@ -85,7 +86,7 @@ fun SynLoansApp() {
 					route = CoreBottomScreen.Profile.route,
 				) {
 					composable(PROFILE) { ProfileDestination(navController) }
-					composable(EDIT_PROFILE) { /* TODO destination */ }
+					composable(EDIT_PROFILE) { EditProfileDestination(navController) }
 				}
 			}
 		}

@@ -59,4 +59,7 @@
 
 	<string name="payment_paid">Платеж оплачен</string>
 	<string name="payment_not_paid">Платеж не оплачен</string>
+
+	<string name="edit_profile_title">Редактирование</string>
+	<string name="edit_profile_button">Сохранить</string>
 </resources>

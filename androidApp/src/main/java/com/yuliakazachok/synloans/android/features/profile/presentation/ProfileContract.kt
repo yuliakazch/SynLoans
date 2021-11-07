@@ -7,23 +7,23 @@ import com.yuliakazachok.synloans.features.profile.domain.entity.Profile
 
 sealed class ProfileAction : Action {
 
-    object RequestsClicked : ProfileAction()
+	object RequestsClicked : ProfileAction()
 
-    object EditProfileClicked : ProfileAction()
+	object EditProfileClicked : ProfileAction()
 
-    object LogoutClicked : ProfileAction()
+	object LogoutClicked : ProfileAction()
 }
 
 data class ProfileState(val profile: Profile?, val loading: Boolean = false) : State
 
 sealed class ProfileEffect : Effect {
 
-    sealed class Navigation : ProfileEffect() {
+	sealed class Navigation : ProfileEffect() {
 
-        object ToRequests : Navigation()
+		object ToRequests : Navigation()
 
-        object ToEditProfile : Navigation()
+		object ToEditProfile : Navigation()
 
-        object ToLogout : Navigation()
-    }
+		object ToLogout : Navigation()
+	}
 }
