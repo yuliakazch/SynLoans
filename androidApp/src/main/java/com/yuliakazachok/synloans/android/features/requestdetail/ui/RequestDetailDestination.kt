@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.yuliakazachok.synloans.android.core.NavigationKeys.BANK_DETAIL
 import com.yuliakazachok.synloans.android.core.NavigationKeys.JOIN_SYNDICATE
+import com.yuliakazachok.synloans.android.core.NavigationKeys.PAYMENT_SCHEDULE
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailEffect
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailViewModel
 import org.koin.androidx.compose.getViewModel
@@ -28,7 +29,7 @@ fun RequestDetailDestination(navController: NavHostController) {
 				}
 
 				is RequestDetailEffect.Navigation.ToPaymentSchedule -> {
-					// TODO navigate
+					navController.navigate(PAYMENT_SCHEDULE)
 				}
 
 				is RequestDetailEffect.Navigation.ToJoinSyndicate -> {
