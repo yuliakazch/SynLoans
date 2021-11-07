@@ -13,4 +13,5 @@ object NavigationKeys {
 	const val CREATE_REQUEST = "createRequest"
 	const val REQUEST_DETAIL = "requestDetail"
 	const val JOIN_SYNDICATE = "joinSyndicate"
+	const val BANK_DETAIL = "bankDetail"
 }

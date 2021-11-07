@@ -11,6 +11,7 @@ import androidx.navigation.compose.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.yuliakazachok.synloans.android.components.bottombar.BottomBarView
 import com.yuliakazachok.synloans.android.core.CoreBottomScreen
+import com.yuliakazachok.synloans.android.core.NavigationKeys.BANK_DETAIL
 import com.yuliakazachok.synloans.android.core.NavigationKeys.CREATE_REQUEST
 import com.yuliakazachok.synloans.android.core.NavigationKeys.EDIT_PROFILE
 import com.yuliakazachok.synloans.android.core.NavigationKeys.JOIN_SYNDICATE
@@ -22,6 +23,7 @@ import com.yuliakazachok.synloans.android.features.signup.ui.SignUpDestination
 import com.yuliakazachok.synloans.android.theme.AppTheme
 import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_IN
 import com.yuliakazachok.synloans.android.core.NavigationKeys.SIGN_UP
+import com.yuliakazachok.synloans.android.features.bankdetail.ui.BankDetailDestination
 import com.yuliakazachok.synloans.android.features.joinsyndicate.ui.JoinSyndicateDestination
 import com.yuliakazachok.synloans.android.features.profile.ui.ProfileDestination
 import com.yuliakazachok.synloans.android.features.requestcreate.ui.RequestCreateDestination
@@ -73,6 +75,7 @@ fun SynLoansApp() {
 					composable(CREATE_REQUEST) { RequestCreateDestination(navController) }
 					composable(REQUEST_DETAIL) { RequestDetailDestination(navController) }
 					composable(JOIN_SYNDICATE) { JoinSyndicateDestination(navController) }
+					composable(BANK_DETAIL) { BankDetailDestination(navController) }
 				}
 				navigation(
 					startDestination = PROFILE,

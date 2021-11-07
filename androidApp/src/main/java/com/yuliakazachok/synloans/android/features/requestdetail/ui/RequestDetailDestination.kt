@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.yuliakazachok.synloans.android.core.NavigationKeys.BANK_DETAIL
 import com.yuliakazachok.synloans.android.core.NavigationKeys.JOIN_SYNDICATE
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailEffect
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailViewModel
@@ -35,7 +36,7 @@ fun RequestDetailDestination(navController: NavHostController) {
 				}
 
 				is RequestDetailEffect.Navigation.ToBankItem -> {
-					// TODO navigate
+					navController.navigate(BANK_DETAIL)
 				}
 			}
 		}
