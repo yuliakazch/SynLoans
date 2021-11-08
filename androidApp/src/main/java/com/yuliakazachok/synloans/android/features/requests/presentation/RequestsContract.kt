@@ -4,26 +4,32 @@ import com.yuliakazachok.synloans.android.core.Action
 import com.yuliakazachok.synloans.android.core.Effect
 import com.yuliakazachok.synloans.android.core.State
 import com.yuliakazachok.synloans.features.requests.domain.entity.BorrowRequest
+import com.yuliakazachok.synloans.features.requests.domain.entity.BankRequests
 
 sealed class RequestsAction : Action {
 
-    object CreateRequestClicked : RequestsAction()
+	object CreateRequestClicked : RequestsAction()
 
-    object RequestClicked : RequestsAction()
+	object RequestClicked : RequestsAction()
 
-    object ProfileClicked : RequestsAction()
+	object ProfileClicked : RequestsAction()
 }
 
-data class RequestsState(val requests: List<BorrowRequest>?, val loading: Boolean) : State
+data class RequestsState(
+	val borrowRequests: List<BorrowRequest>?,
+	val bankRequests: BankRequests?,
+	val creditOrganisation: Boolean,
+	val loading: Boolean,
+) : State
 
 sealed class RequestsEffect : Effect {
 
-    sealed class Navigation : RequestsEffect() {
+	sealed class Navigation : RequestsEffect() {
 
-        object ToCreateRequest : Navigation()
+		object ToCreateRequest : Navigation()
 
-        object ToRequest : Navigation()
+		object ToRequest : Navigation()
 
-        object ToProfile : Navigation()
-    }
+		object ToProfile : Navigation()
+	}
 }

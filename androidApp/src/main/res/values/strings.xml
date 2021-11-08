@@ -62,4 +62,7 @@
 
 	<string name="edit_profile_title">Редактирование</string>
 	<string name="edit_profile_button">Сохранить</string>
+
+	<string name="requests_own">Мои заявки</string>
+	<string name="requests_other">Открытые заявки</string>
 </resources>

@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 
 @Composable
-fun RequestsScreen(
+fun BorrowerRequestsScreen(
 	state: RequestsState,
 	effectFlow: Flow<RequestsEffect>?,
 	onActionSent: (action: RequestsAction) -> Unit,
@@ -53,19 +53,19 @@ fun RequestsScreen(
 		}
 	) {
 		when {
-			state.loading            -> LoadingView()
+			state.loading                  -> LoadingView()
 
-			state.requests == null   -> ErrorView()
+			state.borrowRequests == null   -> ErrorView()
 
-			state.requests.isEmpty() -> TextFullScreenView(stringResource(R.string.requests_empty))
+			state.borrowRequests.isEmpty() -> TextFullScreenView(stringResource(R.string.requests_empty))
 
-			else                     -> RequestsView(state.requests) { onActionSent(RequestsAction.RequestClicked) }
+			else                           -> BorrowerRequestsView(state.borrowRequests) { onActionSent(RequestsAction.RequestClicked) }
 		}
 	}
 }
 
 @Composable
-fun RequestsView(
+fun BorrowerRequestsView(
 	requests: List<BorrowRequest>,
 	onRequestClicked: () -> Unit,
 ) {
