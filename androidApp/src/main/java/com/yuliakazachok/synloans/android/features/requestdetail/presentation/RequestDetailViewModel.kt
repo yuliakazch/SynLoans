@@ -2,10 +2,7 @@ package com.yuliakazachok.synloans.android.features.requestdetail.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
-import com.yuliakazachok.synloans.features.requestdetail.domain.entity.Bank
-import com.yuliakazachok.synloans.features.requestdetail.domain.entity.Borrower
-import com.yuliakazachok.synloans.features.requestdetail.domain.entity.RequestCommon
-import com.yuliakazachok.synloans.features.requestdetail.domain.entity.RequestInfo
+import com.yuliakazachok.synloans.features.requestdetail.domain.entity.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -36,6 +33,7 @@ class RequestDetailViewModel :
 		RequestCommon(
 			info = RequestInfo(
 				id = 23,
+				status = StatusRequest.OPEN,
 				sum = 5,
 				maxRate = 11,
 				term = 8,
@@ -78,6 +76,7 @@ class RequestDetailViewModel :
 		RequestCommon(
 			info = RequestInfo(
 				id = 23,
+				status = StatusRequest.ISSUE,
 				sum = 5,
 				maxRate = 11,
 				term = 8,

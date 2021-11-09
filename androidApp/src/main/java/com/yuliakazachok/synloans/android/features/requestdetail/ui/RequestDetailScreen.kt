@@ -26,10 +26,7 @@ import com.yuliakazachok.synloans.android.core.getIndexYearText
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailAction
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailEffect
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailState
-import com.yuliakazachok.synloans.features.requestdetail.domain.entity.Bank
-import com.yuliakazachok.synloans.features.requestdetail.domain.entity.Borrower
-import com.yuliakazachok.synloans.features.requestdetail.domain.entity.RequestCommon
-import com.yuliakazachok.synloans.features.requestdetail.domain.entity.RequestInfo
+import com.yuliakazachok.synloans.features.requestdetail.domain.entity.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -148,6 +145,17 @@ fun RequestInfoView(
 		state = listState,
 		modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
 	) {
+		item {
+			TextTwoLinesView(
+				textOne = stringResource(R.string.request_status),
+				textTwo = when (request.status) {
+					StatusRequest.OPEN     -> stringResource(R.string.request_status_open)
+					StatusRequest.TRANSFER -> stringResource(R.string.request_status_transfer)
+					StatusRequest.ISSUE    -> stringResource(R.string.request_status_issue)
+					StatusRequest.CLOSE    -> stringResource(R.string.request_status_close)
+				},
+			)
+		}
 		item {
 			TextTwoLinesView(
 				textOne = stringResource(R.string.request_sum),
