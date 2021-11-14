@@ -1,1 +1,1 @@
-# SynLoans - KMM project
+# SynLoans - Kotlin Multiplatform project
