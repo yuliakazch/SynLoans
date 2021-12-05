@@ -3,7 +3,9 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
+    kotlin("plugin.serialization")
     id("com.android.library")
+    id("kotlinx-serialization")
 }
 
 version = "1.0"
@@ -32,10 +34,15 @@ kotlin {
             dependencies {
                 //Network
                 implementation("io.ktor:ktor-client-core:${findProperty("version.ktor")}")
+                implementation("io.ktor:ktor-client-serialization:${findProperty("version.ktor")}")
+                implementation("io.ktor:ktor-client-json:${findProperty("version.ktor")}")
+                implementation("io.ktor:ktor-client-cio:${findProperty("version.ktor")}")
+                implementation("io.ktor:ktor-client-logging:${findProperty("version.ktor")}")
                 //Coroutines
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${findProperty("version.kotlinx.coroutines")}")
                 //JSON
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${findProperty("version.kotlinx.serialization")}")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:${findProperty("version.kotlinx.serialization")}")
                 //Key-Value storage
                 implementation("com.russhwolf:multiplatform-settings:0.8.1")
                 //DI

@@ -2,11 +2,12 @@ package com.yuliakazachok.synloans.android.features.signin.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
-import com.yuliakazachok.synloans.features.signin.domain.entity.Credentials
+import com.yuliakazachok.synloans.shared.user.signin.domain.entity.Credentials
+import com.yuliakazachok.synloans.shared.user.signin.domain.usecase.SignInUseCase
 import kotlinx.coroutines.launch
 
 class SignInViewModel(
-    //private val repository: SignInRepository,
+    private val signInUseCase: SignInUseCase,
 ) : BaseViewModel<SignInAction, SignInState, SignInEffect>() {
 
     override fun setInitialState(): SignInState =
@@ -41,7 +42,7 @@ class SignInViewModel(
             setState { copy(loading = true) }
 
             try {
-                //repository.signIn(viewState.value.credentials)
+                signInUseCase(viewState.value.credentials)
                 setEffect { SignInEffect.Navigation.ToProfile }
             } catch (e: Throwable) {
                 setState { copy(credentials = credentials.copy(password = ""), loading = false) }
