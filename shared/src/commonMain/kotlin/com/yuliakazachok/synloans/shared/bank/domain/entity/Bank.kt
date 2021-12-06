@@ -1,6 +1,9 @@
-package com.yuliakazachok.synloans.features.bankdetail.domain.entity
+package com.yuliakazachok.synloans.shared.bank.domain.entity
 
-data class BankInfo(
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class Bank(
 	val id: Int,
 	val fullName: String,
 	val shortName: String,

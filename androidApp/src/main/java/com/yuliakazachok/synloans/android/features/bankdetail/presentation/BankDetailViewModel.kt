@@ -2,7 +2,7 @@ package com.yuliakazachok.synloans.android.features.bankdetail.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
-import com.yuliakazachok.synloans.features.bankdetail.domain.entity.BankInfo
+import com.yuliakazachok.synloans.shared.bank.domain.entity.Bank
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -36,8 +36,8 @@ class BankDetailViewModel : BaseViewModel<BankDetailAction, BankDetailState, Ban
 		}
 	}
 
-	private fun getBankInfoMock(): BankInfo =
-		BankInfo(
+	private fun getBankInfoMock(): Bank =
+		Bank(
 			id = 31,
 			fullName = "Публичное акционерное общество “Банк Северный”",
 			shortName = "ПАО “Банк Северный”",

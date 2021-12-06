@@ -18,7 +18,7 @@ import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
 import com.yuliakazachok.synloans.android.features.bankdetail.presentation.BankDetailAction
 import com.yuliakazachok.synloans.android.features.bankdetail.presentation.BankDetailEffect
 import com.yuliakazachok.synloans.android.features.bankdetail.presentation.BankDetailState
-import com.yuliakazachok.synloans.features.bankdetail.domain.entity.BankInfo
+import com.yuliakazachok.synloans.shared.bank.domain.entity.Bank
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -60,7 +60,7 @@ fun BankDetailScreen(
 
 @Composable
 fun BankDetailView(
-	data: BankInfo
+	data: Bank
 ) {
 	val listState = rememberLazyListState()
 
