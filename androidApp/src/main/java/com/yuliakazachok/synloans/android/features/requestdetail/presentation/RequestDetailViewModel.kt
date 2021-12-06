@@ -2,7 +2,7 @@ package com.yuliakazachok.synloans.android.features.requestdetail.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
-import com.yuliakazachok.synloans.features.requestdetail.domain.entity.*
+import com.yuliakazachok.synloans.shared.request.domain.entity.detail.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -41,19 +41,19 @@ class RequestDetailViewModel :
 				dateCreate = "01.03.2021"
 			),
 			banks = listOf(
-				Bank(
+				BankItem(
 					id = 1,
 					name = "Банк Западный",
 					sum = 1,
 					approveBankAgent = true,
 				),
-				Bank(
+				BankItem(
 					id = 6,
 					name = "Банк Северный",
 					sum = 4,
 					approveBankAgent = true,
 				),
-				Bank(
+				BankItem(
 					id = 3,
 					name = "Банк Южный",
 					sum = 2,
@@ -84,19 +84,19 @@ class RequestDetailViewModel :
 				dateCreate = "01.03.2021"
 			),
 			banks = listOf(
-				Bank(
+				BankItem(
 					id = 1,
 					name = "Банк Западный",
 					sum = 1,
 					approveBankAgent = true,
 				),
-				Bank(
+				BankItem(
 					id = 6,
 					name = "Банк Северный",
 					sum = 4,
 					approveBankAgent = true,
 				),
-				Bank(
+				BankItem(
 					id = 3,
 					name = "Банк Южный",
 					sum = 2,

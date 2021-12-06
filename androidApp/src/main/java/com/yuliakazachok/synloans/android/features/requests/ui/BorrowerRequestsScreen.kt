@@ -21,7 +21,7 @@ import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsAction
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsEffect
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsState
-import com.yuliakazachok.synloans.features.requests.domain.entity.BorrowRequest
+import com.yuliakazachok.synloans.shared.request.domain.entity.list.BorrowRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -66,8 +66,8 @@ fun BorrowerRequestsScreen(
 
 @Composable
 fun BorrowerRequestsView(
-	requests: List<BorrowRequest>,
-	onRequestClicked: () -> Unit,
+    requests: List<BorrowRequest>,
+    onRequestClicked: () -> Unit,
 ) {
 	val listState = rememberLazyListState()
 	val textDateCreate = stringResource(R.string.requests_date_create)

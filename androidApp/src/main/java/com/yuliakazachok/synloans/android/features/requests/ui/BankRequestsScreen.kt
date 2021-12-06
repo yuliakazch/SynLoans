@@ -25,8 +25,8 @@ import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsAction
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsEffect
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsState
-import com.yuliakazachok.synloans.features.requests.domain.entity.BankRequest
-import com.yuliakazachok.synloans.features.requests.domain.entity.BankRequests
+import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequest
+import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -70,8 +70,8 @@ fun BankRequestsScreen(
 @ExperimentalPagerApi
 @Composable
 fun BankRequestsView(
-	data: BankRequests,
-	onActionSent: (action: RequestsAction) -> Unit,
+    data: BankRequests,
+    onActionSent: (action: RequestsAction) -> Unit,
 ) {
 	val tabData = listOf(
 		0 to R.string.requests_own,
@@ -122,8 +122,8 @@ fun BankRequestsView(
 
 @Composable
 fun ListRequestsView(
-	data: List<BankRequest>,
-	onActionSent: (action: RequestsAction) -> Unit,
+    data: List<BankRequest>,
+    onActionSent: (action: RequestsAction) -> Unit,
 ) {
 	val listState = rememberLazyListState()
 	val textSumUnit = stringResource(R.string.requests_sum_units)

@@ -1,4 +1,4 @@
-package com.yuliakazachok.synloans.features.requests.domain.entity
+package com.yuliakazachok.synloans.shared.request.domain.entity.list
 
 data class BankRequests(
 	val own: List<BankRequest>,

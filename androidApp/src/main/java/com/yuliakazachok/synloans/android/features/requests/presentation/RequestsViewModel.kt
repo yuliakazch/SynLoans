@@ -2,9 +2,9 @@ package com.yuliakazachok.synloans.android.features.requests.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
-import com.yuliakazachok.synloans.features.requests.domain.entity.BankRequest
-import com.yuliakazachok.synloans.features.requests.domain.entity.BorrowRequest
-import com.yuliakazachok.synloans.features.requests.domain.entity.BankRequests
+import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequest
+import com.yuliakazachok.synloans.shared.request.domain.entity.list.BorrowRequest
+import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

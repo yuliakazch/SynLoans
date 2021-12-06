@@ -2,7 +2,7 @@ package com.yuliakazachok.synloans.android.features.paymentschedule.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
-import com.yuliakazachok.synloans.features.paymentschedule.domain.entity.Payment
+import com.yuliakazachok.synloans.shared.request.domain.entity.schedule.Payment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

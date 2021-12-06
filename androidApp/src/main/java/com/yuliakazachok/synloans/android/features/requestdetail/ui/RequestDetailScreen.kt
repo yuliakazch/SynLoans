@@ -26,7 +26,7 @@ import com.yuliakazachok.synloans.android.core.getIndexYearText
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailAction
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailEffect
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailState
-import com.yuliakazachok.synloans.features.requestdetail.domain.entity.*
+import com.yuliakazachok.synloans.shared.request.domain.entity.detail.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -79,8 +79,8 @@ fun RequestDetailScreen(
 @ExperimentalPagerApi
 @Composable
 fun RequestDetailView(
-	request: RequestCommon,
-	onActionSent: (action: RequestDetailAction) -> Unit,
+    request: RequestCommon,
+    onActionSent: (action: RequestDetailAction) -> Unit,
 ) {
 	val tabData = listOf(
 		0 to R.string.request_info,
@@ -221,8 +221,8 @@ fun RequestInfoView(
 
 @Composable
 fun BanksView(
-	banks: List<Bank>,
-	onActionSent: (action: RequestDetailAction) -> Unit,
+    banks: List<BankItem>,
+    onActionSent: (action: RequestDetailAction) -> Unit,
 ) {
 	val listState = rememberLazyListState()
 	val textSumUnit = stringResource(R.string.requests_sum_units)

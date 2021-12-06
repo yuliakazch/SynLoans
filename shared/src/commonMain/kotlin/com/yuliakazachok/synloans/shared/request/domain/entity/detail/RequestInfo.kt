@@ -1,5 +1,8 @@
-package com.yuliakazachok.synloans.features.requestdetail.domain.entity
+package com.yuliakazachok.synloans.shared.request.domain.entity.detail
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class RequestInfo(
 	val id: Int,
 	val status: StatusRequest,

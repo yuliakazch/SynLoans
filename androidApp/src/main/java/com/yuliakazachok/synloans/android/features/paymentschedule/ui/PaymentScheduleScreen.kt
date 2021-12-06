@@ -18,7 +18,7 @@ import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
 import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.PaymentScheduleAction
 import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.PaymentScheduleEffect
 import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.PaymentScheduleState
-import com.yuliakazachok.synloans.features.paymentschedule.domain.entity.Payment
+import com.yuliakazachok.synloans.shared.request.domain.entity.schedule.Payment
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
