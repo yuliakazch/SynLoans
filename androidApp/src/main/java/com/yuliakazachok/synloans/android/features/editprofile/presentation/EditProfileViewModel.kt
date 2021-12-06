@@ -98,7 +98,7 @@ class EditProfileViewModel : BaseViewModel<EditProfileAction, EditProfileState, 
 			delay(2_000) // TODO delete
 
 			try {
-				// TODO save changed use case
+				// TODO update profile use case
 				setEffect { EditProfileEffect.Navigation.ToBack }
 			} catch (e: Throwable) {
 				setState { copy(loading = false) }

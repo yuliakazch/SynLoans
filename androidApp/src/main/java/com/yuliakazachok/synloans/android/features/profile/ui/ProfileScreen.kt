@@ -21,7 +21,7 @@ import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
 import com.yuliakazachok.synloans.android.features.profile.presentation.ProfileAction
 import com.yuliakazachok.synloans.android.features.profile.presentation.ProfileEffect
 import com.yuliakazachok.synloans.android.features.profile.presentation.ProfileState
-import com.yuliakazachok.synloans.features.profile.domain.entity.Profile
+import com.yuliakazachok.synloans.shared.user.domain.entity.Profile
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach

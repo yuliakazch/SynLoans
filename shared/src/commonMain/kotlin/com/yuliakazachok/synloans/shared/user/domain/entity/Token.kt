@@ -1,4 +1,4 @@
-package com.yuliakazachok.synloans.shared.user.signin.domain.entity
+package com.yuliakazachok.synloans.shared.user.domain.entity
 
 import kotlinx.serialization.Serializable
 

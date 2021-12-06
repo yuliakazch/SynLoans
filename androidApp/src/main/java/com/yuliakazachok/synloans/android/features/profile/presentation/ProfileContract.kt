@@ -3,7 +3,7 @@ package com.yuliakazachok.synloans.android.features.profile.presentation
 import com.yuliakazachok.synloans.android.core.Action
 import com.yuliakazachok.synloans.android.core.Effect
 import com.yuliakazachok.synloans.android.core.State
-import com.yuliakazachok.synloans.features.profile.domain.entity.Profile
+import com.yuliakazachok.synloans.shared.user.domain.entity.Profile
 
 sealed class ProfileAction : Action {
 

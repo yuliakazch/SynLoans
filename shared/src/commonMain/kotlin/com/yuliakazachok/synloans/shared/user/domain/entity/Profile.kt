@@ -1,5 +1,8 @@
-package com.yuliakazachok.synloans.features.profile.domain.entity
+package com.yuliakazachok.synloans.shared.user.domain.entity
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Profile(
     val fullName: String,
     val shortName: String,

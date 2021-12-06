@@ -89,7 +89,7 @@ class SignUpViewModel() : BaseViewModel<SignUpAction, SignUpState, SignUpEffect>
                 val password = viewState.value.content.password
                 val passwordAgain = viewState.value.content.passwordAgain
                 if (password == passwordAgain) {
-                    //signUpUseCase
+                    // TODO add invoke signUpUseCase
                     setEffect { SignUpEffect.Navigation.ToBack }
                 } else {
                     handleError()

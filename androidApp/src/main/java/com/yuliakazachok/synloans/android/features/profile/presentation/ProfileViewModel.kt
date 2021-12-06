@@ -2,7 +2,7 @@ package com.yuliakazachok.synloans.android.features.profile.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
-import com.yuliakazachok.synloans.features.profile.domain.entity.Profile
+import com.yuliakazachok.synloans.shared.user.domain.entity.Profile
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

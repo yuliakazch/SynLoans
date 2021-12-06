@@ -1,6 +1,6 @@
 package com.yuliakazachok.synloans.di
 
-import com.yuliakazachok.synloans.shared.user.signin.di.signInModule
+import com.yuliakazachok.synloans.shared.user.di.userModule
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.json.*
@@ -15,7 +15,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) {
 
     startKoin {
         modules(networkModule)
-        modules(signInModule)
+        modules(userModule)
         appDeclaration()
     }
 }
