@@ -2,9 +2,13 @@ package com.yuliakazachok.synloans.android.features.signup.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
+import com.yuliakazachok.synloans.shared.user.domain.entity.SignUpInfo
+import com.yuliakazachok.synloans.shared.user.domain.usecase.SignUpUseCase
 import kotlinx.coroutines.launch
 
-class SignUpViewModel() : BaseViewModel<SignUpAction, SignUpState, SignUpEffect>() {
+class SignUpViewModel(
+    private val signUpUseCase: SignUpUseCase,
+) : BaseViewModel<SignUpAction, SignUpState, SignUpEffect>() {
 
     override fun setInitialState(): SignUpState =
         SignUpState(content = SignUpData(), loading = false)
@@ -33,13 +37,13 @@ class SignUpViewModel() : BaseViewModel<SignUpAction, SignUpState, SignUpEffect>
 
             is SignUpAction.TinChanged -> {
                 setState {
-                    copy(content = content.copy(tin = action.newValue))
+                    copy(content = content.copy(inn = action.newValue))
                 }
             }
 
             is SignUpAction.IecChanged -> {
                 setState {
-                    copy(content = content.copy(iec = action.newValue))
+                    copy(content = content.copy(kpp = action.newValue))
                 }
             }
 
@@ -85,11 +89,10 @@ class SignUpViewModel() : BaseViewModel<SignUpAction, SignUpState, SignUpEffect>
         viewModelScope.launch {
             setState { copy(loading = true) }
             try {
-                val email = viewState.value.content.email
                 val password = viewState.value.content.password
                 val passwordAgain = viewState.value.content.passwordAgain
                 if (password == passwordAgain) {
-                    // TODO add invoke signUpUseCase
+                    signUpUseCase(viewState.value.content.convertToSignUpInfo())
                     setEffect { SignUpEffect.Navigation.ToBack }
                 } else {
                     handleError()
@@ -99,6 +102,9 @@ class SignUpViewModel() : BaseViewModel<SignUpAction, SignUpState, SignUpEffect>
             }
         }
     }
+
+    private fun SignUpData.convertToSignUpInfo(): SignUpInfo =
+        SignUpInfo(fullName, shortName, inn, kpp, legalAddress, actualAddress, creditOrganisation, email, password)
 
     private fun handleError() {
         setState {

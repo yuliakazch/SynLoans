@@ -11,14 +11,14 @@ class UserDataSourceImpl(
 ) : UserDataSource {
 
     override suspend fun signIn(credentials: Credentials) {
-        httpClient.post<Token>("$BASE_URL/") { // TODO add url
+        httpClient.post<Token>("$BASE_URL/users/login") {
             contentType(ContentType.Application.Json)
             body = credentials
         }
     }
 
     override suspend fun signUp(data: SignUpInfo) {
-        httpClient.post<Unit>("$BASE_URL/") { // TODO add url
+        httpClient.post<Unit>("$BASE_URL/users/registration") {
             contentType(ContentType.Application.Json)
             body = data
         }

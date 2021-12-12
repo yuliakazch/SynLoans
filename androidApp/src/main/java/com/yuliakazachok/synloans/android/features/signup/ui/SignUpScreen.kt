@@ -145,14 +145,14 @@ fun SignUpContentView(
             }
             item {
                 EditTextView(
-                    text = state.content.tin,
+                    text = state.content.inn,
                     label = stringResource(R.string.field_tin),
                     onTextChange = { onActionSent(SignUpAction.TinChanged(it)) },
                 )
             }
             item {
                 EditTextView(
-                    text = state.content.iec,
+                    text = state.content.kpp,
                     label = stringResource(R.string.field_iec),
                     onTextChange = { onActionSent(SignUpAction.IecChanged(it)) },
                 )

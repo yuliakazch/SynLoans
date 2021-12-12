@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 data class SignUpInfo(
     val fullName: String = "",
     val shortName: String = "",
-    val tin: String = "",
-    val iec: String = "",
+    val inn: String = "",
+    val kpp: String = "",
     val legalAddress: String = "",
     val actualAddress: String = "",
     val creditOrganisation: Boolean = false,
