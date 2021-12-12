@@ -21,7 +21,7 @@ val appModule = module {
 	viewModel { EditProfileViewModel(get(), get()) }
 	viewModel { RequestsViewModel(get()) }
 	viewModel { RequestDetailViewModel() }
-	viewModel { RequestCreateViewModel() }
+	viewModel { RequestCreateViewModel(get()) }
 	viewModel { JoinSyndicateViewModel() }
 	viewModel { BankDetailViewModel() }
 	viewModel { PaymentScheduleViewModel() }

@@ -2,10 +2,15 @@ package com.yuliakazachok.synloans.android.features.requestcreate.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
-import kotlinx.coroutines.delay
+import com.yuliakazachok.synloans.shared.request.domain.entity.create.CreateRequestInfo
+import com.yuliakazachok.synloans.shared.request.domain.entity.sum.Sum
+import com.yuliakazachok.synloans.shared.request.domain.entity.sum.SumUnit
+import com.yuliakazachok.synloans.shared.request.domain.usecase.CreateRequestUseCase
 import kotlinx.coroutines.launch
 
-class RequestCreateViewModel : BaseViewModel<RequestCreateAction, RequestCreateState, RequestCreateEffect>() {
+class RequestCreateViewModel(
+	private val createRequestUseCase: CreateRequestUseCase,
+) : BaseViewModel<RequestCreateAction, RequestCreateState, RequestCreateEffect>() {
 
 	override fun setInitialState(): RequestCreateState =
 		RequestCreateState(data = CreateData(), loading = false)
@@ -44,8 +49,7 @@ class RequestCreateViewModel : BaseViewModel<RequestCreateAction, RequestCreateS
 		viewModelScope.launch {
 			setState { copy(loading = true) }
 			try {
-				delay(2_000) // TODO delete
-				// TODO send request use case and convert from CreateData to RequestCreateData
+				createRequestUseCase(viewState.value.data.convertToCreateInfo())
 				setEffect { RequestCreateEffect.Navigation.ToBack }
 			} catch (e: Throwable) {
 				setState { copy(loading = false) }
@@ -53,4 +57,7 @@ class RequestCreateViewModel : BaseViewModel<RequestCreateAction, RequestCreateS
 			}
 		}
 	}
+
+	private fun CreateData.convertToCreateInfo(): CreateRequestInfo =
+		CreateRequestInfo(Sum(value = sum.toInt(), unit = SumUnit.MILLION), maxRate.toInt(), term.toInt())
 }

@@ -11,7 +11,7 @@ val requestModule = module {
 
     single<RequestDataSource> { RequestDataSourceImpl(get()) }
 
-    single<RequestRepository> { RequestRepositoryImpl(get()) }
+    single<RequestRepository> { RequestRepositoryImpl(get(), get()) }
 
     single { CreateRequestUseCase(get()) }
     single { GetBorrowRequestsUseCase(get()) }

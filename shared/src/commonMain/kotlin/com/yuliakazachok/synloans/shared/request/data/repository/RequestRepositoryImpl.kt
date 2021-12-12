@@ -8,35 +8,37 @@ import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCom
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
 import com.yuliakazachok.synloans.shared.request.domain.entity.schedule.Payment
 import com.yuliakazachok.synloans.shared.request.domain.repository.RequestRepository
+import com.yuliakazachok.synloans.shared.token.data.datasource.TokenDataSource
 
 class RequestRepositoryImpl(
-    private val dataSource: RequestDataSource,
+    private val requestDataSource: RequestDataSource,
+    private val tokenDataSource: TokenDataSource,
 ) : RequestRepository {
 
     override suspend fun create(data: CreateRequestInfo) {
-        dataSource.create(data)
+        requestDataSource.create(data, tokenDataSource.get())
     }
 
     override suspend fun getBorrowRequests(): List<BorrowRequest> =
-        dataSource.getBorrowRequests()
+        requestDataSource.getBorrowRequests()
 
     override suspend fun getBankRequests(): BankRequests =
-        dataSource.getBankRequests()
+        requestDataSource.getBankRequests()
 
     override suspend fun getRequestDetail(id: Int): RequestCommon =
-        dataSource.getRequestDetail(id)
+        requestDataSource.getRequestDetail(id)
 
     override suspend fun join(data: JoinSyndicateInfo) {
-        dataSource.join(data)
+        requestDataSource.join(data)
     }
 
     override suspend fun getActualSchedule(id: Int): List<Payment> =
-        dataSource.getActualSchedule(id)
+        requestDataSource.getActualSchedule(id)
 
     override suspend fun getPlannedSchedule(id: Int): List<Payment> =
-        dataSource.getPlannedSchedule(id)
+        requestDataSource.getPlannedSchedule(id)
 
     override suspend fun cancel(id: Int) {
-        dataSource.cancel(id)
+        requestDataSource.cancel(id)
     }
 }

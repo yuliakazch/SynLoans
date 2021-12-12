@@ -9,7 +9,7 @@ import com.yuliakazachok.synloans.shared.request.domain.entity.schedule.Payment
 
 interface RequestDataSource {
 
-    suspend fun create(data: CreateRequestInfo)
+    suspend fun create(data: CreateRequestInfo, token: String)
 
     suspend fun getBorrowRequests(): List<BorrowRequest>
 

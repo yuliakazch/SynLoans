@@ -15,9 +15,10 @@ class RequestDataSourceImpl(
     private val httpClient: HttpClient,
 ) : RequestDataSource {
 
-    override suspend fun create(data: CreateRequestInfo) {
-        httpClient.post<Unit>("$BASE_URL/") { // TODO add url
+    override suspend fun create(data: CreateRequestInfo, token: String) {
+        httpClient.post<Unit>("$BASE_URL/loan/requests/") {
             contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, token)
             body = data
         }
     }
