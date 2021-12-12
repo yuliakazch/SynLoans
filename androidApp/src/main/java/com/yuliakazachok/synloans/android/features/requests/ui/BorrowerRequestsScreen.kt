@@ -21,75 +21,81 @@ import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsAction
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsEffect
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsState
-import com.yuliakazachok.synloans.shared.request.domain.entity.list.BorrowRequest
+import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCommon
+import com.yuliakazachok.synloans.shared.request.domain.entity.sum.SumUnit
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun BorrowerRequestsScreen(
-	state: RequestsState,
-	effectFlow: Flow<RequestsEffect>?,
-	onActionSent: (action: RequestsAction) -> Unit,
-	onNavigationRequested: (navigationEffect: RequestsEffect.Navigation) -> Unit
+    state: RequestsState,
+    effectFlow: Flow<RequestsEffect>?,
+    onActionSent: (action: RequestsAction) -> Unit,
+    onNavigationRequested: (navigationEffect: RequestsEffect.Navigation) -> Unit
 ) {
 
-	LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
-		effectFlow?.onEach { effect ->
-			when (effect) {
-				is RequestsEffect.Navigation ->
-					onNavigationRequested(effect)
-			}
-		}?.collect()
-	}
+    LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
+        effectFlow?.onEach { effect ->
+            when (effect) {
+                is RequestsEffect.Navigation ->
+                    onNavigationRequested(effect)
+            }
+        }?.collect()
+    }
 
-	Scaffold(
-		topBar = {
-			TopBarEndIconView(
-				title = stringResource(R.string.requests_title),
-				icon = Icons.Filled.AddCircle,
-				onIconClicked = { onActionSent(RequestsAction.CreateRequestClicked) },
-			)
-		}
-	) {
-		when {
-			state.loading                  -> LoadingView()
+    Scaffold(
+        topBar = {
+            TopBarEndIconView(
+                title = stringResource(R.string.requests_title),
+                icon = Icons.Filled.AddCircle,
+                onIconClicked = { onActionSent(RequestsAction.CreateRequestClicked) },
+            )
+        }
+    ) {
+        when {
+            state.loading -> LoadingView()
 
-			state.borrowRequests == null   -> ErrorView()
+            state.borrowRequests == null -> ErrorView()
 
-			state.borrowRequests.isEmpty() -> TextFullScreenView(stringResource(R.string.requests_empty))
+            state.borrowRequests.isEmpty() -> TextFullScreenView(stringResource(R.string.requests_empty))
 
-			else                           -> BorrowerRequestsView(state.borrowRequests) { onActionSent(RequestsAction.RequestClicked) }
-		}
-	}
+            else -> BorrowerRequestsView(state.borrowRequests) { onActionSent(RequestsAction.RequestClicked) }
+        }
+    }
 }
 
 @Composable
 fun BorrowerRequestsView(
-    requests: List<BorrowRequest>,
+    requests: List<RequestCommon>,
     onRequestClicked: () -> Unit,
 ) {
-	val listState = rememberLazyListState()
-	val textDateCreate = stringResource(R.string.requests_date_create)
-	val textDateIssue = stringResource(R.string.requests_date_issue)
-	val textSumUnit = stringResource(R.string.requests_sum_units)
+    val listState = rememberLazyListState()
+    val textDateCreate = stringResource(R.string.requests_date_create)
+    val textDateIssue = stringResource(R.string.requests_date_issue)
 
-	LazyColumn(
-		state = listState,
-		modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
-	) {
-		requests.forEach { request ->
-			item {
-				TextTwoLinesView(
-					textOne = if (request.dateIssue.isNullOrEmpty()) {
-						textDateCreate + request.dateCreate
-					} else {
-						textDateIssue + request.dateIssue
-					},
-					textTwo = request.sum.toString() + textSumUnit,
-					onClicked = { onRequestClicked() }
-				)
-			}
-		}
-	}
+    LazyColumn(
+        state = listState,
+        modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+    ) {
+        requests.forEach { request ->
+            item {
+                val textSumUnit = when (request.info.sum.unit) {
+                    SumUnit.BILLION -> stringResource(R.string.requests_sum_billion)
+                    SumUnit.MILLION -> stringResource(R.string.requests_sum_million)
+                    SumUnit.THOUSAND -> stringResource(R.string.requests_sum_thousand)
+                }
+
+                TextTwoLinesView(
+                    textOne = if (request.info.dateIssue.isNullOrEmpty()) {
+                        textDateCreate + request.info.dateCreate
+                    } else {
+                        textDateIssue + request.info.dateIssue
+                    },
+                    textTwo = request.info.sum.value.toString() + textSumUnit,
+                    onClicked = { onRequestClicked() }
+                )
+            }
+        }
+    }
 }

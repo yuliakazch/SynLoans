@@ -4,11 +4,12 @@ import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
 import com.yuliakazachok.synloans.shared.flag.domain.usecase.IsCreditOrganisationUseCase
 import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequest
-import com.yuliakazachok.synloans.shared.request.domain.entity.list.BorrowRequest
 import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
+import com.yuliakazachok.synloans.shared.request.domain.usecase.GetBorrowRequestsUseCase
 import kotlinx.coroutines.launch
 
 class RequestsViewModel(
+    private val getBorrowRequestsUseCase: GetBorrowRequestsUseCase,
     private val isCreditOrganisationUseCase: IsCreditOrganisationUseCase,
 ) : BaseViewModel<RequestsAction, RequestsState, RequestsEffect>() {
 
@@ -55,8 +56,8 @@ class RequestsViewModel(
     private fun loadBorrowerRequests() {
         viewModelScope.launch {
             try {
-                // TODO get borrower requests use case
-                setState { copy(borrowRequests = getBorrowerRequestsMock(), loading = false) }
+                val data = getBorrowRequestsUseCase()
+                setState { copy(borrowRequests = data, loading = false) }
             } catch (e: Throwable) {
                 setState { copy(borrowRequests = null, loading = false) }
             }
@@ -87,27 +88,6 @@ class RequestsViewModel(
                 name = "ПАО “Компания Третья”",
                 sum = 7,
             ),
-        ),
-    )
-
-    private fun getBorrowerRequestsMock(): List<BorrowRequest> = listOf(
-        BorrowRequest(
-            id = 76,
-            dateIssue = null,
-            dateCreate = "01.10.2021",
-            sum = 12,
-        ),
-        BorrowRequest(
-            id = 56,
-            dateIssue = "15.03.2021",
-            dateCreate = "21.01.2021",
-            sum = 2,
-        ),
-        BorrowRequest(
-            id = 45,
-            dateIssue = "09.10.2020",
-            dateCreate = "05.09.2020",
-            sum = 7,
         ),
     )
 }

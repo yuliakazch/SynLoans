@@ -1,7 +1,6 @@
 package com.yuliakazachok.synloans.shared.request.data.datasource
 
 import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
-import com.yuliakazachok.synloans.shared.request.domain.entity.list.BorrowRequest
 import com.yuliakazachok.synloans.shared.request.domain.entity.create.CreateRequestInfo
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCommon
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
@@ -23,9 +22,10 @@ class RequestDataSourceImpl(
         }
     }
 
-    override suspend fun getBorrowRequests(): List<BorrowRequest> =
-        httpClient.get<List<BorrowRequest>>("$BASE_URL/") { // TODO add url
+    override suspend fun getBorrowRequests(token: String): List<RequestCommon> =
+        httpClient.get<List<RequestCommon>>("$BASE_URL/loan/requests/") {
             contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, token)
         }
 
     override suspend fun getBankRequests(): BankRequests =

@@ -19,7 +19,7 @@ val appModule = module {
 	viewModel { SignUpViewModel(get()) }
 	viewModel { ProfileViewModel(get()) }
 	viewModel { EditProfileViewModel(get(), get()) }
-	viewModel { RequestsViewModel(get()) }
+	viewModel { RequestsViewModel(get(), get()) }
 	viewModel { RequestDetailViewModel() }
 	viewModel { RequestCreateViewModel(get()) }
 	viewModel { JoinSyndicateViewModel() }

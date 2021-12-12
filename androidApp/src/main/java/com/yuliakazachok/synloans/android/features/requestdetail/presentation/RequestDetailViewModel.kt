@@ -3,6 +3,8 @@ package com.yuliakazachok.synloans.android.features.requestdetail.presentation
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.*
+import com.yuliakazachok.synloans.shared.request.domain.entity.sum.Sum
+import com.yuliakazachok.synloans.shared.request.domain.entity.sum.SumUnit
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -34,8 +36,8 @@ class RequestDetailViewModel :
 			info = RequestInfo(
 				id = 23,
 				status = StatusRequest.OPEN,
-				sum = 5,
-				maxRate = 11,
+				sum = Sum(value = 4, unit = SumUnit.MILLION),
+				maxRate = 11.0f,
 				term = 8,
 				dateIssue = null,
 				dateCreate = "01.03.2021"
@@ -64,8 +66,8 @@ class RequestDetailViewModel :
 				id = 43,
 				fullName = "Публичное акционерное общество “Компания”",
 				shortName = "ПАО “Компания”",
-				tin = "7708004761",
-				iec = "43653462219",
+				inn = "7708004761",
+				kpp = "43653462219",
 				legalAddress = "101000, Москва, Бульвар Сретенский, 11",
 				actualAddress = "117420, Москва, Наметкина, 16",
 				email = "company@companymai.ru",
@@ -77,8 +79,8 @@ class RequestDetailViewModel :
 			info = RequestInfo(
 				id = 23,
 				status = StatusRequest.ISSUE,
-				sum = 5,
-				maxRate = 11,
+				sum = Sum(value = 5, unit = SumUnit.MILLION),
+				maxRate = 11.0f,
 				term = 8,
 				dateIssue = "12.04.2021",
 				dateCreate = "01.03.2021"
@@ -107,8 +109,8 @@ class RequestDetailViewModel :
 				id = 43,
 				fullName = "Публичное акционерное общество “Компания”",
 				shortName = "ПАО “Компания”",
-				tin = "7708004761",
-				iec = "43653462219",
+				inn = "7708004761",
+				kpp = "43653462219",
 				legalAddress = "101000, Москва, Бульвар Сретенский, 11",
 				actualAddress = "117420, Москва, Наметкина, 16",
 				email = "company@companymai.ru",

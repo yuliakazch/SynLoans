@@ -159,7 +159,7 @@ fun RequestInfoView(
 		item {
 			TextTwoLinesView(
 				textOne = stringResource(R.string.request_sum),
-				textTwo = request.sum.toString() + stringResource(R.string.requests_sum_units),
+				textTwo = request.sum.toString() + stringResource(R.string.requests_sum_billion),
 			)
 		}
 		item {
@@ -225,7 +225,7 @@ fun BanksView(
     onActionSent: (action: RequestDetailAction) -> Unit,
 ) {
 	val listState = rememberLazyListState()
-	val textSumUnit = stringResource(R.string.requests_sum_units)
+	val textSumUnit = stringResource(R.string.requests_sum_billion)
 
 	LazyColumn(
 		state = listState,
@@ -272,13 +272,13 @@ fun BorrowerView(
 		item {
 			TextTwoLinesView(
 				textOne = stringResource(R.string.field_tin),
-				textTwo = borrower.tin,
+				textTwo = borrower.inn,
 			)
 		}
 		item {
 			TextTwoLinesView(
 				textOne = stringResource(R.string.field_iec),
-				textTwo = borrower.iec,
+				textTwo = borrower.kpp,
 			)
 		}
 		item {

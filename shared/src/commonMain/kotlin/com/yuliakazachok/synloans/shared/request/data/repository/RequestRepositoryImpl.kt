@@ -2,7 +2,6 @@ package com.yuliakazachok.synloans.shared.request.data.repository
 
 import com.yuliakazachok.synloans.shared.request.data.datasource.RequestDataSource
 import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
-import com.yuliakazachok.synloans.shared.request.domain.entity.list.BorrowRequest
 import com.yuliakazachok.synloans.shared.request.domain.entity.create.CreateRequestInfo
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCommon
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
@@ -19,8 +18,8 @@ class RequestRepositoryImpl(
         requestDataSource.create(data, tokenDataSource.get())
     }
 
-    override suspend fun getBorrowRequests(): List<BorrowRequest> =
-        requestDataSource.getBorrowRequests()
+    override suspend fun getBorrowRequests(): List<RequestCommon> =
+        requestDataSource.getBorrowRequests(tokenDataSource.get())
 
     override suspend fun getBankRequests(): BankRequests =
         requestDataSource.getBankRequests()

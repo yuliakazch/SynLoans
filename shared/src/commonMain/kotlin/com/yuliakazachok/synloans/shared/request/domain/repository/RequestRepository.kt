@@ -1,7 +1,6 @@
 package com.yuliakazachok.synloans.shared.request.domain.repository
 
 import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
-import com.yuliakazachok.synloans.shared.request.domain.entity.list.BorrowRequest
 import com.yuliakazachok.synloans.shared.request.domain.entity.create.CreateRequestInfo
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCommon
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
@@ -11,7 +10,7 @@ interface RequestRepository {
 
     suspend fun create(data: CreateRequestInfo)
 
-    suspend fun getBorrowRequests(): List<BorrowRequest>
+    suspend fun getBorrowRequests(): List<RequestCommon>
 
     suspend fun getBankRequests(): BankRequests
 

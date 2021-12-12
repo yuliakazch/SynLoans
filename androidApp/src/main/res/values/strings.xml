@@ -26,8 +26,9 @@
 	<string name="requests_title">Заявки</string>
 	<string name="requests_date_create">Дата создания\u0020</string>
 	<string name="requests_date_issue">Дата выдачи\u0020</string>
-	<string name="requests_sum_units">\u0020млрд руб</string>
+	<string name="requests_sum_billion">\u0020млрд руб</string>
 	<string name="requests_sum_million">\u0020млн руб</string>
+	<string name="requests_sum_thousand">\u0020тыс руб</string>
 	<string name="requests_empty">У вас нет текущих заявок!</string>
 
 	<string name="request_title">Информация о заявке</string>

@@ -126,7 +126,7 @@ fun ListRequestsView(
     onActionSent: (action: RequestsAction) -> Unit,
 ) {
 	val listState = rememberLazyListState()
-	val textSumUnit = stringResource(R.string.requests_sum_units)
+	val textSumUnit = stringResource(R.string.requests_sum_billion)
 
 	LazyColumn(
 		state = listState,
