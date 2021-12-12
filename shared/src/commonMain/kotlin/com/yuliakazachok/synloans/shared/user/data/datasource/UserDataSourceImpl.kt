@@ -10,12 +10,11 @@ class UserDataSourceImpl(
     private val httpClient: HttpClient,
 ) : UserDataSource {
 
-    override suspend fun signIn(credentials: Credentials) {
+    override suspend fun signIn(credentials: Credentials): Token =
         httpClient.post<Token>("$BASE_URL/users/login") {
             contentType(ContentType.Application.Json)
             body = credentials
         }
-    }
 
     override suspend fun signUp(data: SignUpInfo) {
         httpClient.post<Unit>("$BASE_URL/users/registration") {
@@ -24,14 +23,16 @@ class UserDataSourceImpl(
         }
     }
 
-    override suspend fun getProfile(): Profile =
-        httpClient.get<Profile>("$BASE_URL/") { // TODO add url
+    override suspend fun getProfile(token: String): Profile =
+        httpClient.get<Profile>("$BASE_URL/profile/") {
             contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, token)
         }
 
-    override suspend fun updateProfile(data: EditProfileInfo) {
-        httpClient.post<Unit>("$BASE_URL/") { // TODO add url
+    override suspend fun updateProfile(data: EditProfileInfo, token: String) {
+        httpClient.put<Unit>("$BASE_URL/profile/edit") {
             contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, token)
             body = data
         }
     }

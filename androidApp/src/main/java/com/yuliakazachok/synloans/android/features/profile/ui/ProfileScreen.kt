@@ -89,13 +89,13 @@ fun ProfileView(
 		item {
 			TextTwoLinesView(
 				textOne = stringResource(R.string.field_tin),
-				textTwo = profile.tin,
+				textTwo = profile.inn,
 			)
 		}
 		item {
 			TextTwoLinesView(
 				textOne = stringResource(R.string.field_iec),
-				textTwo = profile.iec,
+				textTwo = profile.kpp,
 			)
 		}
 		item {

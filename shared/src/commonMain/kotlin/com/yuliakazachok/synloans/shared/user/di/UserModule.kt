@@ -14,7 +14,7 @@ val userModule = module {
 
     single<UserDataSource> { UserDataSourceImpl(get()) }
 
-    single<UserRepository> { UserRepositoryImpl(get()) }
+    single<UserRepository> { UserRepositoryImpl(get(), get()) }
 
     single { SignInUseCase(get()) }
     single { SignUpUseCase(get()) }

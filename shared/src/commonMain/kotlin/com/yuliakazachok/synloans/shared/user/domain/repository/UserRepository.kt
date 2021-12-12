@@ -5,7 +5,6 @@ import com.yuliakazachok.synloans.shared.user.domain.entity.EditProfileInfo
 import com.yuliakazachok.synloans.shared.user.domain.entity.Profile
 import com.yuliakazachok.synloans.shared.user.domain.entity.SignUpInfo
 
-
 interface UserRepository {
 
     suspend fun signIn(credentials: Credentials)

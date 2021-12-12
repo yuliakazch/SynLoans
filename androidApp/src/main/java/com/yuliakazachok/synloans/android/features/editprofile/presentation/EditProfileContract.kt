@@ -3,6 +3,7 @@ package com.yuliakazachok.synloans.android.features.editprofile.presentation
 import com.yuliakazachok.synloans.android.core.Action
 import com.yuliakazachok.synloans.android.core.Effect
 import com.yuliakazachok.synloans.android.core.State
+import com.yuliakazachok.synloans.shared.user.domain.entity.EditProfileInfo
 
 sealed class EditProfileAction : Action {
 
@@ -19,7 +20,7 @@ sealed class EditProfileAction : Action {
 	data class EmailChanged(val newValue: String) : EditProfileAction()
 }
 
-data class EditProfileState(val data: EditData?, val loading: Boolean) : State
+data class EditProfileState(val data: EditProfileInfo?, val loading: Boolean) : State
 
 sealed class EditProfileEffect : Effect {
 

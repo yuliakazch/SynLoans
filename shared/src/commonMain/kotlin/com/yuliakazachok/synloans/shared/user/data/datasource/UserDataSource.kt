@@ -1,17 +1,14 @@
 package com.yuliakazachok.synloans.shared.user.data.datasource
 
-import com.yuliakazachok.synloans.shared.user.domain.entity.Credentials
-import com.yuliakazachok.synloans.shared.user.domain.entity.EditProfileInfo
-import com.yuliakazachok.synloans.shared.user.domain.entity.Profile
-import com.yuliakazachok.synloans.shared.user.domain.entity.SignUpInfo
+import com.yuliakazachok.synloans.shared.user.domain.entity.*
 
 interface UserDataSource {
 
-    suspend fun signIn(credentials: Credentials)
+    suspend fun signIn(credentials: Credentials): Token
 
     suspend fun signUp(data: SignUpInfo)
 
-    suspend fun getProfile(): Profile
+    suspend fun getProfile(token: String): Profile
 
-    suspend fun updateProfile(data: EditProfileInfo)
+    suspend fun updateProfile(data: EditProfileInfo, token: String)
 }

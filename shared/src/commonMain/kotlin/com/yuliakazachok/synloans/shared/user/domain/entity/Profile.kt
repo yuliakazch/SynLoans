@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 data class Profile(
     val fullName: String,
     val shortName: String,
-    val tin: String,
-    val iec: String,
+    val inn: String,
+    val kpp: String,
     val legalAddress: String,
     val actualAddress: String,
     val email: String,

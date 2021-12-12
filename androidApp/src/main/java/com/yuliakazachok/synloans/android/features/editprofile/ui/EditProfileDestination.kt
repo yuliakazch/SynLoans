@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavHostController
+import com.yuliakazachok.synloans.android.core.NavigationKeys
 import com.yuliakazachok.synloans.android.features.editprofile.presentation.EditProfileEffect
 import com.yuliakazachok.synloans.android.features.editprofile.presentation.EditProfileViewModel
 import org.koin.androidx.compose.getViewModel
@@ -22,7 +23,9 @@ fun EditProfileDestination(navController: NavHostController) {
 		onNavigationRequested = { navigationEffect ->
 			when (navigationEffect) {
 				is EditProfileEffect.Navigation.ToBack -> {
-					navController.popBackStack()
+					navController.navigate(NavigationKeys.PROFILE) {
+						popUpTo(NavigationKeys.EDIT_PROFILE) { inclusive = true }
+					}
 				}
 			}
 		}

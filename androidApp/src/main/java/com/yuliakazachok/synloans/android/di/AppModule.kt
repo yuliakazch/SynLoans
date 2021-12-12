@@ -17,8 +17,8 @@ val appModule = module {
 
 	viewModel { SignInViewModel(get()) }
 	viewModel { SignUpViewModel(get()) }
-	viewModel { ProfileViewModel() }
-	viewModel { EditProfileViewModel() }
+	viewModel { ProfileViewModel(get()) }
+	viewModel { EditProfileViewModel(get(), get()) }
 	viewModel { RequestsViewModel() }
 	viewModel { RequestDetailViewModel() }
 	viewModel { RequestCreateViewModel() }

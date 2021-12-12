@@ -17,10 +17,10 @@ import com.yuliakazachok.synloans.android.components.progress.LoadingView
 import com.yuliakazachok.synloans.android.components.textfield.EditTextView
 import com.yuliakazachok.synloans.android.components.topbar.TopBarBackView
 import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
-import com.yuliakazachok.synloans.android.features.editprofile.presentation.EditData
 import com.yuliakazachok.synloans.android.features.editprofile.presentation.EditProfileAction
 import com.yuliakazachok.synloans.android.features.editprofile.presentation.EditProfileEffect
 import com.yuliakazachok.synloans.android.features.editprofile.presentation.EditProfileState
+import com.yuliakazachok.synloans.shared.user.domain.entity.EditProfileInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -73,7 +73,7 @@ fun EditProfileScreen(
 @ExperimentalComposeUiApi
 @Composable
 fun EditProfileView(
-	data: EditData,
+	data: EditProfileInfo,
 	onActionSent: (action: EditProfileAction) -> Unit,
 ) {
 	val listState = rememberLazyListState()
@@ -98,14 +98,14 @@ fun EditProfileView(
 		}
 		item {
 			EditTextView(
-				text = data.tin,
+				text = data.inn,
 				label = stringResource(R.string.field_tin),
 				onTextChange = { onActionSent(EditProfileAction.TinChanged(it)) },
 			)
 		}
 		item {
 			EditTextView(
-				text = data.iec,
+				text = data.kpp,
 				label = stringResource(R.string.field_iec),
 				onTextChange = { onActionSent(EditProfileAction.IecChanged(it)) },
 			)
