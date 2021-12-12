@@ -1,6 +1,7 @@
 package com.yuliakazachok.synloans.di
 
 import com.yuliakazachok.synloans.shared.bank.di.bankModule
+import com.yuliakazachok.synloans.shared.flag.di.flagModule
 import com.yuliakazachok.synloans.shared.request.di.requestModule
 import com.yuliakazachok.synloans.shared.token.di.tokenModule
 import com.yuliakazachok.synloans.shared.user.di.userModule
@@ -21,6 +22,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) {
         modules(settingsModule)
         modules(networkModule)
         modules(tokenModule)
+        modules(flagModule)
         modules(userModule)
         modules(requestModule)
         modules(bankModule)

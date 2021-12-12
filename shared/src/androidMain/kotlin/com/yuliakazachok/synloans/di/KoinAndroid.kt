@@ -12,4 +12,4 @@ actual val settingsModule = module {
     }
 }
 
-private fun getSharedPreferences(context: Context) = context.getSharedPreferences("token_references", Context.MODE_PRIVATE)
+private fun getSharedPreferences(context: Context) = context.getSharedPreferences("references", Context.MODE_PRIVATE)

@@ -18,6 +18,6 @@ val userModule = module {
 
     single { SignInUseCase(get()) }
     single { SignUpUseCase(get()) }
-    single { GetProfileUseCase(get()) }
+    single { GetProfileUseCase(get(), get()) }
     single { UpdateProfileUseCase(get()) }
 }
