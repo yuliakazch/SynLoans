@@ -11,7 +11,7 @@ val bankModule = module {
 
     single<BankDataSource> { BankDataSourceImpl(get()) }
 
-    single<BankRepository> { BankRepositoryImpl(get()) }
+    single<BankRepository> { BankRepositoryImpl(get(), get()) }
 
     single { GetBankDetailUseCase(get()) }
 }

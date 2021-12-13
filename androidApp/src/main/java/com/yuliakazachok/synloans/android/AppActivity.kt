@@ -96,7 +96,15 @@ fun SynLoansApp() {
                             requestId = backStackEntry.arguments?.getInt("requestId") ?: throw NullPointerException("requestId is null")
                         )
                     }
-                    composable(BANK_DETAIL) { BankDetailDestination(navController) }
+                    composable(
+                        route = "$BANK_DETAIL/{bankId}",
+                        arguments = listOf(navArgument("bankId") { type = NavType.IntType }),
+                    ) { backStackEntry ->
+                        BankDetailDestination(
+                            navController = navController,
+                            bankId = backStackEntry.arguments?.getInt("bankId") ?: throw NullPointerException("bankId is null"),
+                        )
+                    }
                     composable(PAYMENT_SCHEDULE) { PaymentScheduleDestination(navController) }
                 }
                 navigation(

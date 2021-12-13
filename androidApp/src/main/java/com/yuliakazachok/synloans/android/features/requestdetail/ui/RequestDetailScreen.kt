@@ -257,7 +257,7 @@ fun BanksView(
                     } else {
                         bank.sum.value.toString() + textSumUnit
                     },
-                    onClicked = { onActionSent(RequestDetailAction.BankItemClicked) }
+                    onClicked = { onActionSent(RequestDetailAction.BankItemClicked(bank.id)) }
                 )
             }
         }

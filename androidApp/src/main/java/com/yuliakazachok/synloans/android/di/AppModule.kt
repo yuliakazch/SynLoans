@@ -20,13 +20,15 @@ val appModule = module {
     viewModel { ProfileViewModel(get()) }
     viewModel { EditProfileViewModel(get(), get()) }
     viewModel { RequestsViewModel(get(), get()) }
-    viewModel { (idRequest: Int) ->
-        RequestDetailViewModel(get(), get(), get(), idRequest)
+    viewModel { (requestId: Int) ->
+        RequestDetailViewModel(get(), get(), get(), requestId)
     }
     viewModel { RequestCreateViewModel(get()) }
-    viewModel { (idRequest: Int) ->
-        JoinSyndicateViewModel(get(), idRequest)
+    viewModel { (requestId: Int) ->
+        JoinSyndicateViewModel(get(), requestId)
     }
-    viewModel { BankDetailViewModel() }
+    viewModel { (bankId: Int) ->
+        BankDetailViewModel(get(), bankId)
+    }
     viewModel { PaymentScheduleViewModel() }
 }

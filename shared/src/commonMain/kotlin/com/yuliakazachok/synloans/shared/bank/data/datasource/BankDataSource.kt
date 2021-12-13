@@ -4,5 +4,5 @@ import com.yuliakazachok.synloans.shared.bank.domain.entity.Bank
 
 interface BankDataSource {
 
-    suspend fun getDetail(id: Int): Bank
+    suspend fun getDetail(id: Int, token: String): Bank
 }

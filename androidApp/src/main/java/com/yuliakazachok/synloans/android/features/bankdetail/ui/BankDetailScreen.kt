@@ -25,90 +25,90 @@ import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun BankDetailScreen(
-	state: BankDetailState,
-	effectFlow: Flow<BankDetailEffect>?,
-	onActionSent: (action: BankDetailAction) -> Unit,
-	onNavigationRequested: (navigationEffect: BankDetailEffect.Navigation) -> Unit
+    state: BankDetailState,
+    effectFlow: Flow<BankDetailEffect>?,
+    onActionSent: (action: BankDetailAction) -> Unit,
+    onNavigationRequested: (navigationEffect: BankDetailEffect.Navigation) -> Unit
 ) {
 
-	LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
-		effectFlow?.onEach { effect ->
-			when (effect) {
-				is BankDetailEffect.Navigation ->
-					onNavigationRequested(effect)
-			}
-		}?.collect()
-	}
+    LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
+        effectFlow?.onEach { effect ->
+            when (effect) {
+                is BankDetailEffect.Navigation ->
+                    onNavigationRequested(effect)
+            }
+        }?.collect()
+    }
 
-	Scaffold(
-		topBar = {
-			TopBarBackView(
-				title = stringResource(R.string.bank_detail_title),
-				onIconClicked = { onActionSent(BankDetailAction.BackClicked) },
-			)
-		}
-	) {
-		when {
-			state.loading -> LoadingView()
+    Scaffold(
+        topBar = {
+            TopBarBackView(
+                title = stringResource(R.string.bank_detail_title),
+                onIconClicked = { onActionSent(BankDetailAction.BackClicked) },
+            )
+        }
+    ) {
+        when {
+            state.loading -> LoadingView()
 
-			state.data == null -> ErrorView()
+            state.data == null -> ErrorView()
 
-			else -> BankDetailView(state.data)
-		}
-	}
+            else -> BankDetailView(state.data)
+        }
+    }
 }
 
 @Composable
 fun BankDetailView(
-	data: Bank
+    data: Bank
 ) {
-	val listState = rememberLazyListState()
+    val listState = rememberLazyListState()
 
-	LazyColumn(
-		state = listState,
-		modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
-	) {
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.field_full_name_company),
-				textTwo = data.fullName,
-			)
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.field_short_name_company),
-				textTwo = data.shortName,
-			)
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.field_tin),
-				textTwo = data.tin,
-			)
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.field_iec),
-				textTwo = data.iec,
-			)
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.field_legal_address),
-				textTwo = data.legalAddress,
-			)
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.field_actual_address),
-				textTwo = data.actualAddress,
-			)
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.field_email),
-				textTwo = data.email,
-			)
-		}
-	}
+    LazyColumn(
+        state = listState,
+        modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+    ) {
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.field_full_name_company),
+                textTwo = data.fullName,
+            )
+        }
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.field_short_name_company),
+                textTwo = data.shortName,
+            )
+        }
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.field_tin),
+                textTwo = data.inn,
+            )
+        }
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.field_iec),
+                textTwo = data.kpp,
+            )
+        }
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.field_legal_address),
+                textTwo = data.legalAddress,
+            )
+        }
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.field_actual_address),
+                textTwo = data.actualAddress,
+            )
+        }
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.field_email),
+                textTwo = data.email,
+            )
+        }
+    }
 }

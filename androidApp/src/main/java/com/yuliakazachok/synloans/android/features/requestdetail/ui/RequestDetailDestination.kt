@@ -43,7 +43,7 @@ fun RequestDetailDestination(navController: NavHostController, requestId: Int) {
                 }
 
                 is RequestDetailEffect.Navigation.ToBankItem -> {
-                    navController.navigate(BANK_DETAIL)
+                    navController.navigate("${BANK_DETAIL}/${navigationEffect.id}")
                 }
             }
         }

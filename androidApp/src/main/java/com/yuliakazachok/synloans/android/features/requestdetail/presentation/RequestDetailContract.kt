@@ -11,7 +11,7 @@ sealed class RequestDetailAction : Action {
     object CancelRequestClicked : RequestDetailAction()
     object PaymentScheduleClicked : RequestDetailAction()
     object JoinSyndicateClicked : RequestDetailAction()
-    object BankItemClicked : RequestDetailAction()
+    data class BankItemClicked(val id: Int) : RequestDetailAction()
 }
 
 data class RequestDetailState(
@@ -32,6 +32,6 @@ sealed class RequestDetailEffect : Effect {
 
         data class ToJoinSyndicate(val id: Int) : Navigation()
 
-        object ToBankItem : Navigation()
+        data class ToBankItem(val id: Int) : Navigation()
     }
 }

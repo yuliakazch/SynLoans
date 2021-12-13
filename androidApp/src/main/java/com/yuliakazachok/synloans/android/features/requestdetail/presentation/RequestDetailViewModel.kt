@@ -53,7 +53,7 @@ class RequestDetailViewModel(
             }
 
             is RequestDetailAction.BankItemClicked -> {
-                setEffect { RequestDetailEffect.Navigation.ToBankItem }
+                setEffect { RequestDetailEffect.Navigation.ToBankItem(action.id) }
             }
         }
     }

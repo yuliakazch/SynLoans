@@ -10,8 +10,9 @@ class BankDataSourceImpl(
     private val httpClient: HttpClient,
 ) : BankDataSource {
 
-    override suspend fun getDetail(id: Int): Bank =
-        httpClient.get<Bank>("$BASE_URL/$id") { // TODO add url
+    override suspend fun getDetail(id: Int, token: String): Bank =
+        httpClient.get<Bank>("$BASE_URL/banks/$id") {
             contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, token)
         }
 }
