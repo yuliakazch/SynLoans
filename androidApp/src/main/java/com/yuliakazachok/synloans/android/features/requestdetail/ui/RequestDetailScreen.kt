@@ -253,9 +253,9 @@ fun BanksView(
                 TextTwoLinesView(
                     textOne = bank.name,
                     textTwo = if (bank.approveBankAgent) {
-                        bank.sum.toString() + textSumUnit + stringResource(R.string.request_divider) + stringResource(R.string.request_approve_bank_agent)
+                        bank.sum.value.toString() + textSumUnit + stringResource(R.string.request_divider) + stringResource(R.string.request_approve_bank_agent)
                     } else {
-                        bank.sum.toString() + textSumUnit
+                        bank.sum.value.toString() + textSumUnit
                     },
                     onClicked = { onActionSent(RequestDetailAction.BankItemClicked) }
                 )

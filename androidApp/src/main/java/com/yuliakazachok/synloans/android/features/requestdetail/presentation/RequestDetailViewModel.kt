@@ -49,7 +49,7 @@ class RequestDetailViewModel(
             }
 
             is RequestDetailAction.JoinSyndicateClicked -> {
-                setEffect { RequestDetailEffect.Navigation.ToJoinSyndicate }
+                setEffect { RequestDetailEffect.Navigation.ToJoinSyndicate(requestId) }
             }
 
             is RequestDetailAction.BankItemClicked -> {

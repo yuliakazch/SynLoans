@@ -6,11 +6,14 @@ import androidx.navigation.NavHostController
 import com.yuliakazachok.synloans.android.features.joinsyndicate.presentation.JoinSyndicateEffect
 import com.yuliakazachok.synloans.android.features.joinsyndicate.presentation.JoinSyndicateViewModel
 import org.koin.androidx.compose.getViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
-fun JoinSyndicateDestination(navController: NavHostController) {
+fun JoinSyndicateDestination(navController: NavHostController, requestId: Int) {
 
-	val viewModel = getViewModel<JoinSyndicateViewModel>()
+	val viewModel = getViewModel<JoinSyndicateViewModel> {
+		parametersOf(requestId)
+	}
 	val state = viewModel.viewState.collectAsState().value
 
 	JoinSyndicateScreen(

@@ -28,7 +28,7 @@ class RequestRepositoryImpl(
         requestDataSource.getRequestDetail(id, tokenDataSource.get())
 
     override suspend fun join(data: JoinSyndicateInfo) {
-        requestDataSource.join(data)
+        requestDataSource.join(data, tokenDataSource.get())
     }
 
     override suspend fun getActualSchedule(id: Int): List<Payment> =

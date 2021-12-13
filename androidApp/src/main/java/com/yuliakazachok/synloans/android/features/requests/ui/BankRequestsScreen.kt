@@ -144,7 +144,7 @@ fun ListRequestsView(
 
                 TextTwoLinesView(
                     textOne = request.name,
-                    textTwo = request.sum.toString() + textSumUnit,
+                    textTwo = request.sum.value.toString() + textSumUnit,
                     onClicked = { onActionSent(RequestsAction.RequestClicked(request.id)) }
                 )
             }

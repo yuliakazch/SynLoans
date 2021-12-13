@@ -39,9 +39,10 @@ class RequestDataSourceImpl(
             header(HttpHeaders.Authorization, token)
         }
 
-    override suspend fun join(data: JoinSyndicateInfo) {
-        httpClient.post<Unit>("$BASE_URL/") { // TODO add url
+    override suspend fun join(data: JoinSyndicateInfo, token: String) {
+        httpClient.post<Unit>("$BASE_URL/syndicates/join") {
             contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, token)
             body = data
         }
     }

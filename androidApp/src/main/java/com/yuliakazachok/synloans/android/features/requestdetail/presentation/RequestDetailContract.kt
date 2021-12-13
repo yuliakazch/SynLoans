@@ -30,7 +30,7 @@ sealed class RequestDetailEffect : Effect {
 
         object ToPaymentSchedule : Navigation()
 
-        object ToJoinSyndicate : Navigation()
+        data class ToJoinSyndicate(val id: Int) : Navigation()
 
         object ToBankItem : Navigation()
     }

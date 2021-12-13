@@ -69,7 +69,7 @@ class RequestsViewModel(
     private fun getBankRequestsMock(): BankRequests = BankRequests(
         own = listOf(
             BankRequest(
-                id = 102,
+                id = 4,
                 name = "ПАО “Компания Первая”",
                 sum = Sum(12, SumUnit.MILLION),
             ),

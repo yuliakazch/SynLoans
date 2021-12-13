@@ -16,7 +16,7 @@ interface RequestDataSource {
 
     suspend fun getRequestDetail(id: Int, token: String): RequestCommon
 
-    suspend fun join(data: JoinSyndicateInfo)
+    suspend fun join(data: JoinSyndicateInfo, token: String)
 
     suspend fun getActualSchedule(id: Int): List<Payment>
 

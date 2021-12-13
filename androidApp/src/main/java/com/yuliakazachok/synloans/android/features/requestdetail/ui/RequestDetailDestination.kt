@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.yuliakazachok.synloans.android.core.NavigationKeys
 import com.yuliakazachok.synloans.android.core.NavigationKeys.BANK_DETAIL
 import com.yuliakazachok.synloans.android.core.NavigationKeys.JOIN_SYNDICATE
 import com.yuliakazachok.synloans.android.core.NavigationKeys.PAYMENT_SCHEDULE
+import com.yuliakazachok.synloans.android.core.NavigationKeys.REQUESTS
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailEffect
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailViewModel
 import org.koin.androidx.compose.getViewModel
@@ -29,8 +29,8 @@ fun RequestDetailDestination(navController: NavHostController, requestId: Int) {
         onNavigationRequested = { navigationEffect ->
             when (navigationEffect) {
                 is RequestDetailEffect.Navigation.ToBack -> {
-                    navController.navigate(NavigationKeys.REQUESTS) {
-                        popUpTo(NavigationKeys.REQUESTS) { inclusive = true }
+                    navController.navigate(REQUESTS) {
+                        popUpTo(REQUESTS) { inclusive = true }
                     }
                 }
 
@@ -39,7 +39,7 @@ fun RequestDetailDestination(navController: NavHostController, requestId: Int) {
                 }
 
                 is RequestDetailEffect.Navigation.ToJoinSyndicate -> {
-                    navController.navigate(JOIN_SYNDICATE)
+                    navController.navigate("${JOIN_SYNDICATE}/${navigationEffect.id}")
                 }
 
                 is RequestDetailEffect.Navigation.ToBankItem -> {

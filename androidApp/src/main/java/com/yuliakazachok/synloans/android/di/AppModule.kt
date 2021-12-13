@@ -24,7 +24,9 @@ val appModule = module {
         RequestDetailViewModel(get(), get(), get(), idRequest)
     }
     viewModel { RequestCreateViewModel(get()) }
-    viewModel { JoinSyndicateViewModel() }
+    viewModel { (idRequest: Int) ->
+        JoinSyndicateViewModel(get(), idRequest)
+    }
     viewModel { BankDetailViewModel() }
     viewModel { PaymentScheduleViewModel() }
 }
