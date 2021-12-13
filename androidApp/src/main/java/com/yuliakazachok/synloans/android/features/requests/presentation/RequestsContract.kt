@@ -10,7 +10,7 @@ sealed class RequestsAction : Action {
 
 	object CreateRequestClicked : RequestsAction()
 
-	object RequestClicked : RequestsAction()
+	data class RequestClicked(val id: Int) : RequestsAction()
 
 	object ProfileClicked : RequestsAction()
 }
@@ -28,7 +28,7 @@ sealed class RequestsEffect : Effect {
 
 		object ToCreateRequest : Navigation()
 
-		object ToRequest : Navigation()
+		data class ToRequest(val id: Int) : Navigation()
 
 		object ToProfile : Navigation()
 	}

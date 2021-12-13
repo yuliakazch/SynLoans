@@ -60,7 +60,9 @@ fun BorrowerRequestsScreen(
 
             state.borrowRequests.isEmpty() -> TextFullScreenView(stringResource(R.string.requests_empty))
 
-            else -> BorrowerRequestsView(state.borrowRequests) { onActionSent(RequestsAction.RequestClicked) }
+            else -> BorrowerRequestsView(state.borrowRequests) { id ->
+                onActionSent(RequestsAction.RequestClicked(id))
+            }
         }
     }
 }
@@ -68,7 +70,7 @@ fun BorrowerRequestsScreen(
 @Composable
 fun BorrowerRequestsView(
     requests: List<RequestCommon>,
-    onRequestClicked: () -> Unit,
+    onRequestClicked: (id: Int) -> Unit,
 ) {
     val listState = rememberLazyListState()
     val textDateCreate = stringResource(R.string.requests_date_create)
@@ -93,7 +95,7 @@ fun BorrowerRequestsView(
                         textDateIssue + request.info.dateIssue
                     },
                     textTwo = request.info.sum.value.toString() + textSumUnit,
-                    onClicked = { onRequestClicked() }
+                    onClicked = { onRequestClicked(request.info.id) }
                 )
             }
         }

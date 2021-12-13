@@ -22,11 +22,12 @@ import com.yuliakazachok.synloans.android.components.progress.LoadingView
 import com.yuliakazachok.synloans.android.components.text.TextTwoLinesView
 import com.yuliakazachok.synloans.android.components.topbar.TopBarBackView
 import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
-import com.yuliakazachok.synloans.android.core.getIndexYearText
+import com.yuliakazachok.synloans.android.core.getIndexMonthText
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailAction
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailEffect
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailState
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.*
+import com.yuliakazachok.synloans.shared.request.domain.entity.sum.SumUnit
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -35,188 +36,199 @@ import kotlinx.coroutines.launch
 @ExperimentalPagerApi
 @Composable
 fun RequestDetailScreen(
-	state: RequestDetailState,
-	effectFlow: Flow<RequestDetailEffect>?,
-	onActionSent: (action: RequestDetailAction) -> Unit,
-	onNavigationRequested: (navigationEffect: RequestDetailEffect.Navigation) -> Unit
+    state: RequestDetailState,
+    effectFlow: Flow<RequestDetailEffect>?,
+    onActionSent: (action: RequestDetailAction) -> Unit,
+    onNavigationRequested: (navigationEffect: RequestDetailEffect.Navigation) -> Unit
 ) {
-	val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
 
-	val textError = stringResource(R.string.error)
+    val textError = stringResource(R.string.error)
 
-	LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
-		effectFlow?.onEach { effect ->
-			when (effect) {
-				is RequestDetailEffect.Error      ->
-					scaffoldState.snackbarHostState.showSnackbar(
-						message = effect.message ?: textError,
-						duration = SnackbarDuration.Short
-					)
-				is RequestDetailEffect.Navigation ->
-					onNavigationRequested(effect)
-			}
-		}?.collect()
-	}
+    LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
+        effectFlow?.onEach { effect ->
+            when (effect) {
+                is RequestDetailEffect.Error ->
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = effect.message ?: textError,
+                        duration = SnackbarDuration.Short
+                    )
+                is RequestDetailEffect.Navigation ->
+                    onNavigationRequested(effect)
+            }
+        }?.collect()
+    }
 
-	Scaffold(
-		topBar = {
-			TopBarBackView(
-				title = stringResource(R.string.request_title),
-				onIconClicked = { onActionSent(RequestDetailAction.BackClicked) },
-			)
-		}
-	) {
-		when {
-			state.loading         -> LoadingView()
+    Scaffold(
+        topBar = {
+            TopBarBackView(
+                title = stringResource(R.string.request_title),
+                onIconClicked = { onActionSent(RequestDetailAction.BackClicked) },
+            )
+        }
+    ) {
+        when {
+            state.loading -> LoadingView()
 
-			state.request == null -> ErrorView()
+            state.request == null -> ErrorView()
 
-			else                  -> RequestDetailView(state.request, onActionSent)
-		}
-	}
+            else -> RequestDetailView(state.request, state.creditOrganisation, onActionSent)
+        }
+    }
 }
 
 @ExperimentalPagerApi
 @Composable
 fun RequestDetailView(
     request: RequestCommon,
+    creditOrganisation: Boolean,
     onActionSent: (action: RequestDetailAction) -> Unit,
 ) {
-	val tabData = listOf(
-		0 to R.string.request_info,
-		1 to R.string.request_banks,
-		2 to R.string.request_borrower,
-	)
+    val tabData = listOf(
+        0 to R.string.request_info,
+        1 to R.string.request_banks,
+        2 to R.string.request_borrower,
+    )
 
-	val pagerState = rememberPagerState()
-	val coroutineScope = rememberCoroutineScope()
-	val tabIndex = pagerState.currentPage
+    val pagerState = rememberPagerState()
+    val coroutineScope = rememberCoroutineScope()
+    val tabIndex = pagerState.currentPage
 
-	Column {
-		TabRow(
-			selectedTabIndex = tabIndex,
-			backgroundColor = MaterialTheme.colors.background,
-			indicator = {},
-			divider = {},
-		) {
-			tabData.forEach { (index, textId) ->
-				Tab(
-					selected = tabIndex == index,
-					onClick = {
-						coroutineScope.launch {
-							pagerState.animateScrollToPage(index)
-						}
-					},
-					text = {
-						Text(
-							text = stringResource(textId),
-							fontSize = 18.sp
-						)
-					},
-				)
-			}
-		}
+    Column {
+        TabRow(
+            selectedTabIndex = tabIndex,
+            backgroundColor = MaterialTheme.colors.background,
+            indicator = {},
+            divider = {},
+        ) {
+            tabData.forEach { (index, textId) ->
+                Tab(
+                    selected = tabIndex == index,
+                    onClick = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
+                    text = {
+                        Text(
+                            text = stringResource(textId),
+                            fontSize = 18.sp
+                        )
+                    },
+                )
+            }
+        }
 
-		HorizontalPager(
-			count = 3,
-			state = pagerState,
-		) { index ->
-			when (index) {
-				0 -> RequestInfoView(request.info, onActionSent)
+        HorizontalPager(
+            count = 3,
+            state = pagerState,
+        ) { index ->
+            when (index) {
+                0 -> RequestInfoView(request.info, creditOrganisation, onActionSent)
 
-				1 -> BanksView(request.banks, onActionSent)
+                1 -> BanksView(request.banks, onActionSent)
 
-				2 -> BorrowerView(request.borrower)
-			}
-		}
-	}
+                2 -> BorrowerView(request.borrower)
+            }
+        }
+    }
 }
 
 @SuppressLint("ResourceType")
 @Composable
 fun RequestInfoView(
-	request: RequestInfo,
-	onActionSent: (action: RequestDetailAction) -> Unit,
+    request: RequestInfo,
+    creditOrganisation: Boolean,
+    onActionSent: (action: RequestDetailAction) -> Unit,
 ) {
-	val listState = rememberLazyListState()
-	val yearTexts = stringArrayResource(R.array.request_years)
+    val listState = rememberLazyListState()
+    val monthsTexts = stringArrayResource(R.array.request_months)
 
-	LazyColumn(
-		state = listState,
-		modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
-	) {
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.request_status),
-				textTwo = when (request.status) {
-					StatusRequest.OPEN     -> stringResource(R.string.request_status_open)
-					StatusRequest.TRANSFER -> stringResource(R.string.request_status_transfer)
-					StatusRequest.ISSUE    -> stringResource(R.string.request_status_issue)
-					StatusRequest.CLOSE    -> stringResource(R.string.request_status_close)
-				},
-			)
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.request_sum),
-				textTwo = request.sum.toString() + stringResource(R.string.requests_sum_billion),
-			)
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.request_max_rate),
-				textTwo = request.maxRate.toString() + stringResource(R.string.request_rate_units),
-			)
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.request_term),
-				textTwo = request.term.toString() + yearTexts[getIndexYearText(request.term)],
-			)
-		}
-		if (request.dateIssue != null) {
-			item {
-				TextTwoLinesView(
-					textOne = stringResource(R.string.requests_date_issue),
-					textTwo = request.dateIssue.toString(),
-				)
-			}
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.requests_date_create),
-				textTwo = request.dateCreate,
-			)
-		}
+    LazyColumn(
+        state = listState,
+        modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+    ) {
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.request_status),
+                textTwo = when (request.status) {
+                    StatusRequest.OPEN -> stringResource(R.string.request_status_open)
+                    StatusRequest.TRANSFER -> stringResource(R.string.request_status_transfer)
+                    StatusRequest.ISSUE -> stringResource(R.string.request_status_issue)
+                    StatusRequest.CLOSE -> stringResource(R.string.request_status_close)
+                },
+            )
+        }
+        item {
+            val textSumUnit = when (request.sum.unit) {
+                SumUnit.BILLION -> stringResource(R.string.requests_sum_billion)
+                SumUnit.MILLION -> stringResource(R.string.requests_sum_million)
+                SumUnit.THOUSAND -> stringResource(R.string.requests_sum_thousand)
+            }
 
-		if (request.dateIssue != null) {
-			item {
-				Button(
-					onClick = { onActionSent(RequestDetailAction.PaymentScheduleClicked) },
-					modifier = Modifier.fillMaxWidth(),
-				) {
-					Text(stringResource(R.string.request_payment_schedule))
-				}
-			}
-		} else {
-			item {
-				Button(
-					onClick = { onActionSent(RequestDetailAction.CancelRequestClicked) },
-					modifier = Modifier.fillMaxWidth(),
-				) {
-					Text(stringResource(R.string.request_cancel))
-				}
-			}
-			item {
-				Button(
-					onClick = { onActionSent(RequestDetailAction.JoinSyndicateClicked) },
-					modifier = Modifier.fillMaxWidth(),
-				) {
-					Text(stringResource(R.string.request_join_syndicate))
-				}
-			}
-		}
-	}
+            TextTwoLinesView(
+                textOne = stringResource(R.string.request_sum),
+                textTwo = request.sum.value.toString() + textSumUnit,
+            )
+        }
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.request_max_rate),
+                textTwo = request.maxRate.toString() + stringResource(R.string.request_rate_units),
+            )
+        }
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.request_term),
+                textTwo = request.term.toString() + monthsTexts[getIndexMonthText(request.term)],
+            )
+        }
+        if (request.dateIssue != null) {
+            item {
+                TextTwoLinesView(
+                    textOne = stringResource(R.string.requests_date_issue),
+                    textTwo = request.dateIssue.toString(),
+                )
+            }
+        }
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.requests_date_create),
+                textTwo = request.dateCreate,
+            )
+        }
+
+        if (request.dateIssue != null) {
+            item {
+                Button(
+                    onClick = { onActionSent(RequestDetailAction.PaymentScheduleClicked) },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(stringResource(R.string.request_payment_schedule))
+                }
+            }
+        } else {
+            if (creditOrganisation) {
+                item {
+                    Button(
+                        onClick = { onActionSent(RequestDetailAction.JoinSyndicateClicked) },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text(stringResource(R.string.request_join_syndicate))
+                    }
+                }
+            } else {
+                item {
+                    Button(
+                        onClick = { onActionSent(RequestDetailAction.CancelRequestClicked) },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text(stringResource(R.string.request_cancel))
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -224,80 +236,85 @@ fun BanksView(
     banks: List<BankItem>,
     onActionSent: (action: RequestDetailAction) -> Unit,
 ) {
-	val listState = rememberLazyListState()
-	val textSumUnit = stringResource(R.string.requests_sum_billion)
+    val listState = rememberLazyListState()
 
-	LazyColumn(
-		state = listState,
-		modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
-	) {
-		banks.forEach { bank ->
-			item {
-				TextTwoLinesView(
-					textOne = bank.name,
-					textTwo = if (bank.approveBankAgent) {
-						bank.sum.toString() + textSumUnit + stringResource(R.string.request_divider) + stringResource(R.string.request_approve_bank_agent)
-					} else {
-						bank.sum.toString() + textSumUnit
-					},
-					onClicked = { onActionSent(RequestDetailAction.BankItemClicked) }
-				)
-			}
-		}
-	}
+    LazyColumn(
+        state = listState,
+        modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+    ) {
+        banks.forEach { bank ->
+            item {
+                val textSumUnit = when (bank.sum.unit) {
+                    SumUnit.BILLION -> stringResource(R.string.requests_sum_billion)
+                    SumUnit.MILLION -> stringResource(R.string.requests_sum_million)
+                    SumUnit.THOUSAND -> stringResource(R.string.requests_sum_thousand)
+                }
+
+                TextTwoLinesView(
+                    textOne = bank.name,
+                    textTwo = if (bank.approveBankAgent) {
+                        bank.sum.toString() + textSumUnit + stringResource(R.string.request_divider) + stringResource(R.string.request_approve_bank_agent)
+                    } else {
+                        bank.sum.toString() + textSumUnit
+                    },
+                    onClicked = { onActionSent(RequestDetailAction.BankItemClicked) }
+                )
+            }
+        }
+    }
 }
 
 @Composable
 fun BorrowerView(
-	borrower: Borrower,
+    borrower: Borrower,
 ) {
-	val listState = rememberLazyListState()
+    val listState = rememberLazyListState()
 
-	LazyColumn(
-		state = listState,
-		modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
-	) {
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.field_full_name_company),
-				textTwo = borrower.fullName,
-			)
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.field_short_name_company),
-				textTwo = borrower.shortName,
-			)
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.field_tin),
-				textTwo = borrower.inn,
-			)
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.field_iec),
-				textTwo = borrower.kpp,
-			)
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.field_legal_address),
-				textTwo = borrower.legalAddress,
-			)
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.field_actual_address),
-				textTwo = borrower.actualAddress,
-			)
-		}
-		item {
-			TextTwoLinesView(
-				textOne = stringResource(R.string.field_email),
-				textTwo = borrower.email,
-			)
-		}
-	}
+    LazyColumn(
+        state = listState,
+        modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+    ) {
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.field_full_name_company),
+                textTwo = borrower.fullName,
+            )
+        }
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.field_short_name_company),
+                textTwo = borrower.shortName,
+            )
+        }
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.field_tin),
+                textTwo = borrower.inn,
+            )
+        }
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.field_iec),
+                textTwo = borrower.kpp,
+            )
+        }
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.field_legal_address),
+                textTwo = borrower.legalAddress,
+            )
+        }
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.field_actual_address),
+                textTwo = borrower.actualAddress,
+            )
+        }
+        item {
+            TextTwoLinesView(
+                textOne = stringResource(R.string.field_email),
+                textTwo = borrower.email,
+            )
+        }
+    }
 }

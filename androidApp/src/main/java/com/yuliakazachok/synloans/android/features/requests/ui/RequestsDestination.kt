@@ -31,7 +31,7 @@ fun RequestsDestination(navController: NavHostController) {
 					}
 
 					is RequestsEffect.Navigation.ToRequest       -> {
-						navController.navigate(REQUEST_DETAIL)
+						navController.navigate("$REQUEST_DETAIL/${navigationEffect.id}")
 					}
 
 					is RequestsEffect.Navigation.ToProfile       -> {
@@ -54,7 +54,7 @@ fun RequestsDestination(navController: NavHostController) {
 					}
 
 					is RequestsEffect.Navigation.ToRequest       -> {
-						navController.navigate(REQUEST_DETAIL)
+						navController.navigate("$REQUEST_DETAIL/${navigationEffect.id}")
 					}
 
 					is RequestsEffect.Navigation.ToProfile       -> {

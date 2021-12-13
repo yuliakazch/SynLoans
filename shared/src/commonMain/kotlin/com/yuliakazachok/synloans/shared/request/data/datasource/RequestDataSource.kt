@@ -14,7 +14,7 @@ interface RequestDataSource {
 
     suspend fun getBankRequests(): BankRequests
 
-    suspend fun getRequestDetail(id: Int): RequestCommon
+    suspend fun getRequestDetail(id: Int, token: String): RequestCommon
 
     suspend fun join(data: JoinSyndicateInfo)
 
@@ -22,5 +22,5 @@ interface RequestDataSource {
 
     suspend fun getPlannedSchedule(id: Int): List<Payment>
 
-    suspend fun cancel(id: Int)
+    suspend fun cancel(id: Int, token: String)
 }

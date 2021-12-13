@@ -25,7 +25,7 @@ class RequestRepositoryImpl(
         requestDataSource.getBankRequests()
 
     override suspend fun getRequestDetail(id: Int): RequestCommon =
-        requestDataSource.getRequestDetail(id)
+        requestDataSource.getRequestDetail(id, tokenDataSource.get())
 
     override suspend fun join(data: JoinSyndicateInfo) {
         requestDataSource.join(data)
@@ -38,6 +38,6 @@ class RequestRepositoryImpl(
         requestDataSource.getPlannedSchedule(id)
 
     override suspend fun cancel(id: Int) {
-        requestDataSource.cancel(id)
+        requestDataSource.cancel(id, tokenDataSource.get())
     }
 }

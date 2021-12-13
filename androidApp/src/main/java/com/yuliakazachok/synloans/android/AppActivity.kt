@@ -7,7 +7,9 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.navigation.NavType
 import androidx.navigation.compose.*
+import androidx.navigation.navArgument
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.yuliakazachok.synloans.android.components.bottombar.BottomBarView
 import com.yuliakazachok.synloans.android.core.CoreBottomScreen
@@ -35,60 +37,68 @@ import com.yuliakazachok.synloans.android.features.requests.ui.RequestsDestinati
 
 class AppActivity : ComponentActivity() {
 
-	@ExperimentalPagerApi
-	@ExperimentalComposeUiApi
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		setContent {
-			SynLoansApp()
-		}
-	}
+    @ExperimentalPagerApi
+    @ExperimentalComposeUiApi
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            SynLoansApp()
+        }
+    }
 }
 
 @ExperimentalPagerApi
 @ExperimentalComposeUiApi
 @Composable
 fun SynLoansApp() {
-	AppTheme {
-		val navController = rememberNavController()
-		val navBackStackEntry by navController.currentBackStackEntryAsState()
-		val currentDestination = navBackStackEntry?.destination
-		val currentRoute = currentDestination?.route
+    AppTheme {
+        val navController = rememberNavController()
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
+        val currentRoute = currentDestination?.route
 
-		Scaffold(
-			bottomBar = {
-				if (currentRoute == PROFILE || currentRoute == REQUESTS) {
-					BottomBarView(
-						tabs = listOf(CoreBottomScreen.Requests, CoreBottomScreen.Profile),
-						navController = navController,
-						currentDestination = currentDestination,
-						currentRoute = currentRoute,
-					)
-				}
-			}
-		) {
-			NavHost(navController = navController, startDestination = SIGN_IN) {
-				composable(SIGN_IN) { SignInDestination(navController) }
-				composable(SIGN_UP) { SignUpDestination(navController) }
-				navigation(
-					startDestination = REQUESTS,
-					route = CoreBottomScreen.Requests.route,
-				) {
-					composable(REQUESTS) { RequestsDestination(navController) }
-					composable(CREATE_REQUEST) { RequestCreateDestination(navController) }
-					composable(REQUEST_DETAIL) { RequestDetailDestination(navController) }
-					composable(JOIN_SYNDICATE) { JoinSyndicateDestination(navController) }
-					composable(BANK_DETAIL) { BankDetailDestination(navController) }
-					composable(PAYMENT_SCHEDULE) { PaymentScheduleDestination(navController) }
-				}
-				navigation(
-					startDestination = PROFILE,
-					route = CoreBottomScreen.Profile.route,
-				) {
-					composable(PROFILE) { ProfileDestination(navController) }
-					composable(EDIT_PROFILE) { EditProfileDestination(navController) }
-				}
-			}
-		}
-	}
+        Scaffold(
+            bottomBar = {
+                if (currentRoute == PROFILE || currentRoute == REQUESTS) {
+                    BottomBarView(
+                        tabs = listOf(CoreBottomScreen.Requests, CoreBottomScreen.Profile),
+                        navController = navController,
+                        currentDestination = currentDestination,
+                        currentRoute = currentRoute,
+                    )
+                }
+            }
+        ) {
+            NavHost(navController = navController, startDestination = SIGN_IN) {
+                composable(SIGN_IN) { SignInDestination(navController) }
+                composable(SIGN_UP) { SignUpDestination(navController) }
+                navigation(
+                    startDestination = REQUESTS,
+                    route = CoreBottomScreen.Requests.route,
+                ) {
+                    composable(REQUESTS) { RequestsDestination(navController) }
+                    composable(CREATE_REQUEST) { RequestCreateDestination(navController) }
+                    composable(
+                        route = "$REQUEST_DETAIL/{requestId}",
+                        arguments = listOf(navArgument("requestId") { type = NavType.IntType }),
+                    ) { backStackEntry ->
+                        RequestDetailDestination(
+                            navController = navController,
+                            requestId = backStackEntry.arguments?.getInt("requestId") ?: throw NullPointerException("requestId is null")
+                        )
+                    }
+                    composable(JOIN_SYNDICATE) { JoinSyndicateDestination(navController) }
+                    composable(BANK_DETAIL) { BankDetailDestination(navController) }
+                    composable(PAYMENT_SCHEDULE) { PaymentScheduleDestination(navController) }
+                }
+                navigation(
+                    startDestination = PROFILE,
+                    route = CoreBottomScreen.Profile.route,
+                ) {
+                    composable(PROFILE) { ProfileDestination(navController) }
+                    composable(EDIT_PROFILE) { EditProfileDestination(navController) }
+                }
+            }
+        }
+    }
 }

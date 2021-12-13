@@ -49,10 +49,10 @@
 	<string name="request_cancel">Отменить заявку</string>
 	<string name="request_rate_units">\u0020%</string>
 	<string name="request_divider">\u0020/\u0020</string>
-	<string-array name="request_years">
-		<item>\u0020год</item>
-		<item>\u0020года</item>
-		<item>\u0020лет</item>
+	<string-array name="request_months">
+		<item>\u0020месяц</item>
+		<item>\u0020месяца</item>
+		<item>\u0020месяцев</item>
 	</string-array>
 
 	<string name="request_create_title">Создание заявки</string>

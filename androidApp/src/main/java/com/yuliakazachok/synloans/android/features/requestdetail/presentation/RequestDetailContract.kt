@@ -7,27 +7,31 @@ import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCom
 
 sealed class RequestDetailAction : Action {
 
-	object BackClicked : RequestDetailAction()
-	object CancelRequestClicked : RequestDetailAction()
-	object PaymentScheduleClicked : RequestDetailAction()
-	object JoinSyndicateClicked : RequestDetailAction()
-	object BankItemClicked : RequestDetailAction()
+    object BackClicked : RequestDetailAction()
+    object CancelRequestClicked : RequestDetailAction()
+    object PaymentScheduleClicked : RequestDetailAction()
+    object JoinSyndicateClicked : RequestDetailAction()
+    object BankItemClicked : RequestDetailAction()
 }
 
-data class RequestDetailState(val request: RequestCommon?, val loading: Boolean) : State
+data class RequestDetailState(
+    val request: RequestCommon?,
+    val creditOrganisation: Boolean,
+    val loading: Boolean,
+) : State
 
 sealed class RequestDetailEffect : Effect {
 
-	data class Error(val message: String? = null) : RequestDetailEffect()
+    data class Error(val message: String? = null) : RequestDetailEffect()
 
-	sealed class Navigation : RequestDetailEffect() {
+    sealed class Navigation : RequestDetailEffect() {
 
-		object ToBack : Navigation()
+        object ToBack : Navigation()
 
-		object ToPaymentSchedule : Navigation()
+        object ToPaymentSchedule : Navigation()
 
-		object ToJoinSyndicate : Navigation()
+        object ToJoinSyndicate : Navigation()
 
-		object ToBankItem : Navigation()
-	}
+        object ToBankItem : Navigation()
+    }
 }

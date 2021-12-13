@@ -33,9 +33,10 @@ class RequestDataSourceImpl(
             contentType(ContentType.Application.Json)
         }
 
-    override suspend fun getRequestDetail(id: Int): RequestCommon =
-        httpClient.get<RequestCommon>("$BASE_URL/$id") { // TODO add url
+    override suspend fun getRequestDetail(id: Int, token: String): RequestCommon =
+        httpClient.get<RequestCommon>("$BASE_URL/loan/requests/$id") {
             contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, token)
         }
 
     override suspend fun join(data: JoinSyndicateInfo) {
@@ -55,9 +56,10 @@ class RequestDataSourceImpl(
             contentType(ContentType.Application.Json)
         }
 
-    override suspend fun cancel(id: Int) {
-        httpClient.delete<Unit>("$BASE_URL/") { // TODO add url
+    override suspend fun cancel(id: Int, token: String) {
+        httpClient.delete<Unit>("$BASE_URL/loan/requests/$id") {
             contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, token)
         }
     }
 }

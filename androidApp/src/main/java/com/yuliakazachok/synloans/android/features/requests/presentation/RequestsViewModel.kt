@@ -5,6 +5,8 @@ import com.yuliakazachok.synloans.android.core.BaseViewModel
 import com.yuliakazachok.synloans.shared.flag.domain.usecase.IsCreditOrganisationUseCase
 import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequest
 import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
+import com.yuliakazachok.synloans.shared.request.domain.entity.sum.Sum
+import com.yuliakazachok.synloans.shared.request.domain.entity.sum.SumUnit
 import com.yuliakazachok.synloans.shared.request.domain.usecase.GetBorrowRequestsUseCase
 import kotlinx.coroutines.launch
 
@@ -23,7 +25,7 @@ class RequestsViewModel(
             }
 
             is RequestsAction.RequestClicked -> {
-                setEffect { RequestsEffect.Navigation.ToRequest }
+                setEffect { RequestsEffect.Navigation.ToRequest(action.id) }
             }
 
             is RequestsAction.ProfileClicked -> {
@@ -69,24 +71,24 @@ class RequestsViewModel(
             BankRequest(
                 id = 102,
                 name = "ПАО “Компания Первая”",
-                sum = 12,
+                sum = Sum(12, SumUnit.MILLION),
             ),
         ),
         other = listOf(
             BankRequest(
                 id = 101,
                 name = "ПАО “Компания Первая”",
-                sum = 7,
+                sum = Sum(7, SumUnit.MILLION),
             ),
             BankRequest(
                 id = 56,
                 name = "ПАО “Компания Вторая”",
-                sum = 2,
+                sum = Sum(2, SumUnit.MILLION),
             ),
             BankRequest(
                 id = 11,
                 name = "ПАО “Компания Третья”",
-                sum = 7,
+                sum = Sum(7, SumUnit.MILLION),
             ),
         ),
     )
