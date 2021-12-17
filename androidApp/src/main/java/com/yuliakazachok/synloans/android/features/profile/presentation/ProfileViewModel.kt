@@ -2,11 +2,13 @@ package com.yuliakazachok.synloans.android.features.profile.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
+import com.yuliakazachok.synloans.shared.token.domain.usecase.ClearTokenUseCase
 import com.yuliakazachok.synloans.shared.user.domain.usecase.GetProfileUseCase
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val getProfileUseCase: GetProfileUseCase,
+    private val clearTokenUseCase: ClearTokenUseCase,
 ) : BaseViewModel<ProfileAction, ProfileState, ProfileEffect>() {
 
     override fun setInitialState(): ProfileState =
@@ -23,6 +25,7 @@ class ProfileViewModel(
             }
 
             is ProfileAction.LogoutClicked -> {
+                clearTokenUseCase()
                 setEffect { ProfileEffect.Navigation.ToLogout }
             }
         }

@@ -10,6 +10,7 @@ import com.yuliakazachok.synloans.android.features.requestdetail.presentation.Re
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsViewModel
 import com.yuliakazachok.synloans.android.features.signin.presentation.SignInViewModel
 import com.yuliakazachok.synloans.android.features.signup.presentation.SignUpViewModel
+import com.yuliakazachok.synloans.android.features.splash.presentation.SplashViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -17,7 +18,7 @@ val appModule = module {
 
     viewModel { SignInViewModel(get()) }
     viewModel { SignUpViewModel(get()) }
-    viewModel { ProfileViewModel(get()) }
+    viewModel { ProfileViewModel(get(), get()) }
     viewModel { EditProfileViewModel(get(), get()) }
     viewModel { RequestsViewModel(get(), get()) }
     viewModel { (requestId: Int) ->
@@ -31,4 +32,5 @@ val appModule = module {
         BankDetailViewModel(get(), bankId)
     }
     viewModel { PaymentScheduleViewModel() }
+    viewModel { SplashViewModel(get()) }
 }

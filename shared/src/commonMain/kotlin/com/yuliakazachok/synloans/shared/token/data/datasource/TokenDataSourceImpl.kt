@@ -17,4 +17,11 @@ class TokenDataSourceImpl(
 
     override fun get(): String =
         settings.getString(TOKEN_KEY)
+
+    override fun getOrNull(): String? =
+        settings.getStringOrNull(TOKEN_KEY)
+
+    override fun clear() {
+        settings.remove(TOKEN_KEY)
+    }
 }
