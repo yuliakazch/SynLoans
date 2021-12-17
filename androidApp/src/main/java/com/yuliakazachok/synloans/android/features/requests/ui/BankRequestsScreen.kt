@@ -131,7 +131,7 @@ fun ListRequestsView(
     LazyColumn(
         state = listState,
         modifier = Modifier
-            .padding(top = 12.dp, start = 16.dp, end = 16.dp)
+            .padding(top = 12.dp)
             .fillMaxWidth(),
     ) {
         data.forEach { request ->

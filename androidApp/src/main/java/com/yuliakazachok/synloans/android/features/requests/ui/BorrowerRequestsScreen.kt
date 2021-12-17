@@ -78,7 +78,7 @@ fun BorrowerRequestsView(
 
     LazyColumn(
         state = listState,
-        modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+        modifier = Modifier.padding(top = 12.dp)
     ) {
         requests.forEach { request ->
             item {

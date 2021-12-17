@@ -69,7 +69,7 @@ fun PaymentScheduleView(
 
 	LazyColumn(
 		state = listState,
-		modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+		modifier = Modifier.padding(top = 12.dp)
 	) {
 		data.forEach { payment ->
 			item {

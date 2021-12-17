@@ -3,7 +3,6 @@ package com.yuliakazachok.synloans.android.features.requestdetail.ui
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -95,9 +94,10 @@ fun RequestDetailView(
     val tabIndex = pagerState.currentPage
 
     Column {
-        TabRow(
+        ScrollableTabRow(
             selectedTabIndex = tabIndex,
             backgroundColor = MaterialTheme.colors.background,
+            edgePadding = 0.dp,
             indicator = {},
             divider = {},
         ) {
@@ -112,7 +112,7 @@ fun RequestDetailView(
                     text = {
                         Text(
                             text = stringResource(textId),
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
                         )
                     },
                 )
@@ -120,7 +120,7 @@ fun RequestDetailView(
         }
 
         HorizontalPager(
-            count = 3,
+            count = tabData.size,
             state = pagerState,
         ) { index ->
             when (index) {
@@ -141,12 +141,10 @@ fun RequestInfoView(
     creditOrganisation: Boolean,
     onActionSent: (action: RequestDetailAction) -> Unit,
 ) {
-    val listState = rememberLazyListState()
     val monthsTexts = stringArrayResource(R.array.request_months)
 
     LazyColumn(
-        state = listState,
-        modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+        modifier = Modifier.fillMaxSize().padding(top = 12.dp)
     ) {
         item {
             TextTwoLinesView(
@@ -202,7 +200,9 @@ fun RequestInfoView(
             item {
                 Button(
                     onClick = { onActionSent(RequestDetailAction.PaymentScheduleClicked) },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
                 ) {
                     Text(stringResource(R.string.request_payment_schedule))
                 }
@@ -212,7 +212,9 @@ fun RequestInfoView(
                 item {
                     Button(
                         onClick = { onActionSent(RequestDetailAction.JoinSyndicateClicked) },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
                     ) {
                         Text(stringResource(R.string.request_join_syndicate))
                     }
@@ -221,7 +223,9 @@ fun RequestInfoView(
                 item {
                     Button(
                         onClick = { onActionSent(RequestDetailAction.CancelRequestClicked) },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
                     ) {
                         Text(stringResource(R.string.request_cancel))
                     }
@@ -236,11 +240,8 @@ fun BanksView(
     banks: List<BankItem>,
     onActionSent: (action: RequestDetailAction) -> Unit,
 ) {
-    val listState = rememberLazyListState()
-
     LazyColumn(
-        state = listState,
-        modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+        modifier = Modifier.fillMaxSize().padding(top = 12.dp)
     ) {
         banks.forEach { bank ->
             item {
@@ -268,11 +269,8 @@ fun BanksView(
 fun BorrowerView(
     borrower: Borrower,
 ) {
-    val listState = rememberLazyListState()
-
     LazyColumn(
-        state = listState,
-        modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+        modifier = Modifier.fillMaxSize().padding(top = 12.dp)
     ) {
         item {
             TextTwoLinesView(
