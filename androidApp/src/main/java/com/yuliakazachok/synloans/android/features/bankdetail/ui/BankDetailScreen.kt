@@ -104,11 +104,5 @@ fun BankDetailView(
                 textTwo = data.actualAddress,
             )
         }
-        item {
-            TextTwoLinesView(
-                textOne = stringResource(R.string.field_email),
-                textTwo = data.email,
-            )
-        }
     }
 }

@@ -11,5 +11,4 @@ data class Borrower(
 	val kpp: String,
 	val legalAddress: String,
 	val actualAddress: String,
-	val email: String = "email@mail.ru",
 )

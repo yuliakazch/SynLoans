@@ -308,11 +308,5 @@ fun BorrowerView(
                 textTwo = borrower.actualAddress,
             )
         }
-        item {
-            TextTwoLinesView(
-                textOne = stringResource(R.string.field_email),
-                textTwo = borrower.email,
-            )
-        }
     }
 }
