@@ -15,6 +15,7 @@ kotlin {
 		named("jvmMain") {
 			dependencies {
 				implementation(compose.desktop.currentOs)
+				implementation(project(":shared"))
 			}
 		}
 	}
@@ -22,7 +23,7 @@ kotlin {
 
 compose.desktop {
 	application {
-		mainClass = "com.yuliakazachok.desktop.MainKt"
+		mainClass = "com.yuliakazachok.synloans.desktop.MainKt"
 
 		nativeDistributions {
 			targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)

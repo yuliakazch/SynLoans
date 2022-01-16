@@ -8,6 +8,6 @@ pluginManagement {
 }
 
 rootProject.name = "SynLoans"
-include(":androidApp")
+include(":android")
 include(":shared")
 include(":desktop")

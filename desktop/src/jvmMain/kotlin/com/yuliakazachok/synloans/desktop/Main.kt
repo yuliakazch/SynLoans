@@ -1,4 +1,4 @@
-package com.yuliakazachok.desktop
+package com.yuliakazachok.synloans.desktop
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
