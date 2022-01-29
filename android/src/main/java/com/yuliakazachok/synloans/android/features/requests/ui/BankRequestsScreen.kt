@@ -33,7 +33,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-@ExperimentalPagerApi
 @Composable
 fun BankRequestsScreen(
     state: RequestsState,
@@ -68,7 +67,7 @@ fun BankRequestsScreen(
     }
 }
 
-@ExperimentalPagerApi
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun BankRequestsView(
     data: BankRequests,

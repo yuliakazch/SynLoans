@@ -3,7 +3,6 @@ package com.yuliakazachok.synloans.android.features.requests.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.yuliakazachok.synloans.android.core.NavigationKeys.CREATE_REQUEST
 import com.yuliakazachok.synloans.android.core.NavigationKeys.PROFILE
 import com.yuliakazachok.synloans.android.core.NavigationKeys.REQUESTS
@@ -12,7 +11,6 @@ import com.yuliakazachok.synloans.android.features.requests.presentation.Request
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsViewModel
 import org.koin.androidx.compose.getViewModel
 
-@ExperimentalPagerApi
 @Composable
 fun RequestsDestination(navController: NavHostController) {
 

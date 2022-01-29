@@ -32,7 +32,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-@ExperimentalComposeUiApi
 @Composable
 fun SignUpScreen(
     state: SignUpState,
@@ -69,7 +68,7 @@ fun SignUpScreen(
     }
 }
 
-@ExperimentalComposeUiApi
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SignUpContentView(
     state: SignUpState,

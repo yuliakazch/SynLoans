@@ -6,6 +6,7 @@ plugins {
 }
 
 val composeVersion = findProperty("version.compose") as String
+val composeCompilerVersion = findProperty("version.compose.compiler") as String
 
 android {
 	compileSdk = (findProperty("android.compileSdk") as String).toInt()
@@ -40,7 +41,7 @@ android {
 		freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
 	}
 	composeOptions {
-		kotlinCompilerExtensionVersion = composeVersion
+		kotlinCompilerExtensionVersion = composeCompilerVersion
 	}
 }
 
@@ -56,7 +57,7 @@ dependencies {
 	//Compose Utils
 	implementation("io.coil-kt:coil-compose:1.4.0")
 	implementation("androidx.activity:activity-compose:1.4.0")
-	implementation("androidx.navigation:navigation-compose:2.4.0-beta01")
+	implementation("androidx.navigation:navigation-compose:2.5.0-alpha01")
 	implementation("com.google.accompanist:accompanist-insets:0.20.0")
 	implementation("com.google.accompanist:accompanist-swiperefresh:0.20.0")
 	implementation("com.google.accompanist:accompanist-pager:0.20.0")

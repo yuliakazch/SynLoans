@@ -6,11 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.yuliakazachok.synloans.android.components.bottombar.BottomBarView
 import com.yuliakazachok.synloans.android.core.CoreBottomScreen
 import com.yuliakazachok.synloans.android.core.NavigationKeys.BANK_DETAIL
@@ -39,8 +37,6 @@ import com.yuliakazachok.synloans.android.features.splash.ui.SplashDestination
 
 class AppActivity : ComponentActivity() {
 
-    @ExperimentalPagerApi
-    @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -49,8 +45,6 @@ class AppActivity : ComponentActivity() {
     }
 }
 
-@ExperimentalPagerApi
-@ExperimentalComposeUiApi
 @Composable
 fun SynLoansApp() {
     AppTheme {

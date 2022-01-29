@@ -2,13 +2,11 @@ package com.yuliakazachok.synloans.android.features.signup.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavHostController
 import com.yuliakazachok.synloans.android.features.signup.presentation.SignUpEffect
 import com.yuliakazachok.synloans.android.features.signup.presentation.SignUpViewModel
 import org.koin.androidx.compose.getViewModel
 
-@ExperimentalComposeUiApi
 @Composable
 fun SignUpDestination(navController: NavHostController) {
 

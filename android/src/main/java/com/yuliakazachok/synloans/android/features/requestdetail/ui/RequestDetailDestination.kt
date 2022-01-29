@@ -3,7 +3,6 @@ package com.yuliakazachok.synloans.android.features.requestdetail.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.yuliakazachok.synloans.android.core.NavigationKeys.BANK_DETAIL
 import com.yuliakazachok.synloans.android.core.NavigationKeys.JOIN_SYNDICATE
 import com.yuliakazachok.synloans.android.core.NavigationKeys.PAYMENT_SCHEDULE
@@ -13,7 +12,6 @@ import com.yuliakazachok.synloans.android.features.requestdetail.presentation.Re
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
-@ExperimentalPagerApi
 @Composable
 fun RequestDetailDestination(navController: NavHostController, requestId: Int) {
 

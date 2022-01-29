@@ -32,7 +32,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-@ExperimentalPagerApi
 @Composable
 fun RequestDetailScreen(
     state: RequestDetailState,
@@ -76,7 +75,7 @@ fun RequestDetailScreen(
     }
 }
 
-@ExperimentalPagerApi
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun RequestDetailView(
     request: RequestCommon,
