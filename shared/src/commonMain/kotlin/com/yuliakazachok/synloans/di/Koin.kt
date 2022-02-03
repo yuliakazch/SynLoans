@@ -16,18 +16,15 @@ import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
-fun initKoin(appDeclaration: KoinAppDeclaration = {}) {
-
-    startKoin {
-        modules(settingsModule)
-        modules(networkModule)
-        modules(tokenModule)
-        modules(flagModule)
-        modules(userModule)
-        modules(requestModule)
-        modules(bankModule)
-        appDeclaration()
-    }
+fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
+    modules(settingsModule)
+    modules(networkModule)
+    modules(tokenModule)
+    modules(flagModule)
+    modules(userModule)
+    modules(requestModule)
+    modules(bankModule)
+    appDeclaration()
 }
 
 val networkModule = module {

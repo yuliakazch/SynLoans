@@ -1,42 +1,23 @@
 package com.yuliakazachok.synloans.desktop
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.application
-import androidx.compose.ui.window.rememberWindowState
+import com.yuliakazachok.synloans.desktop.core.NavigationTree
+import com.yuliakazachok.synloans.desktop.navigation.buildComposeNavigationGraph
+import com.yuliakazachok.synloans.di.initKoin
+import ru.alexgladkov.odyssey.compose.DesktopScreenHost
+import ru.alexgladkov.odyssey.compose.extensions.setupWithRootController
+import javax.swing.JFrame
+import javax.swing.SwingUtilities
 
-fun main() = application {
-	Window(
-		onCloseRequest = ::exitApplication,
-		title = "Compose for Desktop",
-		state = rememberWindowState(width = 300.dp, height = 300.dp)
-	) {
-		val count = remember { mutableStateOf(0) }
-		MaterialTheme {
-			Column(Modifier.fillMaxSize(), Arrangement.spacedBy(5.dp)) {
-				Button(modifier = Modifier.align(Alignment.CenterHorizontally),
-					onClick = {
-						count.value++
-					}) {
-					Text(if (count.value == 0) "Hello World" else "Clicked ${count.value}!")
-				}
-				Button(modifier = Modifier.align(Alignment.CenterHorizontally),
-					onClick = {
-						count.value = 0
-					}) {
-					Text("Reset")
-				}
-			}
-		}
-	}
+fun main() = SwingUtilities.invokeLater {
+    val window = JFrame()
+    window.title = "Syndicated Loans"
+    window.setSize(1200, 850)
+
+    val koin = initKoin().koin
+
+    DesktopScreenHost(window)
+        .setupWithRootController(
+            startScreen = NavigationTree.Root.SignIn.name,
+            block = buildComposeNavigationGraph(koin)
+        )
 }

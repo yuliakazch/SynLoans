@@ -26,7 +26,8 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${findProperty("version.kotlinx.serialization")}")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:${findProperty("version.kotlinx.serialization")}")
                 //Key-Value storage
-                implementation("com.russhwolf:multiplatform-settings:0.8.1")
+                implementation("com.russhwolf:multiplatform-settings:${findProperty("version.multiplatform.settings")}")
+                implementation("com.russhwolf:multiplatform-settings-no-arg:${findProperty("version.multiplatform.settings")}")
                 //DI
                 implementation("io.insert-koin:koin-core:${findProperty("version.koin")}")
             }

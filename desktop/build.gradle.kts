@@ -3,7 +3,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
 	kotlin("multiplatform")
-	id("org.jetbrains.compose") version "1.0.0-beta5"
+	id("org.jetbrains.compose") version "1.0.1"
 }
 
 kotlin {
@@ -16,6 +16,13 @@ kotlin {
 			dependencies {
 				implementation(compose.desktop.currentOs)
 				implementation(project(":shared"))
+
+				//DI
+				val koinVersion = findProperty("version.koin")
+				implementation("io.insert-koin:koin-core:$koinVersion")
+
+				implementation("io.github.alexgladkov:odyssey-core:0.2.0")
+				implementation("io.github.alexgladkov:odyssey-compose:0.2.0")
 			}
 		}
 	}
