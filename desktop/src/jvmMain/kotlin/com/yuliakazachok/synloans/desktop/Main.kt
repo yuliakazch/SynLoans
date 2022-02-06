@@ -1,6 +1,6 @@
 package com.yuliakazachok.synloans.desktop
 
-import com.yuliakazachok.synloans.desktop.core.NavigationTree
+import com.yuliakazachok.synloans.desktop.navigation.NavigationTree
 import com.yuliakazachok.synloans.desktop.navigation.buildComposeNavigationGraph
 import com.yuliakazachok.synloans.di.initKoin
 import ru.alexgladkov.odyssey.compose.DesktopScreenHost

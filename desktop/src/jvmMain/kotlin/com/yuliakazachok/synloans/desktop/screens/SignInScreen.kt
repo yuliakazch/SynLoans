@@ -16,7 +16,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
-import com.yuliakazachok.synloans.desktop.core.NavigationTree
+import com.yuliakazachok.synloans.desktop.navigation.NavigationTree
 import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.shared.user.domain.entity.Credentials
 import com.yuliakazachok.synloans.shared.user.domain.usecase.SignInUseCase
@@ -144,7 +144,7 @@ private fun signIn(
     produceState<SignInUiState>(initialValue = SignInUiState.SendingRequest(credentials), signInUseCase, credentials) {
         try {
             signInUseCase(credentials)
-            rootController.launch(NavigationTree.Root.SignUp.name) // TODO change navigation
+            rootController.launch(NavigationTree.Root.Profile.name)
         } catch (throwable: Throwable) {
             value = SignInUiState.Content(hasError = true)
         }

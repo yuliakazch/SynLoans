@@ -1,7 +1,7 @@
 package com.yuliakazachok.synloans.desktop.navigation
 
 import com.yuliakazachok.synloans.desktop.core.AppTheme
-import com.yuliakazachok.synloans.desktop.core.NavigationTree
+import com.yuliakazachok.synloans.desktop.screens.ProfileScreen
 import com.yuliakazachok.synloans.desktop.screens.SignInScreen
 import com.yuliakazachok.synloans.desktop.screens.SignUpScreen
 import org.koin.core.Koin
@@ -23,6 +23,12 @@ fun RootComposeBuilder.generateGraph(koin: Koin) {
     screen(NavigationTree.Root.SignUp.name) {
         AppTheme {
             SignUpScreen(rootController, koin)
+        }
+    }
+
+    screen(NavigationTree.Root.Profile.name) {
+        AppTheme {
+            ProfileScreen(rootController, koin)
         }
     }
 }

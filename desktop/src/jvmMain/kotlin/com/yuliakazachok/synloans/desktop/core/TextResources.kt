@@ -19,4 +19,6 @@ object TextResources {
     const val legalAddress = "Юридический адрес"
     const val actualAddress = "Фактический адрес"
     const val creditOrganisation = "Кредитная организация"
+
+    const val profile = "Профиль"
 }
