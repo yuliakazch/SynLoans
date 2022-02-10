@@ -1,9 +1,14 @@
 import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	kotlin("multiplatform")
 	id("org.jetbrains.compose") version "1.0.1"
+}
+
+tasks.withType<KotlinCompile> {
+	kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
 }
 
 kotlin {
@@ -21,8 +26,11 @@ kotlin {
 				val koinVersion = findProperty("version.koin")
 				implementation("io.insert-koin:koin-core:$koinVersion")
 
-				implementation("io.github.alexgladkov:odyssey-core:0.2.0")
-				implementation("io.github.alexgladkov:odyssey-compose:0.2.0")
+				//Navigation
+				val voyagerVersion = findProperty("version.voyager")
+				implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
+				implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion")
+				implementation("cafe.adriel.voyager:voyager-koin:$voyagerVersion")
 			}
 		}
 	}

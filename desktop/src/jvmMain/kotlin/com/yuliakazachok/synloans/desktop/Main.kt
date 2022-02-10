@@ -1,23 +1,29 @@
 package com.yuliakazachok.synloans.desktop
 
-import com.yuliakazachok.synloans.desktop.navigation.NavigationTree
-import com.yuliakazachok.synloans.desktop.navigation.buildComposeNavigationGraph
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
+import cafe.adriel.voyager.core.registry.ScreenRegistry
+import cafe.adriel.voyager.navigator.Navigator
+import com.yuliakazachok.synloans.desktop.core.AppTheme
+import com.yuliakazachok.synloans.desktop.navigation.appScreenModule
+import com.yuliakazachok.synloans.desktop.screens.SignInScreen
 import com.yuliakazachok.synloans.di.initKoin
-import ru.alexgladkov.odyssey.compose.DesktopScreenHost
-import ru.alexgladkov.odyssey.compose.extensions.setupWithRootController
-import javax.swing.JFrame
-import javax.swing.SwingUtilities
 
-fun main() = SwingUtilities.invokeLater {
-    val window = JFrame()
-    window.title = "Syndicated Loans"
-    window.setSize(1200, 850)
+val koin = initKoin().koin
 
-    val koin = initKoin().koin
-
-    DesktopScreenHost(window)
-        .setupWithRootController(
-            startScreen = NavigationTree.Root.SignIn.name,
-            block = buildComposeNavigationGraph(koin)
-        )
+fun main() = application {
+    Window(
+        onCloseRequest = ::exitApplication,
+        title = "Syndicated Loans",
+        state = rememberWindowState(width = 1200.dp, height = 850.dp)
+    ) {
+        AppTheme {
+            ScreenRegistry {
+                appScreenModule()
+            }
+            Navigator(SignInScreen())
+        }
+    }
 }

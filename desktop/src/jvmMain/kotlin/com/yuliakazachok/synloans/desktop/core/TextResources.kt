@@ -21,4 +21,5 @@ object TextResources {
     const val creditOrganisation = "Кредитная организация"
 
     const val profile = "Профиль"
+    const val requests = "Заявки"
 }

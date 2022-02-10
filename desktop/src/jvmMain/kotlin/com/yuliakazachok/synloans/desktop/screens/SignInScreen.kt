@@ -14,62 +14,73 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.registry.rememberScreen
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
-import com.yuliakazachok.synloans.desktop.navigation.NavigationTree
 import com.yuliakazachok.synloans.desktop.core.TextResources
+import com.yuliakazachok.synloans.desktop.koin
+import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
 import com.yuliakazachok.synloans.shared.user.domain.entity.Credentials
 import com.yuliakazachok.synloans.shared.user.domain.usecase.SignInUseCase
-import org.koin.core.Koin
-import ru.alexgladkov.odyssey.core.RootController
 
 sealed class SignInUiState {
     data class Content(val hasError: Boolean = false) : SignInUiState()
     data class SendingRequest(val credentials: Credentials) : SignInUiState()
 }
 
-@Composable
-fun SignInScreen(
-    rootController: RootController,
-    koin: Koin,
-) {
-    val signInUseCase = koin.get<SignInUseCase>()
+class SignInScreen : Screen {
 
-    val uiState = remember { mutableStateOf<SignInUiState>(SignInUiState.Content()) }
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        val signUpScreen = rememberScreen(NavigationScreen.SignUp)
+        val mainScreen = rememberScreen(NavigationScreen.Main)
 
-    val email = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
+        val signInUseCase = koin.get<SignInUseCase>()
 
-    val scaffoldState = rememberScaffoldState()
+        val uiState = remember { mutableStateOf<SignInUiState>(SignInUiState.Content()) }
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-    ) {
-        when (val state = uiState.value) {
-            is SignInUiState.Content -> {
-                if (state.hasError) {
-                    LaunchedEffect(scaffoldState.snackbarHostState) {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            message = TextResources.error,
-                            duration = SnackbarDuration.Short
-                        )
+        val email = remember { mutableStateOf("") }
+        val password = remember { mutableStateOf("") }
+
+        val scaffoldState = rememberScaffoldState()
+
+        Scaffold(
+            scaffoldState = scaffoldState,
+        ) {
+            when (val state = uiState.value) {
+                is SignInUiState.Content -> {
+                    if (state.hasError) {
+                        LaunchedEffect(scaffoldState.snackbarHostState) {
+                            scaffoldState.snackbarHostState.showSnackbar(
+                                message = TextResources.error,
+                                duration = SnackbarDuration.Short
+                            )
+                        }
                     }
+                    SignInContentView(
+                        email = email.value,
+                        password = password.value,
+                        onEmailChanged = { email.value = it },
+                        onPasswordChanged = { password.value = it },
+                        onRegistrationClick = { navigator.push(signUpScreen) },
+                        onAuthorizationClick = { credentials ->
+                            uiState.value = SignInUiState.SendingRequest(credentials)
+                        },
+                    )
                 }
-                SignInContentView(
-                    email = email.value,
-                    password = password.value,
-                    onEmailChanged = { email.value = it },
-                    onPasswordChanged = { password.value = it },
-                    onRegistrationClick = { rootController.launch(NavigationTree.Root.SignUp.name) },
-                    onAuthorizationClick = { credentials ->
-                        uiState.value = SignInUiState.SendingRequest(credentials)
-                    },
-                )
-            }
 
-            is SignInUiState.SendingRequest -> {
-                LoadingView()
-                uiState.value = signIn(signInUseCase, state.credentials, rootController).value
+                is SignInUiState.SendingRequest -> {
+                    LoadingView()
+                    uiState.value = signIn(
+                        signInUseCase = signInUseCase,
+                        credentials = state.credentials,
+                        onMainRoute = { navigator.replace(mainScreen) },
+                    ).value
+                }
             }
         }
     }
@@ -139,12 +150,12 @@ fun SignInContentView(
 private fun signIn(
     signInUseCase: SignInUseCase,
     credentials: Credentials,
-    rootController: RootController,
+    onMainRoute: () -> Unit,
 ): State<SignInUiState> =
     produceState<SignInUiState>(initialValue = SignInUiState.SendingRequest(credentials), signInUseCase, credentials) {
         try {
             signInUseCase(credentials)
-            rootController.launch(NavigationTree.Root.Profile.name)
+            onMainRoute()
         } catch (throwable: Throwable) {
             value = SignInUiState.Content(hasError = true)
         }

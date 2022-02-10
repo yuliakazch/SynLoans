@@ -13,90 +13,98 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.checkbox.TextWithCheckboxView
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
 import com.yuliakazachok.synloans.desktop.core.TextResources
+import com.yuliakazachok.synloans.desktop.koin
 import com.yuliakazachok.synloans.shared.user.domain.entity.SignUpInfo
 import com.yuliakazachok.synloans.shared.user.domain.usecase.SignUpUseCase
-import org.koin.core.Koin
-import ru.alexgladkov.odyssey.core.RootController
 
 sealed class SignUpUiState {
     data class Content(val hasError: Boolean = false) : SignUpUiState()
     data class SendingRequest(val data: SignUpInfo) : SignUpUiState()
 }
 
-@Composable
-fun SignUpScreen(
-    rootController: RootController,
-    koin: Koin,
-) {
-    val signUpUseCase = koin.get<SignUpUseCase>()
+class SignUpScreen : Screen {
 
-    val uiState = remember { mutableStateOf<SignUpUiState>(SignUpUiState.Content()) }
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
 
-    val email = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
-    val passwordAgain = remember { mutableStateOf("") }
-    val fullName = remember { mutableStateOf("") }
-    val shortName = remember { mutableStateOf("") }
-    val inn = remember { mutableStateOf("") }
-    val kpp = remember { mutableStateOf("") }
-    val legalAddress = remember { mutableStateOf("") }
-    val actualAddress = remember { mutableStateOf("") }
-    val creditOrganisation = remember { mutableStateOf(false) }
+        val signUpUseCase = koin.get<SignUpUseCase>()
 
-    val scaffoldState: ScaffoldState = rememberScaffoldState()
+        val uiState = remember { mutableStateOf<SignUpUiState>(SignUpUiState.Content()) }
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-    ) {
-        when (val state = uiState.value) {
-            is SignUpUiState.Content -> {
-                if (state.hasError) {
-                    LaunchedEffect(scaffoldState.snackbarHostState) {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            message = TextResources.error,
-                            duration = SnackbarDuration.Short
-                        )
-                    }
-                }
-                SignUpContentView(
-                    email = email.value,
-                    password = password.value,
-                    passwordAgain = passwordAgain.value,
-                    fullName = fullName.value,
-                    shortName = shortName.value,
-                    inn = inn.value,
-                    kpp = kpp.value,
-                    legalAddress = legalAddress.value,
-                    actualAddress = actualAddress.value,
-                    creditOrganisation = creditOrganisation.value,
-                    onEmailChanged = { email.value = it },
-                    onPasswordChanged = { password.value = it },
-                    onPasswordAgainChanged = { passwordAgain.value = it },
-                    onFullNameChanged = { fullName.value = it },
-                    onShortNameChanged = { shortName.value = it },
-                    onInnChanged = { inn.value = it },
-                    onKppChanged = { kpp.value = it },
-                    onLegalAddressChanged = { legalAddress.value = it },
-                    onActualAddressChanged = { actualAddress.value = it },
-                    onCreditOrganisationChanged = { creditOrganisation.value = it },
-                    onAuthorizationClick = { rootController.popBackStack() },
-                    onRegistrationClick = { data ->
-                        uiState.value = if (password.value == passwordAgain.value) {
-                            SignUpUiState.SendingRequest(data)
-                        } else {
-                            SignUpUiState.Content(hasError = true)
+        val email = remember { mutableStateOf("") }
+        val password = remember { mutableStateOf("") }
+        val passwordAgain = remember { mutableStateOf("") }
+        val fullName = remember { mutableStateOf("") }
+        val shortName = remember { mutableStateOf("") }
+        val inn = remember { mutableStateOf("") }
+        val kpp = remember { mutableStateOf("") }
+        val legalAddress = remember { mutableStateOf("") }
+        val actualAddress = remember { mutableStateOf("") }
+        val creditOrganisation = remember { mutableStateOf(false) }
+
+        val scaffoldState: ScaffoldState = rememberScaffoldState()
+
+        Scaffold(
+            scaffoldState = scaffoldState,
+        ) {
+            when (val state = uiState.value) {
+                is SignUpUiState.Content -> {
+                    if (state.hasError) {
+                        LaunchedEffect(scaffoldState.snackbarHostState) {
+                            scaffoldState.snackbarHostState.showSnackbar(
+                                message = TextResources.error,
+                                duration = SnackbarDuration.Short
+                            )
                         }
-                    },
-                )
-            }
+                    }
+                    SignUpContentView(
+                        email = email.value,
+                        password = password.value,
+                        passwordAgain = passwordAgain.value,
+                        fullName = fullName.value,
+                        shortName = shortName.value,
+                        inn = inn.value,
+                        kpp = kpp.value,
+                        legalAddress = legalAddress.value,
+                        actualAddress = actualAddress.value,
+                        creditOrganisation = creditOrganisation.value,
+                        onEmailChanged = { email.value = it },
+                        onPasswordChanged = { password.value = it },
+                        onPasswordAgainChanged = { passwordAgain.value = it },
+                        onFullNameChanged = { fullName.value = it },
+                        onShortNameChanged = { shortName.value = it },
+                        onInnChanged = { inn.value = it },
+                        onKppChanged = { kpp.value = it },
+                        onLegalAddressChanged = { legalAddress.value = it },
+                        onActualAddressChanged = { actualAddress.value = it },
+                        onCreditOrganisationChanged = { creditOrganisation.value = it },
+                        onAuthorizationClick = { navigator.pop() },
+                        onRegistrationClick = { data ->
+                            uiState.value = if (password.value == passwordAgain.value) {
+                                SignUpUiState.SendingRequest(data)
+                            } else {
+                                SignUpUiState.Content(hasError = true)
+                            }
+                        },
+                    )
+                }
 
-            is SignUpUiState.SendingRequest -> {
-                LoadingView()
-                uiState.value = signUp(signUpUseCase, state.data, rootController).value
+                is SignUpUiState.SendingRequest -> {
+                    LoadingView()
+                    uiState.value = signUp(
+                        signUpUseCase = signUpUseCase,
+                        data = state.data,
+                        onSignInRoute = { navigator.pop() },
+                    ).value
+                }
             }
         }
     }
@@ -268,12 +276,12 @@ fun SignUpContentView(
 private fun signUp(
     signUpUseCase: SignUpUseCase,
     data: SignUpInfo,
-    rootController: RootController,
+    onSignInRoute: () -> Unit,
 ): State<SignUpUiState> =
     produceState<SignUpUiState>(initialValue = SignUpUiState.SendingRequest(data), signUpUseCase, data) {
         try {
             signUpUseCase(data)
-            rootController.popBackStack()
+            onSignInRoute()
         } catch (throwable: Throwable) {
             value = SignUpUiState.Content(hasError = true)
         }
