@@ -24,10 +24,10 @@ import com.yuliakazachok.synloans.shared.token.domain.usecase.ClearTokenUseCase
 import com.yuliakazachok.synloans.shared.user.domain.entity.Profile
 import com.yuliakazachok.synloans.shared.user.domain.usecase.GetProfileUseCase
 
-sealed class ProfileUiState {
-    data class Content(val profile: Profile) : ProfileUiState()
-    object SendingRequest : ProfileUiState()
-    object Error : ProfileUiState()
+sealed class MainUiState {
+    data class Content(val profile: Profile) : MainUiState()
+    object SendingRequest : MainUiState()
+    object Error : MainUiState()
 }
 
 class MainScreen : Screen {
@@ -35,13 +35,13 @@ class MainScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+        val uiState = remember { mutableStateOf<MainUiState>(MainUiState.SendingRequest) }
 
         val signInScreen = rememberScreen(NavigationScreen.SignIn)
+        var editProfileScreen: Screen? = null
 
         val getProfileUseCase = koin.get<GetProfileUseCase>()
         val clearTokenUseCase = koin.get<ClearTokenUseCase>()
-
-        val uiState = remember { mutableStateOf<ProfileUiState>(ProfileUiState.SendingRequest) }
 
         Scaffold(
             topBar = {
@@ -49,7 +49,7 @@ class MainScreen : Screen {
                     title = TextResources.profile,
                     iconOne = Icons.Filled.Edit,
                     iconTwo = Icons.Filled.ExitToApp,
-                    onOneIconClicked = { /* TODO */ },
+                    onOneIconClicked = { editProfileScreen?.let { navigator.push(it) } },
                     onTwoIconClicked = {
                         clearTokenUseCase()
                         navigator.replaceAll(signInScreen)
@@ -58,16 +58,17 @@ class MainScreen : Screen {
             }
         ) {
             when (val state = uiState.value) {
-                is ProfileUiState.SendingRequest -> {
+                is MainUiState.SendingRequest -> {
                     LoadingView()
                     uiState.value = loadProfile(getProfileUseCase).value
                 }
 
-                is ProfileUiState.Content -> {
+                is MainUiState.Content -> {
                     ProfileView(state.profile)
+                    editProfileScreen = rememberScreen(NavigationScreen.EditProfile(state.profile))
                 }
 
-                is ProfileUiState.Error -> {
+                is MainUiState.Error -> {
                     ErrorView()
                 }
             }
@@ -130,12 +131,12 @@ fun ProfileView(
 @Composable
 private fun loadProfile(
     getProfileUseCase: GetProfileUseCase,
-): State<ProfileUiState> =
-    produceState<ProfileUiState>(initialValue = ProfileUiState.SendingRequest, getProfileUseCase) {
+): State<MainUiState> =
+    produceState<MainUiState>(initialValue = MainUiState.SendingRequest, getProfileUseCase) {
         value = try {
             val profile = getProfileUseCase()
-            ProfileUiState.Content(profile)
+            MainUiState.Content(profile)
         } catch (throwable: Throwable) {
-            ProfileUiState.Error
+            MainUiState.Error
         }
     }
