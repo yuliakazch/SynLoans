@@ -25,4 +25,14 @@ object TextResources {
     const val save = "Сохранить"
 
     const val requests = "Заявки"
+    const val ownRequests = "Мои заявки"
+    const val otherRequests = "Открытые заявки"
+    const val dateCreate = "Дата создания "
+    const val dateIssue = "Дата выдачи "
+    const val emptyCurrentRequests = "Нет текущих заявок!"
+    const val emptyActiveRequests = "Нет активных заявок!"
+
+    const val billionSum = " млрд руб"
+    const val millionSum = " млн руб"
+    const val thousandSum = " тыс руб"
 }
