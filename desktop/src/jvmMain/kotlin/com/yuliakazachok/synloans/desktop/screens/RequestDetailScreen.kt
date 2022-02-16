@@ -15,8 +15,10 @@ import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.yuliakazachok.synloans.desktop.components.checkbox.TextWithCheckboxView
 import com.yuliakazachok.synloans.desktop.components.error.ErrorView
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
+import com.yuliakazachok.synloans.desktop.components.text.EditTextView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
 import com.yuliakazachok.synloans.desktop.core.TextResources
@@ -26,13 +28,18 @@ import com.yuliakazachok.synloans.desktop.koin
 import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
 import com.yuliakazachok.synloans.shared.flag.domain.usecase.IsCreditOrganisationUseCase
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.*
+import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
+import com.yuliakazachok.synloans.shared.request.domain.entity.sum.Sum
+import com.yuliakazachok.synloans.shared.request.domain.entity.sum.SumUnit
 import com.yuliakazachok.synloans.shared.request.domain.usecase.CancelRequestUseCase
 import com.yuliakazachok.synloans.shared.request.domain.usecase.GetRequestDetailUseCase
+import com.yuliakazachok.synloans.shared.request.domain.usecase.JoinSyndicateUseCase
 
 private sealed class RequestDetailUiState {
     object LoadingRequest : RequestDetailUiState()
     data class Content(val request: RequestCommon, val creditOrganisation: Boolean) : RequestDetailUiState()
     object CancelRequest : RequestDetailUiState()
+    object JoinSyndicateRequest : RequestDetailUiState()
     object Error : RequestDetailUiState()
     object Exit : RequestDetailUiState()
 }
@@ -40,6 +47,10 @@ private sealed class RequestDetailUiState {
 class RequestDetailScreen(
     private val requestId: Int,
 ) : Screen {
+
+    private companion object {
+        val DIGIT_REGEX = """([0-9])+""".toRegex()
+    }
 
     @Composable
     override fun Content() {
@@ -51,6 +62,10 @@ class RequestDetailScreen(
         val getRequestDetailUseCase = koin.get<GetRequestDetailUseCase>()
         val isCreditOrganisationUseCase = koin.get<IsCreditOrganisationUseCase>()
         val cancelRequestUseCase = koin.get<CancelRequestUseCase>()
+        val joinSyndicateUseCase = koin.get<JoinSyndicateUseCase>()
+
+        val sumJoinSyndicate = remember { mutableStateOf("") }
+        val approveBankAgentJoinSyndicate = remember { mutableStateOf(false) }
 
         Scaffold(
             topBar = {
@@ -68,6 +83,21 @@ class RequestDetailScreen(
                         item { RequestInfoView(state.request.info) }
                         item { BanksView(state.request.banks) }
                         item { BorrowerView(state.request.borrower) }
+                        if (state.creditOrganisation && state.request.info.dateIssue == null) {
+                            item {
+                                JoinSyndicateView(
+                                    sum = sumJoinSyndicate.value,
+                                    approveBankAgent = approveBankAgentJoinSyndicate.value,
+                                    onSumChanged = { sumJoinSyndicate.value = it },
+                                    onApproveBankAgentChanged = { approveBankAgentJoinSyndicate.value = it },
+                                    onJoinClicked = {
+                                        if (sumJoinSyndicate.value.matches(DIGIT_REGEX)) {
+                                            uiState.value = RequestDetailUiState.JoinSyndicateRequest
+                                        }
+                                    },
+                                )
+                            }
+                        }
                         item {
                             ButtonsRequestDetail(
                                 request = state.request.info,
@@ -82,6 +112,18 @@ class RequestDetailScreen(
                 is RequestDetailUiState.CancelRequest -> {
                     LoadingView()
                     uiState.value = cancelRequest(cancelRequestUseCase, requestId).value
+                }
+
+                is RequestDetailUiState.JoinSyndicateRequest -> {
+                    LoadingView()
+                    uiState.value = joinSyndicate(
+                        joinSyndicateUseCase = joinSyndicateUseCase,
+                        joinSyndicateInfo = JoinSyndicateInfo(
+                            requestId = requestId,
+                            sum = Sum(sumJoinSyndicate.value.toInt(), SumUnit.THOUSAND),
+                            approveBankAgent = approveBankAgentJoinSyndicate.value,
+                        )
+                    ).value
                 }
 
                 is RequestDetailUiState.Error -> {
@@ -211,6 +253,44 @@ fun BorrowerView(
 }
 
 @Composable
+fun JoinSyndicateView(
+    sum: String,
+    approveBankAgent: Boolean,
+    onSumChanged: (String) -> Unit,
+    onApproveBankAgentChanged: (Boolean) -> Unit,
+    onJoinClicked: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+    ) {
+        Divider(modifier = Modifier.padding(vertical = 16.dp))
+        Text(
+            text = TextResources.joinSyndicate,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+        )
+        EditTextView(
+            text = sum,
+            label = TextResources.sumThousand,
+            onTextChange = onSumChanged,
+        )
+        TextWithCheckboxView(
+            text = TextResources.approveBankAgent,
+            checked = approveBankAgent,
+            onCheckedChange = onApproveBankAgentChanged,
+        )
+        Button(
+            onClick = onJoinClicked,
+            modifier = Modifier
+                .padding(top = 8.dp, bottom = 12.dp)
+                .fillMaxWidth()
+        ) {
+            Text(TextResources.join)
+        }
+    }
+}
+
+@Composable
 fun ButtonsRequestDetail(
     request: RequestInfo,
     creditOrganisation: Boolean,
@@ -229,18 +309,7 @@ fun ButtonsRequestDetail(
             }
         }
 
-        creditOrganisation -> {
-            Button(
-                onClick = { /* TODO */ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-            ) {
-                Text(TextResources.joinSyndicate)
-            }
-        }
-
-        else -> {
+        !creditOrganisation -> {
             Button(
                 onClick = onCancelClicked,
                 modifier = Modifier
@@ -253,7 +322,7 @@ fun ButtonsRequestDetail(
     }
 
     Text(
-        text = TextResources.back,
+        text = TextResources.backMain,
         color = MaterialTheme.colors.primary,
         modifier = Modifier.padding(bottom = 8.dp).clickable { onBackClicked() },
     )
@@ -283,6 +352,20 @@ private fun cancelRequest(
     produceState<RequestDetailUiState>(initialValue = RequestDetailUiState.CancelRequest, cancelRequestUseCase) {
         value = try {
             cancelRequestUseCase(requestId)
+            RequestDetailUiState.Exit
+        } catch (throwable: Throwable) {
+            RequestDetailUiState.Error
+        }
+    }
+
+@Composable
+private fun joinSyndicate(
+    joinSyndicateUseCase: JoinSyndicateUseCase,
+    joinSyndicateInfo: JoinSyndicateInfo,
+): State<RequestDetailUiState> =
+    produceState<RequestDetailUiState>(initialValue = RequestDetailUiState.JoinSyndicateRequest, joinSyndicateUseCase) {
+        value = try {
+            joinSyndicateUseCase(joinSyndicateInfo)
             RequestDetailUiState.Exit
         } catch (throwable: Throwable) {
             RequestDetailUiState.Error

@@ -12,7 +12,6 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight.Companion.Medium
 import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.registry.rememberScreen
@@ -196,8 +195,8 @@ fun ListRequestView(
 ) {
     Text(
         text = headerText,
-        fontWeight = Medium,
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
+        fontWeight = SemiBold,
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp),
     )
     if (requests.isNotEmpty()) {
         Column(

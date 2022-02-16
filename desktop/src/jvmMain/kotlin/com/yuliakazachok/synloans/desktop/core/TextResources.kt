@@ -4,7 +4,7 @@ object TextResources {
 
     const val error = "Произошла ошибка"
     const val cancel = "Отмена"
-    const val back = "Назад"
+    const val backMain = "Вернуться на главную"
     const val divider = " / "
     const val percent = " %"
 
@@ -43,10 +43,12 @@ object TextResources {
     const val statusIssue = "Кредит выдан"
     const val statusClose = "Закрыта"
     const val sum = "Сумма"
+    const val sumThousand = "Сумма, тыс"
     const val maxRate = "Максимальный процент"
     const val term = "Срок"
     const val paymentSchedule = "График платежей"
-    const val joinSyndicate = "Присоединиться к синдикату"
+    const val join = "Присоединиться"
+    const val joinSyndicate = "Вступить в синдикат"
     const val cancelRequest = "Отменить заявку"
     const val banks = "Банки-участники"
     const val borrower = "Заемщик"
