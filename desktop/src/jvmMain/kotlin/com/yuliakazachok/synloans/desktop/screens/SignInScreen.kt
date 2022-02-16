@@ -26,7 +26,7 @@ import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
 import com.yuliakazachok.synloans.shared.user.domain.entity.Credentials
 import com.yuliakazachok.synloans.shared.user.domain.usecase.SignInUseCase
 
-sealed class SignInUiState {
+private sealed class SignInUiState {
     data class Content(val hasError: Boolean = false) : SignInUiState()
     data class SendingRequest(val credentials: Credentials) : SignInUiState()
 }

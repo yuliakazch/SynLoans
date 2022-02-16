@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.error.ErrorView
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
@@ -36,7 +37,7 @@ import com.yuliakazachok.synloans.shared.token.domain.usecase.ClearTokenUseCase
 import com.yuliakazachok.synloans.shared.user.domain.entity.Profile
 import com.yuliakazachok.synloans.shared.user.domain.usecase.GetProfileUseCase
 
-sealed class MainUiState {
+private sealed class MainUiState {
     data class Content(val profile: Profile, val bankRequests: BankRequests? = null, val borrowRequests: List<RequestCommon>? = null) : MainUiState()
     object SendingRequest : MainUiState()
     object Error : MainUiState()
@@ -79,7 +80,12 @@ class MainScreen : Screen {
 
                 is MainUiState.Content -> {
                     editProfileScreen = rememberScreen(NavigationScreen.EditProfile(state.profile))
-                    ProfileView(state.profile, state.bankRequests, state.borrowRequests)
+                    ProfileView(
+                        profile = state.profile,
+                        bankRequests = state.bankRequests,
+                        borrowRequests = state.borrowRequests,
+                        navigator = navigator,
+                    )
                 }
 
                 is MainUiState.Error -> {
@@ -95,6 +101,7 @@ fun ProfileView(
     profile: Profile,
     bankRequests: BankRequests?,
     borrowRequests: List<RequestCommon>?,
+    navigator: Navigator,
 ) {
     LazyColumn(
         modifier = Modifier.padding(top = 12.dp)
@@ -151,9 +158,9 @@ fun ProfileView(
         }
         item {
             if (profile.creditOrganisation) {
-                bankRequests?.let { BankRequestsView(it) }
+                bankRequests?.let { BankRequestsView(data = it, navigator = navigator) }
             } else {
-                borrowRequests?.let { BorrowerRequestsView(it) }
+                borrowRequests?.let { BorrowerRequestsView(requests = it, navigator = navigator) }
             }
         }
     }
@@ -162,15 +169,20 @@ fun ProfileView(
 @Composable
 private fun BankRequestsView(
     data: BankRequests,
+    navigator: Navigator,
 ) {
     Column {
         ListRequestView(
             headerText = TextResources.ownRequests,
+            emptyText = TextResources.emptyCurrentRequests,
             requests = data.own,
+            navigator = navigator,
         )
         ListRequestView(
             headerText = TextResources.otherRequests,
+            emptyText = TextResources.emptyActiveRequests,
             requests = data.other,
+            navigator = navigator,
         )
     }
 }
@@ -178,7 +190,9 @@ private fun BankRequestsView(
 @Composable
 fun ListRequestView(
     headerText: String,
+    emptyText: String,
     requests: List<BankRequest>,
+    navigator: Navigator,
 ) {
     Text(
         text = headerText,
@@ -192,16 +206,17 @@ fun ListRequestView(
                 .fillMaxWidth(),
         ) {
             requests.forEach { request ->
+                val requestDetailScreen = rememberScreen(NavigationScreen.RequestDetail(request.id))
                 TextTwoLinesView(
                     textOne = request.name,
                     textTwo = request.sum.value.toString() + request.sum.unit.getTextResource(),
-                    onClicked = { /* TODO */ }
+                    onClicked = { navigator.push(requestDetailScreen) }
                 )
             }
         }
     } else {
         Text(
-            text = TextResources.emptyActiveRequests,
+            text = emptyText,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
     }
@@ -210,11 +225,13 @@ fun ListRequestView(
 @Composable
 fun BorrowerRequestsView(
     requests: List<RequestCommon>,
+    navigator: Navigator,
 ) {
     Column(
         modifier = Modifier.padding(top = 12.dp)
     ) {
         requests.forEach { request ->
+            val requestDetailScreen = rememberScreen(NavigationScreen.RequestDetail(request.info.id))
             TextTwoLinesView(
                 textOne = if (request.info.dateIssue.isNullOrEmpty()) {
                     TextResources.dateCreate + request.info.dateCreate
@@ -222,7 +239,7 @@ fun BorrowerRequestsView(
                     TextResources.dateIssue + request.info.dateIssue
                 },
                 textTwo = request.info.sum.value.toString() + request.info.sum.unit.getTextResource(),
-                onClicked = { /* TODO */ }
+                onClicked = { navigator.push(requestDetailScreen) }
             )
         }
     }

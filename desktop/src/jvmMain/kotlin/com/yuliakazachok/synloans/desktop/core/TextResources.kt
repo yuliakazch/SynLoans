@@ -3,6 +3,10 @@ package com.yuliakazachok.synloans.desktop.core
 object TextResources {
 
     const val error = "Произошла ошибка"
+    const val cancel = "Отмена"
+    const val back = "Назад"
+    const val divider = " / "
+    const val percent = " %"
 
     const val signIn = "Войти"
     const val signUp = "Зарегистрироваться"
@@ -31,8 +35,27 @@ object TextResources {
     const val dateIssue = "Дата выдачи "
     const val emptyCurrentRequests = "Нет текущих заявок!"
     const val emptyActiveRequests = "Нет активных заявок!"
+    const val infoRequest = "Информация о заявке"
+    const val approveBankAgent = "Согласие на роль банка-агента"
+    const val status = "Статус"
+    const val statusOpen = "Открыта"
+    const val statusTransfer = "Банки отправляют переводы"
+    const val statusIssue = "Кредит выдан"
+    const val statusClose = "Закрыта"
+    const val sum = "Сумма"
+    const val maxRate = "Максимальный процент"
+    const val term = "Срок"
+    const val paymentSchedule = "График платежей"
+    const val joinSyndicate = "Присоединиться к синдикату"
+    const val cancelRequest = "Отменить заявку"
+    const val banks = "Банки-участники"
+    const val borrower = "Заемщик"
 
     const val billionSum = " млрд руб"
     const val millionSum = " млн руб"
     const val thousandSum = " тыс руб"
+
+    const val monthsOne = " месяц"
+    const val monthsFew = " месяца"
+    const val monthsMany = " месяцев"
 }

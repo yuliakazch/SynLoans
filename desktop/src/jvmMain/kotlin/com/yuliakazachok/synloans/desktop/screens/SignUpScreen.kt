@@ -24,7 +24,7 @@ import com.yuliakazachok.synloans.desktop.koin
 import com.yuliakazachok.synloans.shared.user.domain.entity.SignUpInfo
 import com.yuliakazachok.synloans.shared.user.domain.usecase.SignUpUseCase
 
-sealed class SignUpUiState {
+private sealed class SignUpUiState {
     data class Content(val hasError: Boolean = false) : SignUpUiState()
     data class SendingRequest(val data: SignUpInfo) : SignUpUiState()
 }

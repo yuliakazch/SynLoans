@@ -1,10 +1,12 @@
 package com.yuliakazachok.synloans.desktop.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -19,7 +21,7 @@ import com.yuliakazachok.synloans.shared.user.domain.entity.EditProfileInfo
 import com.yuliakazachok.synloans.shared.user.domain.entity.Profile
 import com.yuliakazachok.synloans.shared.user.domain.usecase.UpdateProfileUseCase
 
-sealed class EditProfileUiState {
+private sealed class EditProfileUiState {
     data class Content(val hasError: Boolean = false) : EditProfileUiState()
     data class SendingRequest(val data: EditProfileInfo) : EditProfileUiState()
 }
@@ -79,6 +81,7 @@ class EditProfileScreen(
                         onSaveClicked = { data ->
                             uiState.value = EditProfileUiState.SendingRequest(data)
                         },
+                        onCancelClicked = { navigator.pop() },
                     )
                 }
 
@@ -106,9 +109,11 @@ fun EditProfileView(
     onActualAddressChanged: (String) -> Unit,
     onEmailChanged: (String) -> Unit,
     onSaveClicked: (EditProfileInfo) -> Unit,
+    onCancelClicked: () -> Unit,
 ) {
     LazyColumn(
-        modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp),
     ) {
         item {
             EditTextView(
@@ -168,6 +173,13 @@ fun EditProfileView(
             ) {
                 Text(TextResources.save)
             }
+        }
+        item {
+            Text(
+                text = TextResources.cancel,
+                color = MaterialTheme.colors.primary,
+                modifier = Modifier.clickable { onCancelClicked() },
+            )
         }
     }
 }
