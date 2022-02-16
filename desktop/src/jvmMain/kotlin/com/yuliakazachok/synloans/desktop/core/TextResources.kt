@@ -52,6 +52,9 @@ object TextResources {
     const val cancelRequest = "Отменить заявку"
     const val banks = "Банки-участники"
     const val borrower = "Заемщик"
+    const val creationRequest = "Создание заявки"
+    const val createRequest = "Создать заявку"
+    const val sendRequest = "Отправить заявку"
 
     const val billionSum = " млрд руб"
     const val millionSum = " млн руб"

@@ -9,4 +9,5 @@ sealed class NavigationScreen : ScreenProvider {
     object Main : NavigationScreen()
     data class EditProfile(val profile: Profile) : NavigationScreen()
     data class RequestDetail(val requestId: Int) : NavigationScreen()
+    object RequestCreate : NavigationScreen()
 }

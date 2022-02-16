@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -50,6 +51,7 @@ class MainScreen : Screen {
         val uiState = remember { mutableStateOf<MainUiState>(MainUiState.SendingRequest) }
 
         val signInScreen = rememberScreen(NavigationScreen.SignIn)
+        val requestCreateScreen = rememberScreen(NavigationScreen.RequestCreate)
         var editProfileScreen: Screen? = null
 
         val getBankRequestsUseCase = koin.get<GetBankRequestsUseCase>()
@@ -84,6 +86,7 @@ class MainScreen : Screen {
                         bankRequests = state.bankRequests,
                         borrowRequests = state.borrowRequests,
                         navigator = navigator,
+                        onCreateClicked = { navigator.push(requestCreateScreen) },
                     )
                 }
 
@@ -101,6 +104,7 @@ fun ProfileView(
     bankRequests: BankRequests?,
     borrowRequests: List<RequestCommon>?,
     navigator: Navigator,
+    onCreateClicked: () -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.padding(top = 12.dp)
@@ -159,7 +163,7 @@ fun ProfileView(
             if (profile.creditOrganisation) {
                 bankRequests?.let { BankRequestsView(data = it, navigator = navigator) }
             } else {
-                borrowRequests?.let { BorrowerRequestsView(requests = it, navigator = navigator) }
+                borrowRequests?.let { BorrowerRequestsView(requests = it, navigator = navigator, onCreateClicked = onCreateClicked) }
             }
         }
     }
@@ -225,6 +229,7 @@ fun ListRequestView(
 fun BorrowerRequestsView(
     requests: List<RequestCommon>,
     navigator: Navigator,
+    onCreateClicked: () -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(top = 12.dp)
@@ -240,6 +245,15 @@ fun BorrowerRequestsView(
                 textTwo = request.info.sum.value.toString() + request.info.sum.unit.getTextResource(),
                 onClicked = { navigator.push(requestDetailScreen) }
             )
+        }
+
+        Button(
+            onClick = onCreateClicked,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+        ) {
+            Text(TextResources.createRequest)
         }
     }
 }
