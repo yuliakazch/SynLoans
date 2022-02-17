@@ -10,4 +10,5 @@ val appScreenModule = screenModule {
     register<NavigationScreen.EditProfile> { EditProfileScreen(it.profile) }
     register<NavigationScreen.RequestDetail> { RequestDetailScreen(it.requestId) }
     register<NavigationScreen.RequestCreate> { RequestCreateScreen() }
+    register<NavigationScreen.BankDetail> { BankDetailScreen(it.bankId) }
 }

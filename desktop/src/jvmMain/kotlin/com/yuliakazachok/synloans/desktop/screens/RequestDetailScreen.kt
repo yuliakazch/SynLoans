@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.checkbox.TextWithCheckboxView
 import com.yuliakazachok.synloans.desktop.components.error.ErrorView
@@ -81,7 +82,7 @@ class RequestDetailScreen(
                 is RequestDetailUiState.Content -> {
                     LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
                         item { RequestInfoView(state.request.info) }
-                        item { BanksView(state.request.banks) }
+                        item { BanksView(state.request.banks, navigator) }
                         item { BorrowerView(state.request.borrower) }
                         if (state.creditOrganisation && state.request.info.dateIssue == null) {
                             item {
@@ -188,6 +189,7 @@ fun RequestInfoView(
 @Composable
 fun BanksView(
     banks: List<BankItem>,
+    navigator: Navigator,
 ) {
     Column {
         Divider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp))
@@ -198,6 +200,7 @@ fun BanksView(
         )
 
         banks.forEach { bank ->
+            val bankDetailScreen = rememberScreen(NavigationScreen.BankDetail(bank.id))
             val textSumUnit = bank.sum.unit.getTextResource()
 
             TextTwoLinesView(
@@ -207,7 +210,7 @@ fun BanksView(
                 } else {
                     bank.sum.value.toString() + textSumUnit
                 },
-                onClicked = { /* TODO */ }
+                onClicked = { navigator.push(bankDetailScreen) }
             )
         }
     }

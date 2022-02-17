@@ -5,6 +5,7 @@ object TextResources {
     const val error = "Произошла ошибка"
     const val cancel = "Отмена"
     const val backMain = "Вернуться на главную"
+    const val backRequest = "Вернуться к заявке"
     const val divider = " / "
     const val percent = " %"
 
@@ -55,6 +56,7 @@ object TextResources {
     const val creationRequest = "Создание заявки"
     const val createRequest = "Создать заявку"
     const val sendRequest = "Отправить заявку"
+    const val infoBank = "Информация о банке"
 
     const val billionSum = " млрд руб"
     const val millionSum = " млн руб"
