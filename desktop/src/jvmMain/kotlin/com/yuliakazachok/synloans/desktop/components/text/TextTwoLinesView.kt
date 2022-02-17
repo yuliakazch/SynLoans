@@ -26,7 +26,7 @@ fun TextTwoLinesView(
         Column {
             Text(
                 text = textOne,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.SemiBold,
             )
             Text(
                 text = textTwo,
