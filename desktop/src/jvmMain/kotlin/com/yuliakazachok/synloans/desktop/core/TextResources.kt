@@ -47,7 +47,6 @@ object TextResources {
     const val sumThousand = "Сумма, тыс"
     const val maxRate = "Максимальный процент"
     const val term = "Срок"
-    const val paymentSchedule = "График платежей"
     const val join = "Присоединиться"
     const val joinSyndicate = "Вступить в синдикат"
     const val cancelRequest = "Отменить заявку"
@@ -57,6 +56,9 @@ object TextResources {
     const val createRequest = "Создать заявку"
     const val sendRequest = "Отправить заявку"
     const val infoBank = "Информация о банке"
+    const val paymentSchedule = "График платежей"
+    const val paymentPaid = "Платеж оплачен"
+    const val paymentNotPaid = "Платеж не оплачен"
 
     const val billionSum = " млрд руб"
     const val millionSum = " млн руб"

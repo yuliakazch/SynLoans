@@ -11,4 +11,5 @@ sealed class NavigationScreen : ScreenProvider {
     data class RequestDetail(val requestId: Int) : NavigationScreen()
     object RequestCreate : NavigationScreen()
     data class BankDetail(val bankId: Int) : NavigationScreen()
+    data class PaymentSchedule(val requestId: Int) : NavigationScreen()
 }

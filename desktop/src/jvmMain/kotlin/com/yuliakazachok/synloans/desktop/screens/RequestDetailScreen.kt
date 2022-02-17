@@ -105,6 +105,7 @@ class RequestDetailScreen(
                                 creditOrganisation = state.creditOrganisation,
                                 onCancelClicked = { uiState.value = RequestDetailUiState.CancelRequest },
                                 onBackClicked = { uiState.value = RequestDetailUiState.Exit },
+                                navigator = navigator,
                             )
                         }
                     }
@@ -299,11 +300,14 @@ fun ButtonsRequestDetail(
     creditOrganisation: Boolean,
     onCancelClicked: () -> Unit,
     onBackClicked: () -> Unit,
+    navigator: Navigator,
 ) {
     when {
         request.dateIssue != null -> {
+            val paymentScheduleScreen = rememberScreen(NavigationScreen.PaymentSchedule(request.id))
+
             Button(
-                onClick = { /* TODO */ },
+                onClick = { navigator.push(paymentScheduleScreen) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),

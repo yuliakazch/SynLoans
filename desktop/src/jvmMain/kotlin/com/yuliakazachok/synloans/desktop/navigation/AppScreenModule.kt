@@ -11,4 +11,5 @@ val appScreenModule = screenModule {
     register<NavigationScreen.RequestDetail> { RequestDetailScreen(it.requestId) }
     register<NavigationScreen.RequestCreate> { RequestCreateScreen() }
     register<NavigationScreen.BankDetail> { BankDetailScreen(it.bankId) }
+    register<NavigationScreen.PaymentSchedule> { PaymentScheduleScreen(it.requestId) }
 }
