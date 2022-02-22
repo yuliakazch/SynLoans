@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -15,7 +16,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.EditPasswordTextView
 import com.yuliakazachok.synloans.desktop.components.text.EditTextView
-import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
 import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.desktop.koin
 import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
@@ -91,14 +91,19 @@ fun SignInContentView(
     onRegistrationClick: () -> Unit,
     onAuthorizationClick: (Credentials) -> Unit,
 ) {
-    Scaffold(
-        topBar = { TopBarView(title = TextResources.authorization) },
-    ) {
+    Scaffold {
         LazyColumn(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize(),
         ) {
+            item {
+                Text(
+                    text = TextResources.authorization,
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(bottom = 16.dp),
+                )
+            }
             item {
                 EditTextView(
                     text = email,
