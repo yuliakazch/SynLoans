@@ -22,6 +22,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.error.ErrorView
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
+import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesClickableView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarTwoEndIconView
 import com.yuliakazachok.synloans.desktop.core.TextResources
@@ -152,14 +153,6 @@ fun ProfileView(
             )
         }
         item {
-            Divider(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp))
-            Text(
-                text = TextResources.requests,
-                fontWeight = SemiBold,
-                modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
-            )
-        }
-        item {
             if (profile.creditOrganisation) {
                 bankRequests?.let { BankRequestsView(data = it, navigator = navigator) }
             } else {
@@ -174,20 +167,18 @@ private fun BankRequestsView(
     data: BankRequests,
     navigator: Navigator,
 ) {
-    Column {
-        ListRequestView(
-            headerText = TextResources.ownRequests,
-            emptyText = TextResources.emptyCurrentRequests,
-            requests = data.own,
-            navigator = navigator,
-        )
-        ListRequestView(
-            headerText = TextResources.otherRequests,
-            emptyText = TextResources.emptyActiveRequests,
-            requests = data.other,
-            navigator = navigator,
-        )
-    }
+    ListRequestView(
+        headerText = TextResources.ownRequests,
+        emptyText = TextResources.emptyCurrentRequests,
+        requests = data.own,
+        navigator = navigator,
+    )
+    ListRequestView(
+        headerText = TextResources.otherRequests,
+        emptyText = TextResources.emptyActiveRequests,
+        requests = data.other,
+        navigator = navigator,
+    )
 }
 
 @Composable
@@ -197,10 +188,11 @@ fun ListRequestView(
     requests: List<BankRequest>,
     navigator: Navigator,
 ) {
+    Divider(modifier = Modifier.padding(all = 16.dp))
     Text(
         text = headerText,
         fontWeight = SemiBold,
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp),
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp),
     )
     if (requests.isNotEmpty()) {
         Column(
@@ -210,10 +202,10 @@ fun ListRequestView(
         ) {
             requests.forEach { request ->
                 val requestDetailScreen = rememberScreen(NavigationScreen.RequestDetail(request.id))
-                TextTwoLinesView(
+                TextTwoLinesClickableView(
                     textOne = request.name,
                     textTwo = request.sum.value.toString() + request.sum.unit.getTextResource(),
-                    onClicked = { navigator.push(requestDetailScreen) }
+                    onClicked = { navigator.push(requestDetailScreen) },
                 )
             }
         }
@@ -231,27 +223,29 @@ fun BorrowerRequestsView(
     navigator: Navigator,
     onCreateClicked: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier.padding(top = 12.dp)
-    ) {
+    Column {
+        Divider(modifier = Modifier.padding(all = 16.dp))
+        Text(
+            text = TextResources.requests,
+            fontWeight = SemiBold,
+            modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+        )
         requests.forEach { request ->
             val requestDetailScreen = rememberScreen(NavigationScreen.RequestDetail(request.info.id))
-            TextTwoLinesView(
+            TextTwoLinesClickableView(
                 textOne = if (request.info.dateIssue.isNullOrEmpty()) {
                     TextResources.dateCreate + request.info.dateCreate
                 } else {
                     TextResources.dateIssue + request.info.dateIssue
                 },
                 textTwo = request.info.sum.value.toString() + request.info.sum.unit.getTextResource(),
-                onClicked = { navigator.push(requestDetailScreen) }
+                onClicked = { navigator.push(requestDetailScreen) },
             )
         }
 
         Button(
             onClick = onCreateClicked,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
         ) {
             Text(TextResources.createRequest)
         }

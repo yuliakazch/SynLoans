@@ -7,10 +7,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.yuliakazachok.synloans.desktop.core.DEFAULT_WIDTH_VIEW
+import com.yuliakazachok.synloans.desktop.core.LARGE_WIDTH_VIEW
 
 @Composable
-fun EditTextView(
+fun EditLargeTextView(
     text: String,
     label: String,
     onTextChange: (String) -> Unit,
@@ -20,6 +20,6 @@ fun EditTextView(
         onValueChange = onTextChange,
         label = { Text(label) },
         singleLine = true,
-        modifier = Modifier.padding(bottom = 4.dp).width(DEFAULT_WIDTH_VIEW),
+        modifier = Modifier.padding(bottom = 4.dp).width(LARGE_WIDTH_VIEW),
     )
 }

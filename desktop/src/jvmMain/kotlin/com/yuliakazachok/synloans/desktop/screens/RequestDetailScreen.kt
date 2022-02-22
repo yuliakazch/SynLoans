@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -20,6 +19,7 @@ import com.yuliakazachok.synloans.desktop.components.checkbox.TextWithCheckboxVi
 import com.yuliakazachok.synloans.desktop.components.error.ErrorView
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.EditTextView
+import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesClickableView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
 import com.yuliakazachok.synloans.desktop.core.TextResources
@@ -80,7 +80,7 @@ class RequestDetailScreen(
                 }
 
                 is RequestDetailUiState.Content -> {
-                    LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
+                    LazyColumn {
                         item { RequestInfoView(state.request.info) }
                         item { BanksView(state.request.banks, navigator) }
                         item { BorrowerView(state.request.borrower) }
@@ -204,7 +204,7 @@ fun BanksView(
             val bankDetailScreen = rememberScreen(NavigationScreen.BankDetail(bank.id))
             val textSumUnit = bank.sum.unit.getTextResource()
 
-            TextTwoLinesView(
+            TextTwoLinesClickableView(
                 textOne = bank.name,
                 textTwo = if (bank.approveBankAgent) {
                     bank.sum.value.toString() + textSumUnit + TextResources.divider + TextResources.approveBankAgent
@@ -226,7 +226,7 @@ fun BorrowerView(
         Text(
             text = TextResources.borrower,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+            modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         )
 
         TextTwoLinesView(
@@ -265,13 +265,13 @@ fun JoinSyndicateView(
     onJoinClicked: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp),
     ) {
         Divider(modifier = Modifier.padding(vertical = 16.dp))
         Text(
             text = TextResources.joinSyndicate,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
         )
         EditTextView(
             text = sum,
@@ -285,9 +285,7 @@ fun JoinSyndicateView(
         )
         Button(
             onClick = onJoinClicked,
-            modifier = Modifier
-                .padding(top = 8.dp, bottom = 12.dp)
-                .fillMaxWidth()
+            modifier = Modifier.padding(bottom = 12.dp),
         ) {
             Text(TextResources.join)
         }
@@ -308,9 +306,7 @@ fun ButtonsRequestDetail(
 
             Button(
                 onClick = { navigator.push(paymentScheduleScreen) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
             ) {
                 Text(TextResources.paymentSchedule)
             }
@@ -319,9 +315,7 @@ fun ButtonsRequestDetail(
         !creditOrganisation -> {
             Button(
                 onClick = onCancelClicked,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
             ) {
                 Text(TextResources.cancelRequest)
             }
@@ -331,7 +325,7 @@ fun ButtonsRequestDetail(
     Text(
         text = TextResources.backMain,
         color = MaterialTheme.colors.primary,
-        modifier = Modifier.padding(bottom = 8.dp).clickable { onBackClicked() },
+        modifier = Modifier.padding(start = 16.dp, bottom = 12.dp).clickable { onBackClicked() },
     )
 }
 

@@ -1,5 +1,6 @@
 package com.yuliakazachok.synloans.desktop.components.text
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,14 +12,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TextTwoLinesView(
+fun TextTwoLinesClickableView(
     textOne: String,
     textTwo: String,
+    onClicked: () -> Unit,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 12.dp, start = 16.dp, end = 16.dp),
+            .padding(bottom = 12.dp)
+            .clickable { onClicked() }
+            .padding(horizontal = 16.dp),
     ) {
         Column {
             Text(

@@ -1,23 +1,20 @@
 package com.yuliakazachok.synloans.desktop.screens
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.checkbox.TextWithCheckboxView
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
+import com.yuliakazachok.synloans.desktop.components.text.EditLargeTextView
+import com.yuliakazachok.synloans.desktop.components.text.EditPasswordLargeTextView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
 import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.desktop.koin
@@ -61,7 +58,7 @@ class SignUpScreen : Screen {
                         LaunchedEffect(scaffoldState.snackbarHostState) {
                             scaffoldState.snackbarHostState.showSnackbar(
                                 message = TextResources.error,
-                                duration = SnackbarDuration.Short
+                                duration = SnackbarDuration.Short,
                             )
                         }
                     }
@@ -136,98 +133,74 @@ fun SignUpContentView(
     onRegistrationClick: (SignUpInfo) -> Unit,
 ) {
     Scaffold(
-        topBar = {
-            TopBarView(title = TextResources.registration)
-        }
+        topBar = { TopBarView(title = TextResources.registration) },
     ) {
         LazyColumn(
-            modifier = Modifier.padding(top = 4.dp, start = 16.dp, end = 16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize(),
         ) {
             item {
-                OutlinedTextField(
-                    value = email,
-                    onValueChange = onEmailChanged,
-                    label = { Text(TextResources.email) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
+                EditLargeTextView(
+                    text = email,
+                    label = TextResources.email,
+                    onTextChange = onEmailChanged,
                 )
             }
             item {
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = onPasswordChanged,
-                    label = { Text(TextResources.password) },
-                    singleLine = true,
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    modifier = Modifier.fillMaxWidth(),
+                EditPasswordLargeTextView(
+                    text = password,
+                    label = TextResources.password,
+                    onTextChange = onPasswordChanged,
                 )
             }
             item {
-                OutlinedTextField(
-                    value = passwordAgain,
-                    onValueChange = onPasswordAgainChanged,
-                    label = { Text(TextResources.passwordAgain) },
-                    singleLine = true,
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    modifier = Modifier.fillMaxWidth(),
+                EditPasswordLargeTextView(
+                    text = passwordAgain,
+                    label = TextResources.passwordAgain,
+                    onTextChange = onPasswordAgainChanged,
                 )
             }
             item {
-                OutlinedTextField(
-                    value = fullName,
-                    onValueChange = onFullNameChanged,
-                    label = { Text(TextResources.fullName) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
+                EditLargeTextView(
+                    text = fullName,
+                    label = TextResources.fullName,
+                    onTextChange = onFullNameChanged,
                 )
             }
             item {
-                OutlinedTextField(
-                    value = shortName,
-                    onValueChange = onShortNameChanged,
-                    label = { Text(TextResources.shortName) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
+                EditLargeTextView(
+                    text = shortName,
+                    label = TextResources.shortName,
+                    onTextChange = onShortNameChanged,
                 )
             }
             item {
-                OutlinedTextField(
-                    value = inn,
-                    onValueChange = onInnChanged,
-                    label = { Text(TextResources.inn) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
+                EditLargeTextView(
+                    text = inn,
+                    label = TextResources.inn,
+                    onTextChange = onInnChanged,
                 )
             }
             item {
-                OutlinedTextField(
-                    value = kpp,
-                    onValueChange = onKppChanged,
-                    label = { Text(TextResources.kpp) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
+                EditLargeTextView(
+                    text = kpp,
+                    label = TextResources.kpp,
+                    onTextChange = onKppChanged,
                 )
             }
             item {
-                OutlinedTextField(
-                    value = legalAddress,
-                    onValueChange = onLegalAddressChanged,
-                    label = { Text(TextResources.legalAddress) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
+                EditLargeTextView(
+                    text = legalAddress,
+                    label = TextResources.legalAddress,
+                    onTextChange = onLegalAddressChanged,
                 )
             }
             item {
-                OutlinedTextField(
-                    value = actualAddress,
-                    onValueChange = onActualAddressChanged,
-                    label = { Text(TextResources.actualAddress) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
+                EditLargeTextView(
+                    text = actualAddress,
+                    label = TextResources.actualAddress,
+                    onTextChange = onActualAddressChanged,
                 )
             }
             item {
@@ -254,9 +227,7 @@ fun SignUpContentView(
                             )
                         )
                     },
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .fillMaxWidth()
+                    modifier = Modifier.padding(top = 4.dp, bottom = 8.dp),
                 ) {
                     Text(TextResources.signUp)
                 }
@@ -265,7 +236,7 @@ fun SignUpContentView(
                 Text(
                     text = TextResources.authorization,
                     color = MaterialTheme.colors.primary,
-                    modifier = Modifier.clickable { onAuthorizationClick() },
+                    modifier = Modifier.padding(bottom = 8.dp).clickable { onAuthorizationClick() },
                 )
             }
         }

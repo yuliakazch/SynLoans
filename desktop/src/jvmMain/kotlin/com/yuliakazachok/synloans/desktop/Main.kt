@@ -17,7 +17,7 @@ fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         title = "Syndicated Loans",
-        state = rememberWindowState(width = 1200.dp, height = 850.dp)
+        state = rememberWindowState(width = 900.dp, height = 700.dp)
     ) {
         AppTheme {
             ScreenRegistry {

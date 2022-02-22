@@ -5,27 +5,26 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.yuliakazachok.synloans.desktop.core.DEFAULT_WIDTH_VIEW
 
 @Composable
 fun TextWithCheckboxView(
     text: String,
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Boolean) -> Unit,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 4.dp, top = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+        modifier = Modifier.width(DEFAULT_WIDTH_VIEW),
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(
             text = text,
-            modifier = Modifier.padding(top = 10.dp)
+            modifier = Modifier.padding(top = 16.dp, start = 8.dp),
         )
         Checkbox(
             checked = checked,
             onCheckedChange = onCheckedChange,
-            colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colors.primary)
+            colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colors.primary),
         )
     }
 }

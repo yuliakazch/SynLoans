@@ -1,24 +1,20 @@
 package com.yuliakazachok.synloans.desktop.screens
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
+import com.yuliakazachok.synloans.desktop.components.text.EditPasswordTextView
+import com.yuliakazachok.synloans.desktop.components.text.EditTextView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
 import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.desktop.koin
@@ -57,7 +53,7 @@ class SignInScreen : Screen {
                         LaunchedEffect(scaffoldState.snackbarHostState) {
                             scaffoldState.snackbarHostState.showSnackbar(
                                 message = TextResources.error,
-                                duration = SnackbarDuration.Short
+                                duration = SnackbarDuration.Short,
                             )
                         }
                     }
@@ -96,41 +92,31 @@ fun SignInContentView(
     onAuthorizationClick: (Credentials) -> Unit,
 ) {
     Scaffold(
-        topBar = {
-            TopBarView(title = TextResources.authorization)
-        }
+        topBar = { TopBarView(title = TextResources.authorization) },
     ) {
         LazyColumn(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+            modifier = Modifier.fillMaxSize(),
         ) {
             item {
-                OutlinedTextField(
-                    value = email,
-                    onValueChange = onEmailChanged,
-                    label = { Text(TextResources.email) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
+                EditTextView(
+                    text = email,
+                    label = TextResources.email,
+                    onTextChange = onEmailChanged,
                 )
             }
             item {
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = onPasswordChanged,
-                    label = { Text(TextResources.password) },
-                    singleLine = true,
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    modifier = Modifier.fillMaxWidth(),
+                EditPasswordTextView(
+                    text = password,
+                    label = TextResources.password,
+                    onTextChange = onPasswordChanged,
                 )
             }
             item {
                 Button(
                     onClick = { onAuthorizationClick(Credentials(email, password)) },
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .fillMaxWidth(),
+                    modifier = Modifier.padding(vertical = 8.dp),
                 ) {
                     Text(TextResources.signIn)
                 }

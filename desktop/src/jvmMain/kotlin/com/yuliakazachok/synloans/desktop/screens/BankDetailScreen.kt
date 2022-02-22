@@ -70,8 +70,7 @@ fun BankDetailView(
     onBackClicked: () -> Unit,
 ) {
     LazyColumn(
-        //horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(top = 12.dp)
+        modifier = Modifier.padding(top = 12.dp),
     ) {
         item {
             TextTwoLinesView(
@@ -113,7 +112,9 @@ fun BankDetailView(
             Text(
                 text = TextResources.backRequest,
                 color = MaterialTheme.colors.primary,
-                modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp).clickable { onBackClicked() },
+                modifier = Modifier
+                    .padding(vertical = 12.dp, horizontal = 16.dp)
+                    .clickable { onBackClicked() },
             )
         }
     }

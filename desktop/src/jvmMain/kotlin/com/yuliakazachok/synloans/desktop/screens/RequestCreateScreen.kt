@@ -1,7 +1,6 @@
 package com.yuliakazachok.synloans.desktop.screens
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
@@ -9,7 +8,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.registry.rememberScreen
@@ -113,8 +111,7 @@ fun RequestCreateView(
     onBackClicked: () -> Unit,
 ) {
     LazyColumn(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp)
+        modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp),
     ) {
         item {
             EditTextView(
@@ -140,9 +137,7 @@ fun RequestCreateView(
         item {
             Button(
                 onClick = onSendClicked,
-                modifier = Modifier
-                    .padding(top = 16.dp, bottom = 12.dp)
-                    .fillMaxWidth()
+                modifier = Modifier.padding(top = 16.dp, bottom = 12.dp),
             ) {
                 Text(TextResources.sendRequest)
             }

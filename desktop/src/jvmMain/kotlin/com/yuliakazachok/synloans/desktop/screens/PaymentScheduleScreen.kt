@@ -40,9 +40,7 @@ class PaymentScheduleScreen(
         val getScheduleUseCase = koin.get<GetPlannedScheduleUseCase>()
 
         Scaffold(
-            topBar = {
-                TopBarView(title = TextResources.paymentSchedule)
-            }
+            topBar = { TopBarView(title = TextResources.paymentSchedule) },
         ) {
             when (val state = uiState.value) {
                 is PaymentScheduleUiState.LoadingSchedule -> {
@@ -77,7 +75,7 @@ fun PaymentScheduleView(
 
     LazyColumn(
         state = listState,
-        modifier = Modifier.padding(top = 12.dp)
+        modifier = Modifier.padding(top = 12.dp),
     ) {
         payments.forEach { payment ->
             item {

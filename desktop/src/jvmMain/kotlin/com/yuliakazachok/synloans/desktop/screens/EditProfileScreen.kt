@@ -1,19 +1,17 @@
 package com.yuliakazachok.synloans.desktop.screens
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
-import com.yuliakazachok.synloans.desktop.components.text.EditTextView
+import com.yuliakazachok.synloans.desktop.components.text.EditLargeTextView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
 import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.desktop.koin
@@ -112,53 +110,52 @@ fun EditProfileView(
     onCancelClicked: () -> Unit,
 ) {
     LazyColumn(
-        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp),
     ) {
         item {
-            EditTextView(
+            EditLargeTextView(
                 text = data.fullName,
                 label = TextResources.fullName,
                 onTextChange = onFullNameChanged,
             )
         }
         item {
-            EditTextView(
+            EditLargeTextView(
                 text = data.shortName,
                 label = TextResources.shortName,
                 onTextChange = onShortNameChanged,
             )
         }
         item {
-            EditTextView(
+            EditLargeTextView(
                 text = data.inn,
                 label = TextResources.inn,
                 onTextChange = onInnChanged,
             )
         }
         item {
-            EditTextView(
+            EditLargeTextView(
                 text = data.kpp,
                 label = TextResources.kpp,
                 onTextChange = onKppChanged,
             )
         }
         item {
-            EditTextView(
+            EditLargeTextView(
                 text = data.legalAddress,
                 label = TextResources.legalAddress,
                 onTextChange = onLegalAddressChanged,
             )
         }
         item {
-            EditTextView(
+            EditLargeTextView(
                 text = data.actualAddress,
                 label = TextResources.actualAddress,
                 onTextChange = onActualAddressChanged,
             )
         }
         item {
-            EditTextView(
+            EditLargeTextView(
                 text = data.email,
                 label = TextResources.email,
                 onTextChange = onEmailChanged,
@@ -167,9 +164,7 @@ fun EditProfileView(
         item {
             Button(
                 onClick = { onSaveClicked(data) },
-                modifier = Modifier
-                    .padding(vertical = 12.dp)
-                    .fillMaxWidth()
+                modifier = Modifier.padding(vertical = 8.dp),
             ) {
                 Text(TextResources.save)
             }
@@ -178,7 +173,7 @@ fun EditProfileView(
             Text(
                 text = TextResources.cancel,
                 color = MaterialTheme.colors.primary,
-                modifier = Modifier.clickable { onCancelClicked() },
+                modifier = Modifier.padding(bottom = 8.dp).clickable { onCancelClicked() },
             )
         }
     }
