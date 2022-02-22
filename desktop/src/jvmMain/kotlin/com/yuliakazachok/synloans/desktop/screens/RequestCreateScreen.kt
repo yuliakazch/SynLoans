@@ -30,7 +30,6 @@ private sealed class RequestCreateUiState {
     object Content : RequestCreateUiState()
     object CreatingRequest : RequestCreateUiState()
     object Error : RequestCreateUiState()
-    object Exit : RequestCreateUiState()
 }
 
 class RequestCreateScreen : Screen {
@@ -71,7 +70,7 @@ class RequestCreateScreen : Screen {
                                 uiState.value = RequestCreateUiState.CreatingRequest
                             }
                         },
-                        onBackClicked = { uiState.value = RequestCreateUiState.Exit },
+                        onBackClicked = { navigator.replaceAll(mainScreen) },
                     )
                 }
 
@@ -84,15 +83,12 @@ class RequestCreateScreen : Screen {
                             maxRate = rate.value.toInt(),
                             term = term.value.toInt(),
                         ),
+                        onMainRoute = { navigator.replaceAll(mainScreen) },
                     ).value
                 }
 
                 is RequestCreateUiState.Error -> {
                     ErrorView()
-                }
-
-                is RequestCreateUiState.Exit -> {
-                    navigator.replaceAll(mainScreen)
                 }
             }
         }
@@ -154,12 +150,13 @@ fun RequestCreateView(
 private fun createRequest(
     createRequestUseCase: CreateRequestUseCase,
     createRequestInfo: CreateRequestInfo,
+    onMainRoute: () -> Unit,
 ): State<RequestCreateUiState> =
     produceState<RequestCreateUiState>(initialValue = RequestCreateUiState.CreatingRequest, createRequestUseCase) {
-        value = try {
+        try {
             createRequestUseCase(createRequestInfo)
-            RequestCreateUiState.Exit
+            onMainRoute()
         } catch (throwable: Throwable) {
-            RequestCreateUiState.Error
+            value = RequestCreateUiState.Error
         }
     }

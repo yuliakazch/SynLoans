@@ -42,7 +42,6 @@ private sealed class RequestDetailUiState {
     object CancelRequest : RequestDetailUiState()
     object JoinSyndicateRequest : RequestDetailUiState()
     object Error : RequestDetailUiState()
-    object Exit : RequestDetailUiState()
 }
 
 class RequestDetailScreen(
@@ -104,7 +103,7 @@ class RequestDetailScreen(
                                 request = state.request.info,
                                 creditOrganisation = state.creditOrganisation,
                                 onCancelClicked = { uiState.value = RequestDetailUiState.CancelRequest },
-                                onBackClicked = { uiState.value = RequestDetailUiState.Exit },
+                                onBackClicked = { navigator.replaceAll(mainScreen) },
                                 navigator = navigator,
                             )
                         }
@@ -113,7 +112,11 @@ class RequestDetailScreen(
 
                 is RequestDetailUiState.CancelRequest -> {
                     LoadingView()
-                    uiState.value = cancelRequest(cancelRequestUseCase, requestId).value
+                    uiState.value = cancelRequest(
+                        cancelRequestUseCase = cancelRequestUseCase,
+                        requestId = requestId,
+                        onMainRoute = { navigator.replaceAll(mainScreen) },
+                    ).value
                 }
 
                 is RequestDetailUiState.JoinSyndicateRequest -> {
@@ -124,16 +127,13 @@ class RequestDetailScreen(
                             requestId = requestId,
                             sum = Sum(sumJoinSyndicate.value.toInt(), SumUnit.THOUSAND),
                             approveBankAgent = approveBankAgentJoinSyndicate.value,
-                        )
+                        ),
+                        onMainRoute = { navigator.replaceAll(mainScreen) },
                     ).value
                 }
 
                 is RequestDetailUiState.Error -> {
                     ErrorView()
-                }
-
-                is RequestDetailUiState.Exit -> {
-                    navigator.replaceAll(mainScreen)
                 }
             }
         }
@@ -349,13 +349,14 @@ private fun loadRequestDetail(
 private fun cancelRequest(
     cancelRequestUseCase: CancelRequestUseCase,
     requestId: Int,
+    onMainRoute: () -> Unit,
 ): State<RequestDetailUiState> =
     produceState<RequestDetailUiState>(initialValue = RequestDetailUiState.CancelRequest, cancelRequestUseCase) {
-        value = try {
+        try {
             cancelRequestUseCase(requestId)
-            RequestDetailUiState.Exit
+            onMainRoute()
         } catch (throwable: Throwable) {
-            RequestDetailUiState.Error
+            value = RequestDetailUiState.Error
         }
     }
 
@@ -363,12 +364,13 @@ private fun cancelRequest(
 private fun joinSyndicate(
     joinSyndicateUseCase: JoinSyndicateUseCase,
     joinSyndicateInfo: JoinSyndicateInfo,
+    onMainRoute: () -> Unit,
 ): State<RequestDetailUiState> =
     produceState<RequestDetailUiState>(initialValue = RequestDetailUiState.JoinSyndicateRequest, joinSyndicateUseCase) {
-        value = try {
+        try {
             joinSyndicateUseCase(joinSyndicateInfo)
-            RequestDetailUiState.Exit
+            onMainRoute()
         } catch (throwable: Throwable) {
-            RequestDetailUiState.Error
+            value = RequestDetailUiState.Error
         }
     }
