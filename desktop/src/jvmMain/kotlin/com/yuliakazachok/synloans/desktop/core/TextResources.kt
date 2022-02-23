@@ -3,6 +3,7 @@ package com.yuliakazachok.synloans.desktop.core
 object TextResources {
 
     const val error = "Произошла ошибка"
+    const val repeat = "Повторить"
     const val cancel = "Отмена"
     const val backMain = "Вернуться на главную"
     const val backRequest = "Вернуться к заявке"

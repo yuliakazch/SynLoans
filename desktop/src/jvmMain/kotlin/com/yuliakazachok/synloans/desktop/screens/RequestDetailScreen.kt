@@ -16,7 +16,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.checkbox.TextWithCheckboxView
-import com.yuliakazachok.synloans.desktop.components.error.ErrorView
+import com.yuliakazachok.synloans.desktop.components.error.ErrorUpdateBackView
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.EditTextView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesClickableView
@@ -41,7 +41,13 @@ private sealed class RequestDetailUiState {
     data class Content(val request: RequestCommon, val creditOrganisation: Boolean) : RequestDetailUiState()
     object CancelRequest : RequestDetailUiState()
     object JoinSyndicateRequest : RequestDetailUiState()
-    object Error : RequestDetailUiState()
+    data class Error(val errorType: ErrorType) : RequestDetailUiState()
+}
+
+private sealed class ErrorType {
+    object Detail : ErrorType()
+    object Cancel : ErrorType()
+    object JoinSyndicate : ErrorType()
 }
 
 class RequestDetailScreen(
@@ -133,7 +139,17 @@ class RequestDetailScreen(
                 }
 
                 is RequestDetailUiState.Error -> {
-                    ErrorView()
+                    ErrorUpdateBackView(
+                        textBack = TextResources.backMain,
+                        onBackClicked = { navigator.replaceAll(mainScreen) },
+                        onUpdateClicked = {
+                            uiState.value = when (state.errorType) {
+                                ErrorType.Detail -> RequestDetailUiState.LoadingRequest
+                                ErrorType.Cancel -> RequestDetailUiState.CancelRequest
+                                ErrorType.JoinSyndicate -> RequestDetailUiState.JoinSyndicateRequest
+                            }
+                        },
+                    )
                 }
             }
         }
@@ -341,7 +357,7 @@ private fun loadRequestDetail(
             val isCreditOrganisation = isCreditOrganisationUseCase()
             RequestDetailUiState.Content(request, isCreditOrganisation)
         } catch (throwable: Throwable) {
-            RequestDetailUiState.Error
+            RequestDetailUiState.Error(errorType = ErrorType.Detail)
         }
     }
 
@@ -356,7 +372,7 @@ private fun cancelRequest(
             cancelRequestUseCase(requestId)
             onMainRoute()
         } catch (throwable: Throwable) {
-            value = RequestDetailUiState.Error
+            value = RequestDetailUiState.Error(errorType = ErrorType.Cancel)
         }
     }
 
@@ -371,6 +387,6 @@ private fun joinSyndicate(
             joinSyndicateUseCase(joinSyndicateInfo)
             onMainRoute()
         } catch (throwable: Throwable) {
-            value = RequestDetailUiState.Error
+            value = RequestDetailUiState.Error(errorType = ErrorType.JoinSyndicate)
         }
     }
