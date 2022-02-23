@@ -15,17 +15,16 @@ fun TextWithCheckboxView(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 4.dp, top = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+            .padding(start = 4.dp, top = 16.dp, bottom = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(
             text = text,
-            modifier = Modifier.padding(top = 10.dp)
         )
         Checkbox(
             checked = checked,
             onCheckedChange = onCheckedChange,
-            colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colors.primary)
+            colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colors.primary),
         )
     }
 }
