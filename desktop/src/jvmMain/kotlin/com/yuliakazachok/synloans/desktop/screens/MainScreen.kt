@@ -20,7 +20,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.yuliakazachok.synloans.desktop.components.error.ErrorUpdateView
+import com.yuliakazachok.synloans.desktop.components.error.ErrorView
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesClickableView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesView
@@ -92,7 +92,7 @@ class MainScreen : Screen {
                 }
 
                 is MainUiState.Error -> {
-                    ErrorUpdateView(
+                    ErrorView(
                         onUpdateClicked = { uiState.value = MainUiState.SendingRequest },
                     )
                 }

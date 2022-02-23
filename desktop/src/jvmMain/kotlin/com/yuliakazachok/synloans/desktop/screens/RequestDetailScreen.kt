@@ -16,7 +16,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.checkbox.TextWithCheckboxView
-import com.yuliakazachok.synloans.desktop.components.error.ErrorUpdateBackView
+import com.yuliakazachok.synloans.desktop.components.error.ErrorBackView
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.EditTextView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesClickableView
@@ -139,7 +139,7 @@ class RequestDetailScreen(
                 }
 
                 is RequestDetailUiState.Error -> {
-                    ErrorUpdateBackView(
+                    ErrorBackView(
                         textBack = TextResources.backMain,
                         onBackClicked = { navigator.replaceAll(mainScreen) },
                         onUpdateClicked = {

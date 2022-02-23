@@ -14,7 +14,7 @@ import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.yuliakazachok.synloans.desktop.components.error.ErrorUpdateBackView
+import com.yuliakazachok.synloans.desktop.components.error.ErrorBackView
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.EditTextView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
@@ -88,7 +88,7 @@ class RequestCreateScreen : Screen {
                 }
 
                 is RequestCreateUiState.Error -> {
-                    ErrorUpdateBackView(
+                    ErrorBackView(
                         textBack = TextResources.backMain,
                         onBackClicked = { navigator.replaceAll(mainScreen) },
                         onUpdateClicked = { uiState.value = RequestCreateUiState.CreatingRequest },

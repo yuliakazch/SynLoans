@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.yuliakazachok.synloans.desktop.components.error.ErrorUpdateBackView
+import com.yuliakazachok.synloans.desktop.components.error.ErrorBackView
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
@@ -56,7 +56,7 @@ class PaymentScheduleScreen(
                 }
 
                 is PaymentScheduleUiState.Error -> {
-                    ErrorUpdateBackView(
+                    ErrorBackView(
                         textBack = TextResources.backRequest,
                         onBackClicked = { navigator.pop() },
                         onUpdateClicked = { uiState.value = PaymentScheduleUiState.LoadingSchedule },
