@@ -19,7 +19,7 @@ import com.yuliakazachok.synloans.android.R
 import com.yuliakazachok.synloans.android.components.error.ErrorView
 import com.yuliakazachok.synloans.android.components.progress.LoadingView
 import com.yuliakazachok.synloans.android.components.text.TextFullScreenView
-import com.yuliakazachok.synloans.android.components.text.TextTwoLinesView
+import com.yuliakazachok.synloans.android.components.text.TextTwoLinesClickableView
 import com.yuliakazachok.synloans.android.components.topbar.TopBarView
 import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsAction
@@ -144,7 +144,7 @@ fun ListRequestsView(
                         SumUnit.THOUSAND -> stringResource(R.string.requests_sum_thousand)
                     }
 
-                    TextTwoLinesView(
+                    TextTwoLinesClickableView(
                         textOne = request.name,
                         textTwo = request.sum.value.toString() + textSumUnit,
                         onClicked = { onActionSent(RequestsAction.RequestClicked(request.id)) }

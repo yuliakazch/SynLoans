@@ -18,6 +18,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.yuliakazachok.synloans.android.R
 import com.yuliakazachok.synloans.android.components.error.ErrorView
 import com.yuliakazachok.synloans.android.components.progress.LoadingView
+import com.yuliakazachok.synloans.android.components.text.TextTwoLinesClickableView
 import com.yuliakazachok.synloans.android.components.text.TextTwoLinesView
 import com.yuliakazachok.synloans.android.components.topbar.TopBarBackView
 import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
@@ -256,7 +257,7 @@ fun BanksView(
                     SumUnit.THOUSAND -> stringResource(R.string.requests_sum_thousand)
                 }
 
-                TextTwoLinesView(
+                TextTwoLinesClickableView(
                     textOne = bank.name,
                     textTwo = if (bank.approveBankAgent) {
                         bank.sum.value.toString() + textSumUnit + stringResource(R.string.request_divider) + stringResource(R.string.request_approve_bank_agent)

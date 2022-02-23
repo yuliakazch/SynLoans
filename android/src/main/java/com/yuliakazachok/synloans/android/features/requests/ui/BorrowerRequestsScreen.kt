@@ -15,7 +15,7 @@ import com.yuliakazachok.synloans.android.R
 import com.yuliakazachok.synloans.android.components.error.ErrorView
 import com.yuliakazachok.synloans.android.components.progress.LoadingView
 import com.yuliakazachok.synloans.android.components.text.TextFullScreenView
-import com.yuliakazachok.synloans.android.components.text.TextTwoLinesView
+import com.yuliakazachok.synloans.android.components.text.TextTwoLinesClickableView
 import com.yuliakazachok.synloans.android.components.topbar.TopBarEndIconView
 import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsAction
@@ -90,7 +90,7 @@ fun BorrowerRequestsView(
                     SumUnit.THOUSAND -> stringResource(R.string.requests_sum_thousand)
                 }
 
-                TextTwoLinesView(
+                TextTwoLinesClickableView(
                     textOne = if (request.info.dateIssue.isNullOrEmpty()) {
                         textDateCreate + request.info.dateCreate
                     } else {
