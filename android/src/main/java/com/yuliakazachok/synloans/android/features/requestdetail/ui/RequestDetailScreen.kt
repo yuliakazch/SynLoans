@@ -206,7 +206,7 @@ fun RequestInfoView(
                     onClick = { onActionSent(RequestDetailAction.PaymentScheduleClicked) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
                 ) {
                     Text(stringResource(R.string.request_payment_schedule))
                 }
@@ -218,7 +218,7 @@ fun RequestInfoView(
                         onClick = { onActionSent(RequestDetailAction.JoinSyndicateClicked) },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
                     ) {
                         Text(stringResource(R.string.request_join_syndicate))
                     }
@@ -229,7 +229,7 @@ fun RequestInfoView(
                         onClick = { onActionSent(RequestDetailAction.CancelRequestClicked) },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
                     ) {
                         Text(stringResource(R.string.request_cancel))
                     }

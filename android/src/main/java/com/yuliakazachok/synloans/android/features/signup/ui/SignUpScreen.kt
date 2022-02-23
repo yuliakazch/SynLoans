@@ -181,7 +181,7 @@ fun SignUpContentView(
                 Button(
                     onClick = { onActionSent(SignUpAction.SignUpClicked) },
                     modifier = Modifier
-                        .padding(vertical = 12.dp)
+                        .padding(vertical = 16.dp)
                         .fillMaxWidth()
                 ) {
                     Text(stringResource(R.string.sign_up))

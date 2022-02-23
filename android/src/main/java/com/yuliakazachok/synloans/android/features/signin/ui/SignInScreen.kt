@@ -117,7 +117,7 @@ fun SignInContentView(
                 Button(
                     onClick = { onActionSent(SignInAction.SignInClicked) },
                     modifier = Modifier
-                        .padding(vertical = 8.dp)
+                        .padding(vertical = 12.dp)
                         .fillMaxWidth(),
                 ) {
                     Text(stringResource(R.string.sign_in))
