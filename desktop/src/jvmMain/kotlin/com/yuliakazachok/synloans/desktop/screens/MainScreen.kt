@@ -171,13 +171,11 @@ private fun BankRequestsView(
 ) {
     ListRequestView(
         headerText = TextResources.ownRequests,
-        emptyText = TextResources.emptyCurrentRequests,
         requests = data.own,
         navigator = navigator,
     )
     ListRequestView(
         headerText = TextResources.otherRequests,
-        emptyText = TextResources.emptyActiveRequests,
         requests = data.other,
         navigator = navigator,
     )
@@ -186,7 +184,6 @@ private fun BankRequestsView(
 @Composable
 fun ListRequestView(
     headerText: String,
-    emptyText: String,
     requests: List<BankRequest>,
     navigator: Navigator,
 ) {
@@ -213,7 +210,7 @@ fun ListRequestView(
         }
     } else {
         Text(
-            text = emptyText,
+            text = TextResources.emptyRequests,
             modifier = Modifier.padding(horizontal = 16.dp),
         )
     }

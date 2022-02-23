@@ -30,7 +30,9 @@
 	<string name="requests_sum_billion">\u0020млрд руб</string>
 	<string name="requests_sum_million">\u0020млн руб</string>
 	<string name="requests_sum_thousand">\u0020тыс руб</string>
-	<string name="requests_empty">У вас нет текущих заявок!</string>
+	<string name="requests_empty">Нет заявок</string>
+	<string name="requests_own">Принятые заявки</string>
+	<string name="requests_other">Другие заявки</string>
 
 	<string name="request_title">Информация о заявке</string>
 	<string name="request_info">Данные</string>
@@ -69,7 +71,4 @@
 
 	<string name="edit_profile_title">Редактирование</string>
 	<string name="edit_profile_button">Сохранить</string>
-
-	<string name="requests_own">Мои заявки</string>
-	<string name="requests_other">Открытые заявки</string>
 </resources>

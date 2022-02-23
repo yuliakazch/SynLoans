@@ -1,10 +1,9 @@
 package com.yuliakazachok.synloans.android.features.requests.ui
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,6 +18,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.yuliakazachok.synloans.android.R
 import com.yuliakazachok.synloans.android.components.error.ErrorView
 import com.yuliakazachok.synloans.android.components.progress.LoadingView
+import com.yuliakazachok.synloans.android.components.text.TextFullScreenView
 import com.yuliakazachok.synloans.android.components.text.TextTwoLinesView
 import com.yuliakazachok.synloans.android.components.topbar.TopBarView
 import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
@@ -85,9 +85,10 @@ fun BankRequestsView(
     val tabIndex = pagerState.currentPage
 
     Column {
-        TabRow(
+        ScrollableTabRow(
             selectedTabIndex = tabIndex,
             backgroundColor = MaterialTheme.colors.background,
+            edgePadding = 0.dp,
             indicator = {},
             divider = {},
         ) {
@@ -102,7 +103,7 @@ fun BankRequestsView(
                     text = {
                         Text(
                             text = stringResource(textId),
-                            fontSize = 16.sp
+                            fontSize = 18.sp
                         )
                     },
                 )
@@ -110,7 +111,7 @@ fun BankRequestsView(
         }
 
         HorizontalPager(
-            count = 2,
+            count = tabData.size,
             state = pagerState,
         ) { index ->
             when (index) {
@@ -127,27 +128,28 @@ fun ListRequestsView(
     data: List<BankRequest>,
     onActionSent: (action: RequestsAction) -> Unit,
 ) {
-    val listState = rememberLazyListState()
+    if (data.isEmpty()) {
+        TextFullScreenView(stringResource(R.string.requests_empty))
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 12.dp),
+        ) {
+            data.forEach { request ->
+                item {
+                    val textSumUnit = when (request.sum.unit) {
+                        SumUnit.BILLION -> stringResource(R.string.requests_sum_billion)
+                        SumUnit.MILLION -> stringResource(R.string.requests_sum_million)
+                        SumUnit.THOUSAND -> stringResource(R.string.requests_sum_thousand)
+                    }
 
-    LazyColumn(
-        state = listState,
-        modifier = Modifier
-            .padding(top = 12.dp)
-            .fillMaxWidth(),
-    ) {
-        data.forEach { request ->
-            item {
-                val textSumUnit = when (request.sum.unit) {
-                    SumUnit.BILLION -> stringResource(R.string.requests_sum_billion)
-                    SumUnit.MILLION -> stringResource(R.string.requests_sum_million)
-                    SumUnit.THOUSAND -> stringResource(R.string.requests_sum_thousand)
+                    TextTwoLinesView(
+                        textOne = request.name,
+                        textTwo = request.sum.value.toString() + textSumUnit,
+                        onClicked = { onActionSent(RequestsAction.RequestClicked(request.id)) }
+                    )
                 }
-
-                TextTwoLinesView(
-                    textOne = request.name,
-                    textTwo = request.sum.value.toString() + textSumUnit,
-                    onClicked = { onActionSent(RequestsAction.RequestClicked(request.id)) }
-                )
             }
         }
     }
