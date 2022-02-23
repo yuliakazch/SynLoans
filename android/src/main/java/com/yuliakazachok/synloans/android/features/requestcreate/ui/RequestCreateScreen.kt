@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.yuliakazachok.synloans.android.R
+import com.yuliakazachok.synloans.android.components.error.ErrorView
 import com.yuliakazachok.synloans.android.components.progress.LoadingView
 import com.yuliakazachok.synloans.android.components.textfield.EditNumberTextView
 import com.yuliakazachok.synloans.android.components.topbar.TopBarBackView
@@ -25,86 +26,82 @@ import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun RequestCreateScreen(
-	state: RequestCreateState,
-	effectFlow: Flow<RequestCreateEffect>?,
-	onActionSent: (action: RequestCreateAction) -> Unit,
-	onNavigationRequested: (navigationEffect: RequestCreateEffect.Navigation) -> Unit
+    state: RequestCreateState,
+    effectFlow: Flow<RequestCreateEffect>?,
+    onActionSent: (action: RequestCreateAction) -> Unit,
+    onNavigationRequested: (navigationEffect: RequestCreateEffect.Navigation) -> Unit
 ) {
-	val scaffoldState: ScaffoldState = rememberScaffoldState()
 
-	val textError = stringResource(R.string.error)
+    LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
+        effectFlow?.onEach { effect ->
+            when (effect) {
+                is RequestCreateEffect.Navigation ->
+                    onNavigationRequested(effect)
+            }
+        }?.collect()
+    }
 
-	LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
-		effectFlow?.onEach { effect ->
-			when (effect) {
-				is RequestCreateEffect.Error ->
-					scaffoldState.snackbarHostState.showSnackbar(
-						message = effect.message ?: textError,
-						duration = SnackbarDuration.Short
-					)
-				is RequestCreateEffect.Navigation ->
-					onNavigationRequested(effect)
-			}
-		}?.collect()
-	}
+    Scaffold(
+        topBar = {
+            TopBarBackView(
+                title = stringResource(R.string.request_create_title),
+                onIconClicked = { onActionSent(RequestCreateAction.BackClicked) },
+            )
+        }
+    ) {
+        when {
+            state.loading -> LoadingView()
 
-	Scaffold(
-		topBar = {
-			TopBarBackView(
-				title = stringResource(R.string.request_create_title),
-				onIconClicked = { onActionSent(RequestCreateAction.BackClicked) },
-			)
-		}
-	) {
-		if (state.loading) {
-			LoadingView()
-		} else {
-			RequestCreateView(state.data, onActionSent)
-		}
-	}
+            state.hasError -> ErrorView(
+                onUpdateClicked = { onActionSent(RequestCreateAction.RepeatClicked) },
+            )
+
+            else -> RequestCreateView(state.data, onActionSent)
+        }
+    }
 }
 
 @Composable
 fun RequestCreateView(
-	data: CreateData,
-	onActionSent: (action: RequestCreateAction) -> Unit,
+    data: CreateData,
+    onActionSent: (action: RequestCreateAction) -> Unit,
 ) {
-	val listState = rememberLazyListState()
+    val listState = rememberLazyListState()
 
-	LazyColumn(
-		state = listState,
-		modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
-	) {
-		item {
-			EditNumberTextView(
-				text = data.sum,
-				label = stringResource(R.string.request_sum),
-				onTextChange = { onActionSent(RequestCreateAction.SumChanged(it)) },
-			)
-		}
-		item {
-			EditNumberTextView(
-				text = data.maxRate,
-				label = stringResource(R.string.request_max_rate),
-				onTextChange = { onActionSent(RequestCreateAction.RateChanged(it)) },
-			)
-		}
-		item {
-			EditNumberTextView(
-				text = data.term,
-				label = stringResource(R.string.request_term),
-				onTextChange = { onActionSent(RequestCreateAction.TermChanged(it)) },
-			)
-		}
-		item {
-			Button(
-				onClick = { onActionSent(RequestCreateAction.SendRequestClicked) },
-				modifier = Modifier
-					.padding(vertical = 12.dp)
-					.fillMaxWidth()
-			) {
-				Text(stringResource(R.string.request_create_send))
-			}
-		}
-	}
+    LazyColumn(
+        state = listState,
+        modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+    ) {
+        item {
+            EditNumberTextView(
+                text = data.sum,
+                label = stringResource(R.string.request_sum),
+                onTextChange = { onActionSent(RequestCreateAction.SumChanged(it)) },
+            )
+        }
+        item {
+            EditNumberTextView(
+                text = data.maxRate,
+                label = stringResource(R.string.request_max_rate),
+                onTextChange = { onActionSent(RequestCreateAction.RateChanged(it)) },
+            )
+        }
+        item {
+            EditNumberTextView(
+                text = data.term,
+                label = stringResource(R.string.request_term),
+                onTextChange = { onActionSent(RequestCreateAction.TermChanged(it)) },
+            )
+        }
+        item {
+            Button(
+                onClick = { onActionSent(RequestCreateAction.SendRequestClicked) },
+                modifier = Modifier
+                    .padding(vertical = 12.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(stringResource(R.string.request_create_send))
+            }
+        }
+    }
 }

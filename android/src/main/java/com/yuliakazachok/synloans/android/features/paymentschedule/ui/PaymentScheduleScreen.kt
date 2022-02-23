@@ -25,63 +25,65 @@ import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun PaymentScheduleScreen(
-	state: PaymentScheduleState,
-	effectFlow: Flow<PaymentScheduleEffect>?,
-	onActionSent: (action: PaymentScheduleAction) -> Unit,
-	onNavigationRequested: (navigationEffect: PaymentScheduleEffect.Navigation) -> Unit
+    state: PaymentScheduleState,
+    effectFlow: Flow<PaymentScheduleEffect>?,
+    onActionSent: (action: PaymentScheduleAction) -> Unit,
+    onNavigationRequested: (navigationEffect: PaymentScheduleEffect.Navigation) -> Unit
 ) {
 
-	LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
-		effectFlow?.onEach { effect ->
-			when (effect) {
-				is PaymentScheduleEffect.Navigation ->
-					onNavigationRequested(effect)
-			}
-		}?.collect()
-	}
+    LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
+        effectFlow?.onEach { effect ->
+            when (effect) {
+                is PaymentScheduleEffect.Navigation ->
+                    onNavigationRequested(effect)
+            }
+        }?.collect()
+    }
 
-	Scaffold(
-		topBar = {
-			TopBarBackView(
-				title = stringResource(R.string.request_payment_schedule),
-				onIconClicked = { onActionSent(PaymentScheduleAction.BackClicked) },
-			)
-		}
-	) {
-		when {
-			state.loading -> LoadingView()
+    Scaffold(
+        topBar = {
+            TopBarBackView(
+                title = stringResource(R.string.request_payment_schedule),
+                onIconClicked = { onActionSent(PaymentScheduleAction.BackClicked) },
+            )
+        }
+    ) {
+        when {
+            state.loading -> LoadingView()
 
-			state.data == null -> ErrorView()
+            state.data == null -> ErrorView(
+                onUpdateClicked = { onActionSent(PaymentScheduleAction.RepeatClicked) },
+            )
 
-			else -> PaymentScheduleView(state.data)
-		}
-	}
+            else -> PaymentScheduleView(state.data)
+        }
+    }
 }
 
 @Composable
 fun PaymentScheduleView(
-	data: List<Payment>
+    data: List<Payment>
 ) {
-	val listState = rememberLazyListState()
-	val textSumUnit = stringResource(R.string.requests_sum_million)
-	val textPaid = stringResource(R.string.payment_paid)
-	val textNotPaid = stringResource(R.string.payment_not_paid)
+    val listState = rememberLazyListState()
+    val textSumUnit = stringResource(R.string.requests_sum_million)
+    val textPaid = stringResource(R.string.payment_paid)
+    val textNotPaid = stringResource(R.string.payment_not_paid)
 
-	LazyColumn(
-		state = listState,
-		modifier = Modifier.padding(top = 12.dp)
-	) {
-		data.forEach { payment ->
-			item {
-				TextTwoLinesView(
-					textOne = if (payment.paid) {
-						textPaid
-					} else {
-						textNotPaid
-					},
-					textTwo = payment.sum.toString() + textSumUnit + stringResource(R.string.request_divider) + payment.date,
-				)
-			}
-		}
-	}
+    LazyColumn(
+        state = listState,
+        modifier = Modifier.padding(top = 12.dp)
+    ) {
+        data.forEach { payment ->
+            item {
+                TextTwoLinesView(
+                    textOne = if (payment.paid) {
+                        textPaid
+                    } else {
+                        textNotPaid
+                    },
+                    textTwo = payment.sum.toString() + textSumUnit + stringResource(R.string.request_divider) + payment.date,
+                )
+            }
+        }
+    }
 }

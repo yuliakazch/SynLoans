@@ -8,6 +8,7 @@ import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCom
 sealed class RequestDetailAction : Action {
 
     object BackClicked : RequestDetailAction()
+    object RepeatClicked : RequestDetailAction()
     object CancelRequestClicked : RequestDetailAction()
     object PaymentScheduleClicked : RequestDetailAction()
     object JoinSyndicateClicked : RequestDetailAction()
@@ -28,7 +29,7 @@ sealed class RequestDetailEffect : Effect {
 
         object ToBack : Navigation()
 
-        object ToPaymentSchedule : Navigation()
+        data class ToPaymentSchedule(val id: Int) : Navigation()
 
         data class ToJoinSyndicate(val id: Int) : Navigation()
 

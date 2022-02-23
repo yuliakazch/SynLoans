@@ -12,6 +12,8 @@ sealed class ProfileAction : Action {
 	object EditProfileClicked : ProfileAction()
 
 	object LogoutClicked : ProfileAction()
+
+	object RepeatClicked : ProfileAction()
 }
 
 data class ProfileState(val profile: Profile?, val loading: Boolean = false) : State

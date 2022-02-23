@@ -15,24 +15,7 @@ class RequestDetailViewModel(
 ) : BaseViewModel<RequestDetailAction, RequestDetailState, RequestDetailEffect>() {
 
     override fun setInitialState(): RequestDetailState =
-        RequestDetailState(request = null, creditOrganisation = false, loading = true)
-
-    init {
-        setState { copy(creditOrganisation = isCreditOrganisationUseCase()) }
-
-        loadInfoRequest()
-    }
-
-    private fun loadInfoRequest() {
-        viewModelScope.launch {
-            try {
-                val detail = getRequestDetailUseCase(requestId)
-                setState { copy(request = detail, loading = false) }
-            } catch (e: Throwable) {
-                setState { copy(request = null, loading = false) }
-            }
-        }
-    }
+        RequestDetailState(request = null, creditOrganisation = false, loading = false)
 
     override fun handleActions(action: RequestDetailAction) {
         when (action) {
@@ -40,12 +23,16 @@ class RequestDetailViewModel(
                 setEffect { RequestDetailEffect.Navigation.ToBack }
             }
 
+            is RequestDetailAction.RepeatClicked -> {
+                loadInfoRequest()
+            }
+
             is RequestDetailAction.CancelRequestClicked -> {
                 cancelRequest()
             }
 
             is RequestDetailAction.PaymentScheduleClicked -> {
-                setEffect { RequestDetailEffect.Navigation.ToPaymentSchedule }
+                setEffect { RequestDetailEffect.Navigation.ToPaymentSchedule(requestId) }
             }
 
             is RequestDetailAction.JoinSyndicateClicked -> {
@@ -58,10 +45,28 @@ class RequestDetailViewModel(
         }
     }
 
+    init {
+        setState { copy(creditOrganisation = isCreditOrganisationUseCase()) }
+
+        loadInfoRequest()
+    }
+
+    private fun loadInfoRequest() {
+        viewModelScope.launch {
+            setState { copy(loading = true) }
+            try {
+                val detail = getRequestDetailUseCase(requestId)
+                setState { copy(request = detail, loading = false) }
+            } catch (e: Throwable) {
+                setState { copy(request = null, loading = false) }
+            }
+        }
+    }
+
     private fun cancelRequest() {
         viewModelScope.launch {
+            setState { copy(loading = true) }
             try {
-                setState { copy(loading = true) }
                 cancelRequestUseCase(requestId)
                 setEffect { RequestDetailEffect.Navigation.ToBack }
             } catch (e: Throwable) {

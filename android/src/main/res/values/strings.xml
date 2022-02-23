@@ -3,6 +3,7 @@
 	<string name="app_name">Синдицированные кредиты</string>
 
 	<string name="error">Произошла ошибка</string>
+	<string name="repeat">Повторить</string>
 
 	<string name="sign_in">Войти</string>
 	<string name="authorization">Авторизация</string>

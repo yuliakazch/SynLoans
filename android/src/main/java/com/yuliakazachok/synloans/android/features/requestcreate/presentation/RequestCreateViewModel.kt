@@ -13,7 +13,7 @@ class RequestCreateViewModel(
 ) : BaseViewModel<RequestCreateAction, RequestCreateState, RequestCreateEffect>() {
 
 	override fun setInitialState(): RequestCreateState =
-		RequestCreateState(data = CreateData(), loading = false)
+		RequestCreateState(data = CreateData(), loading = false, hasError = false)
 
 	override fun handleActions(action: RequestCreateAction) {
 		when (action) {
@@ -23,6 +23,12 @@ class RequestCreateViewModel(
 
 			is RequestCreateAction.BackClicked        -> {
 				setEffect { RequestCreateEffect.Navigation.ToBack }
+			}
+
+			is RequestCreateAction.RepeatClicked -> {
+				setState {
+					copy(hasError = false)
+				}
 			}
 
 			is RequestCreateAction.SumChanged         -> {
@@ -52,8 +58,7 @@ class RequestCreateViewModel(
 				createRequestUseCase(viewState.value.data.convertToCreateInfo())
 				setEffect { RequestCreateEffect.Navigation.ToBack }
 			} catch (e: Throwable) {
-				setState { copy(loading = false) }
-				setEffect { RequestCreateEffect.Error() }
+				setState { copy(loading = false, hasError = true) }
 			}
 		}
 	}

@@ -60,7 +60,9 @@ fun BankRequestsScreen(
         when {
             state.loading -> LoadingView()
 
-            state.bankRequests == null -> ErrorView()
+            state.bankRequests == null -> ErrorView(
+                onUpdateClicked = { onActionSent(RequestsAction.RepeatClicked) },
+            )
 
             else -> BankRequestsView(state.bankRequests, onActionSent)
         }

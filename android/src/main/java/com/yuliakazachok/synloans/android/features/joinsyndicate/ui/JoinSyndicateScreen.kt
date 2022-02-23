@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.yuliakazachok.synloans.android.R
 import com.yuliakazachok.synloans.android.components.checkbox.TextWithCheckboxView
+import com.yuliakazachok.synloans.android.components.error.ErrorView
 import com.yuliakazachok.synloans.android.components.progress.LoadingView
 import com.yuliakazachok.synloans.android.components.textfield.EditNumberTextView
 import com.yuliakazachok.synloans.android.components.topbar.TopBarBackView
@@ -26,79 +27,75 @@ import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun JoinSyndicateScreen(
-	state: JoinSyndicateState,
-	effectFlow: Flow<JoinSyndicateEffect>?,
-	onActionSent: (action: JoinSyndicateAction) -> Unit,
-	onNavigationRequested: (navigationEffect: JoinSyndicateEffect.Navigation) -> Unit
+    state: JoinSyndicateState,
+    effectFlow: Flow<JoinSyndicateEffect>?,
+    onActionSent: (action: JoinSyndicateAction) -> Unit,
+    onNavigationRequested: (navigationEffect: JoinSyndicateEffect.Navigation) -> Unit
 ) {
-	val scaffoldState: ScaffoldState = rememberScaffoldState()
 
-	val textError = stringResource(R.string.error)
+    LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
+        effectFlow?.onEach { effect ->
+            when (effect) {
+                is JoinSyndicateEffect.Navigation ->
+                    onNavigationRequested(effect)
+            }
+        }?.collect()
+    }
 
-	LaunchedEffect(LAUNCH_LISTEN_FOR_EFFECTS) {
-		effectFlow?.onEach { effect ->
-			when (effect) {
-				is JoinSyndicateEffect.Error ->
-					scaffoldState.snackbarHostState.showSnackbar(
-						message = effect.message ?: textError,
-						duration = SnackbarDuration.Short
-					)
-				is JoinSyndicateEffect.Navigation ->
-					onNavigationRequested(effect)
-			}
-		}?.collect()
-	}
+    Scaffold(
+        topBar = {
+            TopBarBackView(
+                title = stringResource(R.string.join_syndicate_title),
+                onIconClicked = { onActionSent(JoinSyndicateAction.BackClicked) },
+            )
+        }
+    ) {
+        when {
+            state.loading -> LoadingView()
 
-	Scaffold(
-		topBar = {
-			TopBarBackView(
-				title = stringResource(R.string.join_syndicate_title),
-				onIconClicked = { onActionSent(JoinSyndicateAction.BackClicked) },
-			)
-		}
-	) {
-		if (state.loading) {
-			LoadingView()
-		} else {
-			JoinSyndicateView(state.data, onActionSent)
-		}
-	}
+            state.hasError -> ErrorView(
+                onUpdateClicked = { onActionSent(JoinSyndicateAction.RepeatClicked) },
+            )
+
+            else -> JoinSyndicateView(state.data, onActionSent)
+        }
+    }
 }
 
 @Composable
 fun JoinSyndicateView(
-	data: JoinData,
-	onActionSent: (action: JoinSyndicateAction) -> Unit,
+    data: JoinData,
+    onActionSent: (action: JoinSyndicateAction) -> Unit,
 ) {
-	val listState = rememberLazyListState()
+    val listState = rememberLazyListState()
 
-	LazyColumn(
-		state = listState,
-		modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
-	) {
-		item {
-			EditNumberTextView(
-				text = data.sum,
-				label = stringResource(R.string.request_sum),
-				onTextChange = { onActionSent(JoinSyndicateAction.SumChanged(it)) },
-			)
-		}
-		item {
-			TextWithCheckboxView(
-				text = stringResource(R.string.request_approve_bank_agent),
-				checked = data.approveBankAgent,
-				onCheckedChange = { onActionSent(JoinSyndicateAction.ApproveBankAgentCheckChanged(it)) },
-			)
-		}
-		item {
-			Button(
-				onClick = { onActionSent(JoinSyndicateAction.JoinClicked) },
-				modifier = Modifier
-					.padding(vertical = 12.dp)
-					.fillMaxWidth()
-			) {
-				Text(stringResource(R.string.join_syndicate_button))
-			}
-		}
-	}
+    LazyColumn(
+        state = listState,
+        modifier = Modifier.padding(top = 12.dp, start = 16.dp, end = 16.dp)
+    ) {
+        item {
+            EditNumberTextView(
+                text = data.sum,
+                label = stringResource(R.string.request_sum),
+                onTextChange = { onActionSent(JoinSyndicateAction.SumChanged(it)) },
+            )
+        }
+        item {
+            TextWithCheckboxView(
+                text = stringResource(R.string.request_approve_bank_agent),
+                checked = data.approveBankAgent,
+                onCheckedChange = { onActionSent(JoinSyndicateAction.ApproveBankAgentCheckChanged(it)) },
+            )
+        }
+        item {
+            Button(
+                onClick = { onActionSent(JoinSyndicateAction.JoinClicked) },
+                modifier = Modifier
+                    .padding(vertical = 12.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(stringResource(R.string.join_syndicate_button))
+            }
+        }
+    }
 }

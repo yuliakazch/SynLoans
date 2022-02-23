@@ -10,15 +10,15 @@ sealed class JoinSyndicateAction : Action {
 
 	object BackClicked : JoinSyndicateAction()
 
+	object RepeatClicked : JoinSyndicateAction()
+
 	data class SumChanged(val newValue: String) : JoinSyndicateAction()
 	data class ApproveBankAgentCheckChanged(val newValue: Boolean) : JoinSyndicateAction()
 }
 
-data class JoinSyndicateState(val data: JoinData, val loading: Boolean) : State
+data class JoinSyndicateState(val data: JoinData, val loading: Boolean, val hasError: Boolean) : State
 
 sealed class JoinSyndicateEffect : Effect {
-
-	data class Error(val message: String? = null) : JoinSyndicateEffect()
 
 	sealed class Navigation : JoinSyndicateEffect() {
 

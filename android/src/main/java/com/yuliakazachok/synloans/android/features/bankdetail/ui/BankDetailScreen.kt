@@ -51,7 +51,9 @@ fun BankDetailScreen(
         when {
             state.loading -> LoadingView()
 
-            state.data == null -> ErrorView()
+            state.data == null -> ErrorView(
+                onUpdateClicked = { onActionSent(BankDetailAction.RepeatClicked) },
+            )
 
             else -> BankDetailView(state.data)
         }

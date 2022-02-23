@@ -14,7 +14,7 @@ class EditProfileViewModel(
 ) : BaseViewModel<EditProfileAction, EditProfileState, EditProfileEffect>() {
 
     override fun setInitialState(): EditProfileState =
-        EditProfileState(data = null, loading = true)
+        EditProfileState(data = null, loading = false)
 
     override fun handleActions(action: EditProfileAction) {
         when (action) {
@@ -24,6 +24,10 @@ class EditProfileViewModel(
 
             is EditProfileAction.BackClicked -> {
                 setEffect { EditProfileEffect.Navigation.ToBack }
+            }
+
+            is EditProfileAction.RepeatClicked -> {
+                loadProfile()
             }
 
             is EditProfileAction.FullNameChanged -> {
@@ -76,6 +80,7 @@ class EditProfileViewModel(
 
     private fun loadProfile() {
         viewModelScope.launch {
+            setState { copy(loading = true) }
             try {
                 val profile = getProfileUseCase()
                 setState { copy(data = profile.convertToEditInfo(), loading = false) }

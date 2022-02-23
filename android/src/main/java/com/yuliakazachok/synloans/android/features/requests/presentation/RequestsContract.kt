@@ -13,6 +13,8 @@ sealed class RequestsAction : Action {
 	data class RequestClicked(val id: Int) : RequestsAction()
 
 	object ProfileClicked : RequestsAction()
+
+	object RepeatClicked : RequestsAction()
 }
 
 data class RequestsState(

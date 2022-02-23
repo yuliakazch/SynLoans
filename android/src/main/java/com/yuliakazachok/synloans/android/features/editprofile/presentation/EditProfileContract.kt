@@ -11,6 +11,8 @@ sealed class EditProfileAction : Action {
 
 	object BackClicked : EditProfileAction()
 
+	object RepeatClicked : EditProfileAction()
+
 	data class FullNameChanged(val newValue: String) : EditProfileAction()
 	data class ShortNameChanged(val newValue: String) : EditProfileAction()
 	data class TinChanged(val newValue: String) : EditProfileAction()

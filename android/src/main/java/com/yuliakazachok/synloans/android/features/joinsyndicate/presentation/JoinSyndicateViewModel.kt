@@ -14,7 +14,7 @@ class JoinSyndicateViewModel(
 ) : BaseViewModel<JoinSyndicateAction, JoinSyndicateState, JoinSyndicateEffect>() {
 
     override fun setInitialState(): JoinSyndicateState =
-        JoinSyndicateState(data = JoinData(), loading = false)
+        JoinSyndicateState(data = JoinData(), loading = false, hasError = false)
 
     override fun handleActions(action: JoinSyndicateAction) {
         when (action) {
@@ -24,6 +24,12 @@ class JoinSyndicateViewModel(
 
             is JoinSyndicateAction.BackClicked -> {
                 setEffect { JoinSyndicateEffect.Navigation.ToBack }
+            }
+
+            is JoinSyndicateAction.RepeatClicked -> {
+                setState {
+                    copy(hasError = false)
+                }
             }
 
             is JoinSyndicateAction.SumChanged -> {
@@ -47,8 +53,7 @@ class JoinSyndicateViewModel(
                 joinSyndicateUseCase(viewState.value.data.convertToJoinInfo())
                 setEffect { JoinSyndicateEffect.Navigation.ToBack }
             } catch (e: Throwable) {
-                setState { copy(loading = false) }
-                setEffect { JoinSyndicateEffect.Error() }
+                setState { copy(loading = false, hasError = true) }
             }
         }
     }
@@ -56,7 +61,7 @@ class JoinSyndicateViewModel(
     private fun JoinData.convertToJoinInfo(): JoinSyndicateInfo =
         JoinSyndicateInfo(
             requestId = requestId,
-            sum = Sum(value = 3, SumUnit.MILLION),
+            sum = Sum(value = 3, SumUnit.THOUSAND),
             approveBankAgent = approveBankAgent,
         )
 }

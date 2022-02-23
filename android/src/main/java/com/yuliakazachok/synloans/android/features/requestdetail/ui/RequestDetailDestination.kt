@@ -33,7 +33,7 @@ fun RequestDetailDestination(navController: NavHostController, requestId: Int) {
                 }
 
                 is RequestDetailEffect.Navigation.ToPaymentSchedule -> {
-                    navController.navigate(PAYMENT_SCHEDULE)
+                    navController.navigate("${PAYMENT_SCHEDULE}/${navigationEffect.id}")
                 }
 
                 is RequestDetailEffect.Navigation.ToJoinSyndicate -> {

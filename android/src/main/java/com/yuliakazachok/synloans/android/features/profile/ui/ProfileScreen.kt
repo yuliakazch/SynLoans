@@ -57,7 +57,9 @@ fun ProfileScreen(
 		when {
 			state.loading -> LoadingView()
 
-			state.profile == null -> ErrorView()
+			state.profile == null -> ErrorView(
+				onUpdateClicked = { onActionSent(ProfileAction.RepeatClicked) },
+			)
 
 			else -> ProfileView(state.profile)
 		}

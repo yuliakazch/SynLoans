@@ -3,20 +3,18 @@ package com.yuliakazachok.synloans.android.features.requests.presentation
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
 import com.yuliakazachok.synloans.shared.flag.domain.usecase.IsCreditOrganisationUseCase
-import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequest
-import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
-import com.yuliakazachok.synloans.shared.request.domain.entity.sum.Sum
-import com.yuliakazachok.synloans.shared.request.domain.entity.sum.SumUnit
+import com.yuliakazachok.synloans.shared.request.domain.usecase.GetBankRequestsUseCase
 import com.yuliakazachok.synloans.shared.request.domain.usecase.GetBorrowRequestsUseCase
 import kotlinx.coroutines.launch
 
 class RequestsViewModel(
+    private val getBankRequestsUseCase: GetBankRequestsUseCase,
     private val getBorrowRequestsUseCase: GetBorrowRequestsUseCase,
     private val isCreditOrganisationUseCase: IsCreditOrganisationUseCase,
 ) : BaseViewModel<RequestsAction, RequestsState, RequestsEffect>() {
 
     override fun setInitialState(): RequestsState =
-        RequestsState(borrowRequests = null, bankRequests = null, creditOrganisation = false, loading = true)
+        RequestsState(borrowRequests = null, bankRequests = null, creditOrganisation = false, loading = false)
 
     override fun handleActions(action: RequestsAction) {
         when (action) {
@@ -31,12 +29,20 @@ class RequestsViewModel(
             is RequestsAction.ProfileClicked -> {
                 setEffect { RequestsEffect.Navigation.ToProfile }
             }
+
+            is RequestsAction.RepeatClicked -> {
+                loadData()
+            }
         }
     }
 
     init {
         setState { copy(creditOrganisation = isCreditOrganisationUseCase()) }
 
+        loadData()
+    }
+
+    private fun loadData() {
         if (viewState.value.creditOrganisation) {
             loadBankRequests()
         } else {
@@ -46,9 +52,10 @@ class RequestsViewModel(
 
     private fun loadBankRequests() {
         viewModelScope.launch {
+            setState { copy(loading = true) }
             try {
-                // TODO get bank requests use case
-                setState { copy(bankRequests = getBankRequestsMock(), loading = false) }
+                val data = getBankRequestsUseCase()
+                setState { copy(bankRequests = data, loading = false) }
             } catch (e: Throwable) {
                 setState { copy(bankRequests = null, loading = false) }
             }
@@ -57,6 +64,7 @@ class RequestsViewModel(
 
     private fun loadBorrowerRequests() {
         viewModelScope.launch {
+            setState { copy(loading = true) }
             try {
                 val data = getBorrowRequestsUseCase()
                 setState { copy(borrowRequests = data, loading = false) }
@@ -65,31 +73,4 @@ class RequestsViewModel(
             }
         }
     }
-
-    private fun getBankRequestsMock(): BankRequests = BankRequests(
-        own = listOf(
-            BankRequest(
-                id = 4,
-                name = "ПАО “Компания Первая”",
-                sum = Sum(12, SumUnit.MILLION),
-            ),
-        ),
-        other = listOf(
-            BankRequest(
-                id = 101,
-                name = "ПАО “Компания Первая”",
-                sum = Sum(7, SumUnit.MILLION),
-            ),
-            BankRequest(
-                id = 56,
-                name = "ПАО “Компания Вторая”",
-                sum = Sum(2, SumUnit.MILLION),
-            ),
-            BankRequest(
-                id = 11,
-                name = "ПАО “Компания Третья”",
-                sum = Sum(7, SumUnit.MILLION),
-            ),
-        ),
-    )
 }

@@ -11,12 +11,16 @@ class BankDetailViewModel(
 ) : BaseViewModel<BankDetailAction, BankDetailState, BankDetailEffect>() {
 
     override fun setInitialState(): BankDetailState =
-        BankDetailState(data = null, loading = true)
+        BankDetailState(data = null, loading = false)
 
     override fun handleActions(action: BankDetailAction) {
         when (action) {
             is BankDetailAction.BackClicked -> {
                 setEffect { BankDetailEffect.Navigation.ToBack }
+            }
+
+            is BankDetailAction.RepeatClicked -> {
+                loadBankInfo()
             }
         }
     }
@@ -27,6 +31,7 @@ class BankDetailViewModel(
 
     private fun loadBankInfo() {
         viewModelScope.launch {
+            setState { copy(loading = true) }
             try {
                 val detail = getBankDetailUseCase(bankId)
                 setState { copy(data = detail, loading = false) }

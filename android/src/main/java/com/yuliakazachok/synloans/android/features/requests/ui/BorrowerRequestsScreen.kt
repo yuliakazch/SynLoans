@@ -56,7 +56,9 @@ fun BorrowerRequestsScreen(
         when {
             state.loading -> LoadingView()
 
-            state.borrowRequests == null -> ErrorView()
+            state.borrowRequests == null -> ErrorView(
+                onUpdateClicked = { onActionSent(RequestsAction.RepeatClicked) },
+            )
 
             state.borrowRequests.isEmpty() -> TextFullScreenView(stringResource(R.string.requests_empty))
 

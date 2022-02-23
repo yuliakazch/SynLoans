@@ -68,7 +68,9 @@ fun RequestDetailScreen(
         when {
             state.loading -> LoadingView()
 
-            state.request == null -> ErrorView()
+            state.request == null -> ErrorView(
+                onUpdateClicked = { onActionSent(RequestDetailAction.RepeatClicked) },
+            )
 
             else -> RequestDetailView(state.request, state.creditOrganisation, onActionSent)
         }
@@ -143,7 +145,9 @@ fun RequestInfoView(
     val monthsTexts = stringArrayResource(R.array.request_months)
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(top = 12.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 12.dp),
     ) {
         item {
             TextTwoLinesView(
@@ -240,7 +244,9 @@ fun BanksView(
     onActionSent: (action: RequestDetailAction) -> Unit,
 ) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(top = 12.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 12.dp),
     ) {
         banks.forEach { bank ->
             item {
@@ -269,7 +275,9 @@ fun BorrowerView(
     borrower: Borrower,
 ) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(top = 12.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 12.dp),
     ) {
         item {
             TextTwoLinesView(

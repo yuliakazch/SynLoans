@@ -8,6 +8,8 @@ import com.yuliakazachok.synloans.shared.request.domain.entity.schedule.Payment
 sealed class PaymentScheduleAction : Action {
 
 	object BackClicked : PaymentScheduleAction()
+
+	object RepeatClicked : PaymentScheduleAction()
 }
 
 data class PaymentScheduleState(val data: List<Payment>?, val loading: Boolean) : State

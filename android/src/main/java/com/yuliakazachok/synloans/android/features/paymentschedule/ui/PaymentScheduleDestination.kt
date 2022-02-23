@@ -6,11 +6,14 @@ import androidx.navigation.NavHostController
 import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.PaymentScheduleEffect
 import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.PaymentScheduleViewModel
 import org.koin.androidx.compose.getViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
-fun PaymentScheduleDestination(navController: NavHostController) {
+fun PaymentScheduleDestination(navController: NavHostController, requestId: Int) {
 
-	val viewModel = getViewModel<PaymentScheduleViewModel>()
+	val viewModel = getViewModel<PaymentScheduleViewModel> {
+		parametersOf(requestId)
+	}
 	val state = viewModel.viewState.collectAsState().value
 
 	PaymentScheduleScreen(

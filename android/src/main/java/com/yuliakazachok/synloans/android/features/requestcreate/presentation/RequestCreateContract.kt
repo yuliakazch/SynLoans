@@ -10,16 +10,16 @@ sealed class RequestCreateAction : Action {
 
 	object BackClicked : RequestCreateAction()
 
+	object RepeatClicked : RequestCreateAction()
+
 	data class SumChanged(val newValue: String) : RequestCreateAction()
 	data class RateChanged(val newValue: String) : RequestCreateAction()
 	data class TermChanged(val newValue: String) : RequestCreateAction()
 }
 
-data class RequestCreateState(val data: CreateData, val loading: Boolean) : State
+data class RequestCreateState(val data: CreateData, val loading: Boolean, val hasError: Boolean) : State
 
 sealed class RequestCreateEffect : Effect {
-
-	data class Error(val message: String? = null) : RequestCreateEffect()
 
 	sealed class Navigation : RequestCreateEffect() {
 

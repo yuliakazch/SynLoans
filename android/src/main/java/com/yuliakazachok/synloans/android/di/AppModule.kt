@@ -20,7 +20,7 @@ val appModule = module {
     viewModel { SignUpViewModel(get()) }
     viewModel { ProfileViewModel(get(), get()) }
     viewModel { EditProfileViewModel(get(), get()) }
-    viewModel { RequestsViewModel(get(), get()) }
+    viewModel { RequestsViewModel(get(), get(), get()) }
     viewModel { (requestId: Int) ->
         RequestDetailViewModel(get(), get(), get(), requestId)
     }
@@ -31,6 +31,8 @@ val appModule = module {
     viewModel { (bankId: Int) ->
         BankDetailViewModel(get(), bankId)
     }
-    viewModel { PaymentScheduleViewModel() }
+    viewModel { (requestId: Int) ->
+        PaymentScheduleViewModel(get(), requestId)
+    }
     viewModel { SplashViewModel(get()) }
 }
