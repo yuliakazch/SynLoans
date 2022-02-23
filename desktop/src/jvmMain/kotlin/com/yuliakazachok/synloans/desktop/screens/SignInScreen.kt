@@ -51,6 +51,8 @@ class SignInScreen : Screen {
                 is SignInUiState.Content -> {
                     if (state.hasError) {
                         LaunchedEffect(scaffoldState.snackbarHostState) {
+                            password.value = ""
+
                             scaffoldState.snackbarHostState.showSnackbar(
                                 message = TextResources.error,
                                 duration = SnackbarDuration.Short,
