@@ -3,8 +3,6 @@ package com.yuliakazachok.synloans.android.features.joinsyndicate.presentation
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
-import com.yuliakazachok.synloans.shared.request.domain.entity.sum.Sum
-import com.yuliakazachok.synloans.shared.request.domain.entity.sum.SumUnit
 import com.yuliakazachok.synloans.shared.request.domain.usecase.JoinSyndicateUseCase
 import kotlinx.coroutines.launch
 
@@ -61,7 +59,7 @@ class JoinSyndicateViewModel(
     private fun JoinData.convertToJoinInfo(): JoinSyndicateInfo =
         JoinSyndicateInfo(
             requestId = requestId,
-            sum = Sum(value = 3, SumUnit.THOUSAND),
+            sum = sum.toLong(),
             approveBankAgent = approveBankAgent,
         )
 }

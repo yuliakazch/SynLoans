@@ -15,7 +15,7 @@ class RequestDataSourceImpl(
 ) : RequestDataSource {
 
     override suspend fun create(data: CreateRequestInfo, token: String) {
-        httpClient.post<Unit>("$BASE_URL/loan/requests/") {
+        httpClient.post<Unit>("$BASE_URL/loans/requests/") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, token)
             body = data
@@ -23,18 +23,19 @@ class RequestDataSourceImpl(
     }
 
     override suspend fun getBorrowRequests(token: String): List<RequestCommon> =
-        httpClient.get<List<RequestCommon>>("$BASE_URL/loan/requests/") {
+        httpClient.get<List<RequestCommon>>("$BASE_URL/loans/requests/") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, token)
         }
 
-    override suspend fun getBankRequests(): BankRequests =
-        httpClient.get<BankRequests>("$BASE_URL/") { // TODO add url
+    override suspend fun getBankRequests(token: String): BankRequests =
+        httpClient.get<BankRequests>("$BASE_URL/loans/requests/all") {
             contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, token)
         }
 
     override suspend fun getRequestDetail(id: Int, token: String): RequestCommon =
-        httpClient.get<RequestCommon>("$BASE_URL/loan/requests/$id") {
+        httpClient.get<RequestCommon>("$BASE_URL/loans/requests/$id") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, token)
         }
@@ -47,18 +48,20 @@ class RequestDataSourceImpl(
         }
     }
 
-    override suspend fun getActualSchedule(id: Int): List<Payment> =
-        httpClient.get<List<Payment>>("$BASE_URL/$id") { // TODO add url
+    override suspend fun getActualSchedule(id: Int, token: String): List<Payment> =
+        httpClient.get<List<Payment>>("$BASE_URL/loans/$id/payments/actual") {
             contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, token)
         }
 
-    override suspend fun getPlannedSchedule(id: Int): List<Payment> =
-        httpClient.get<List<Payment>>("$BASE_URL/$id") { // TODO add url
+    override suspend fun getPlannedSchedule(id: Int, token: String): List<Payment> =
+        httpClient.get<List<Payment>>("$BASE_URL/loans/$id/payments/plan") {
             contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, token)
         }
 
     override suspend fun cancel(id: Int, token: String) {
-        httpClient.delete<Unit>("$BASE_URL/loan/requests/$id") {
+        httpClient.delete<Unit>("$BASE_URL/loans/requests/$id") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, token)
         }

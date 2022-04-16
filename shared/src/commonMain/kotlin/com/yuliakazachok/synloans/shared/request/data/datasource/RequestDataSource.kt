@@ -12,15 +12,15 @@ interface RequestDataSource {
 
     suspend fun getBorrowRequests(token: String): List<RequestCommon>
 
-    suspend fun getBankRequests(): BankRequests
+    suspend fun getBankRequests(token: String): BankRequests
 
     suspend fun getRequestDetail(id: Int, token: String): RequestCommon
 
     suspend fun join(data: JoinSyndicateInfo, token: String)
 
-    suspend fun getActualSchedule(id: Int): List<Payment>
+    suspend fun getActualSchedule(id: Int, token: String): List<Payment>
 
-    suspend fun getPlannedSchedule(id: Int): List<Payment>
+    suspend fun getPlannedSchedule(id: Int, token: String): List<Payment>
 
     suspend fun cancel(id: Int, token: String)
 }

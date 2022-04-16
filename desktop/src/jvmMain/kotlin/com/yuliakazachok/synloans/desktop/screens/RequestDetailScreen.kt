@@ -30,8 +30,6 @@ import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
 import com.yuliakazachok.synloans.shared.flag.domain.usecase.IsCreditOrganisationUseCase
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.*
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
-import com.yuliakazachok.synloans.shared.request.domain.entity.sum.Sum
-import com.yuliakazachok.synloans.shared.request.domain.entity.sum.SumUnit
 import com.yuliakazachok.synloans.shared.request.domain.usecase.CancelRequestUseCase
 import com.yuliakazachok.synloans.shared.request.domain.usecase.GetRequestDetailUseCase
 import com.yuliakazachok.synloans.shared.request.domain.usecase.JoinSyndicateUseCase
@@ -131,7 +129,7 @@ class RequestDetailScreen(
                         joinSyndicateUseCase = joinSyndicateUseCase,
                         joinSyndicateInfo = JoinSyndicateInfo(
                             requestId = requestId,
-                            sum = Sum(sumJoinSyndicate.value.toInt(), SumUnit.THOUSAND),
+                            sum = sumJoinSyndicate.value.toLong(),
                             approveBankAgent = approveBankAgentJoinSyndicate.value,
                         ),
                         onMainRoute = { navigator.replaceAll(mainScreen) },

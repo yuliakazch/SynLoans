@@ -22,7 +22,7 @@ class RequestRepositoryImpl(
         requestDataSource.getBorrowRequests(tokenDataSource.get())
 
     override suspend fun getBankRequests(): BankRequests =
-        requestDataSource.getBankRequests()
+        requestDataSource.getBankRequests(tokenDataSource.get())
 
     override suspend fun getRequestDetail(id: Int): RequestCommon =
         requestDataSource.getRequestDetail(id, tokenDataSource.get())
@@ -32,10 +32,10 @@ class RequestRepositoryImpl(
     }
 
     override suspend fun getActualSchedule(id: Int): List<Payment> =
-        requestDataSource.getActualSchedule(id)
+        requestDataSource.getActualSchedule(id, tokenDataSource.get())
 
     override suspend fun getPlannedSchedule(id: Int): List<Payment> =
-        requestDataSource.getPlannedSchedule(id)
+        requestDataSource.getPlannedSchedule(id, tokenDataSource.get())
 
     override suspend fun cancel(id: Int) {
         requestDataSource.cancel(id, tokenDataSource.get())

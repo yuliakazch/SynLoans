@@ -22,8 +22,6 @@ import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.desktop.koin
 import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
 import com.yuliakazachok.synloans.shared.request.domain.entity.create.CreateRequestInfo
-import com.yuliakazachok.synloans.shared.request.domain.entity.sum.Sum
-import com.yuliakazachok.synloans.shared.request.domain.entity.sum.SumUnit
 import com.yuliakazachok.synloans.shared.request.domain.usecase.CreateRequestUseCase
 
 private sealed class RequestCreateUiState {
@@ -79,8 +77,8 @@ class RequestCreateScreen : Screen {
                     uiState.value = createRequest(
                         createRequestUseCase = createRequestUseCase,
                         createRequestInfo = CreateRequestInfo(
-                            sum = Sum(value = sum.value.toInt(), unit = SumUnit.THOUSAND),
-                            maxRate = rate.value.toInt(),
+                            sum = sum.value.toLong(),
+                            maxRate = rate.value.toFloat(),
                             term = term.value.toInt(),
                         ),
                         onMainRoute = { navigator.replaceAll(mainScreen) },
