@@ -18,6 +18,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.yuliakazachok.synloans.android.R
 import com.yuliakazachok.synloans.android.components.error.ErrorView
 import com.yuliakazachok.synloans.android.components.progress.LoadingView
+import com.yuliakazachok.synloans.android.components.text.TextFullScreenView
 import com.yuliakazachok.synloans.android.components.text.TextTwoLinesClickableView
 import com.yuliakazachok.synloans.android.components.text.TextTwoLinesView
 import com.yuliakazachok.synloans.android.components.topbar.TopBarBackView
@@ -254,28 +255,32 @@ fun BanksView(
     banks: List<BankItem>,
     onActionSent: (action: RequestDetailAction) -> Unit,
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 12.dp),
-    ) {
-        banks.forEach { bank ->
-            item {
-                val textSumUnit = when (bank.sum.unit) {
-                    SumUnit.BILLION -> stringResource(R.string.requests_sum_billion)
-                    SumUnit.MILLION -> stringResource(R.string.requests_sum_million)
-                    SumUnit.THOUSAND -> stringResource(R.string.requests_sum_thousand)
-                }
+    if (banks.isEmpty()) {
+        TextFullScreenView(stringResource(R.string.request_not_banks))
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 12.dp),
+        ) {
+            banks.forEach { bank ->
+                item {
+                    val textSumUnit = when (bank.sum.unit) {
+                        SumUnit.BILLION -> stringResource(R.string.requests_sum_billion)
+                        SumUnit.MILLION -> stringResource(R.string.requests_sum_million)
+                        SumUnit.THOUSAND -> stringResource(R.string.requests_sum_thousand)
+                    }
 
-                TextTwoLinesClickableView(
-                    textOne = bank.name,
-                    textTwo = if (bank.approveBankAgent) {
-                        bank.sum.value.toString() + textSumUnit + stringResource(R.string.request_divider) + stringResource(R.string.request_approve_bank_agent)
-                    } else {
-                        bank.sum.value.toString() + textSumUnit
-                    },
-                    onClicked = { onActionSent(RequestDetailAction.BankItemClicked(bank.id)) }
-                )
+                    TextTwoLinesClickableView(
+                        textOne = bank.name,
+                        textTwo = if (bank.approveBankAgent) {
+                            bank.sum.value.toString() + textSumUnit + stringResource(R.string.request_divider) + stringResource(R.string.request_approve_bank_agent)
+                        } else {
+                            bank.sum.value.toString() + textSumUnit
+                        },
+                        onClicked = { onActionSent(RequestDetailAction.BankItemClicked(bank.id)) }
+                    )
+                }
             }
         }
     }
