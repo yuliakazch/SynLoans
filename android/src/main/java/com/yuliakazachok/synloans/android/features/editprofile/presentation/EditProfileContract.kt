@@ -19,7 +19,6 @@ sealed class EditProfileAction : Action {
 	data class IecChanged(val newValue: String) : EditProfileAction()
 	data class LegalAddressChanged(val newValue: String) : EditProfileAction()
 	data class ActualAddressChanged(val newValue: String) : EditProfileAction()
-	data class EmailChanged(val newValue: String) : EditProfileAction()
 }
 
 data class EditProfileState(val data: EditProfileInfo?, val loading: Boolean) : State

@@ -83,51 +83,44 @@ fun EditProfileView(
     ) {
         item {
             EditTextView(
-                text = data.fullName,
+                text = data.fullName.orEmpty(),
                 label = stringResource(R.string.field_full_name_company),
                 onTextChange = { onActionSent(EditProfileAction.FullNameChanged(it)) },
             )
         }
         item {
             EditTextView(
-                text = data.shortName,
+                text = data.shortName.orEmpty(),
                 label = stringResource(R.string.field_short_name_company),
                 onTextChange = { onActionSent(EditProfileAction.ShortNameChanged(it)) },
             )
         }
         item {
             EditTextView(
-                text = data.inn,
+                text = data.inn.orEmpty(),
                 label = stringResource(R.string.field_tin),
                 onTextChange = { onActionSent(EditProfileAction.TinChanged(it)) },
             )
         }
         item {
             EditTextView(
-                text = data.kpp,
+                text = data.kpp.orEmpty(),
                 label = stringResource(R.string.field_iec),
                 onTextChange = { onActionSent(EditProfileAction.IecChanged(it)) },
             )
         }
         item {
             EditTextView(
-                text = data.legalAddress,
+                text = data.legalAddress.orEmpty(),
                 label = stringResource(R.string.field_legal_address),
                 onTextChange = { onActionSent(EditProfileAction.LegalAddressChanged(it)) },
             )
         }
         item {
             EditTextView(
-                text = data.actualAddress,
+                text = data.actualAddress.orEmpty(),
                 label = stringResource(R.string.field_actual_address),
                 onTextChange = { onActionSent(EditProfileAction.ActualAddressChanged(it)) },
-            )
-        }
-        item {
-            EditTextView(
-                text = data.email,
-                label = stringResource(R.string.field_email),
-                onTextChange = { onActionSent(EditProfileAction.EmailChanged(it)) },
             )
         }
         item {
