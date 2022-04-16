@@ -12,13 +12,13 @@ import androidx.compose.ui.unit.dp
 import com.yuliakazachok.synloans.android.R
 import com.yuliakazachok.synloans.android.components.error.ErrorView
 import com.yuliakazachok.synloans.android.components.progress.LoadingView
-import com.yuliakazachok.synloans.android.components.text.TextTwoLinesView
+import com.yuliakazachok.synloans.android.components.text.TextThreeLinesView
 import com.yuliakazachok.synloans.android.components.topbar.TopBarBackView
 import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
 import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.PaymentScheduleAction
 import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.PaymentScheduleEffect
 import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.PaymentScheduleState
-import com.yuliakazachok.synloans.shared.request.domain.entity.schedule.Payment
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.PaymentInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -43,7 +43,7 @@ fun PaymentScheduleScreen(
     Scaffold(
         topBar = {
             TopBarBackView(
-                title = stringResource(R.string.request_payment_schedule),
+                title = stringResource(R.string.payments),
                 onIconClicked = { onActionSent(PaymentScheduleAction.BackClicked) },
             )
         }
@@ -62,12 +62,13 @@ fun PaymentScheduleScreen(
 
 @Composable
 fun PaymentScheduleView(
-    data: List<Payment>
+    data: List<PaymentInfo>
 ) {
     val listState = rememberLazyListState()
-    val textSumUnit = stringResource(R.string.requests_sum_million)
-    val textPaid = stringResource(R.string.payment_paid)
-    val textNotPaid = stringResource(R.string.payment_not_paid)
+    val textSumUnit = stringResource(R.string.requests_sum)
+    val textDatePayment = stringResource(R.string.date_payment)
+    val textPrincipal = stringResource(R.string.principal)
+    val textPercents = stringResource(R.string.percents)
 
     LazyColumn(
         state = listState,
@@ -75,13 +76,10 @@ fun PaymentScheduleView(
     ) {
         data.forEach { payment ->
             item {
-                TextTwoLinesView(
-                    textOne = if (payment.paid) {
-                        textPaid
-                    } else {
-                        textNotPaid
-                    },
-                    textTwo = payment.sum.toString() + textSumUnit + stringResource(R.string.request_divider) + payment.date,
+                TextThreeLinesView(
+                    textOne = textDatePayment + payment.date,
+                    textTwo = textPrincipal + payment.principal.toString() + textSumUnit,
+                    textThree = textPercents + payment.percent + textSumUnit,
                 )
             }
         }

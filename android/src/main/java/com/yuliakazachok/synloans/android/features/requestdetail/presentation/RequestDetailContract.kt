@@ -3,6 +3,7 @@ package com.yuliakazachok.synloans.android.features.requestdetail.presentation
 import com.yuliakazachok.synloans.android.core.Action
 import com.yuliakazachok.synloans.android.core.Effect
 import com.yuliakazachok.synloans.android.core.State
+import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.ScheduleType
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCommon
 
 sealed class RequestDetailAction : Action {
@@ -10,7 +11,7 @@ sealed class RequestDetailAction : Action {
     object BackClicked : RequestDetailAction()
     object RepeatClicked : RequestDetailAction()
     object CancelRequestClicked : RequestDetailAction()
-    object PaymentScheduleClicked : RequestDetailAction()
+    data class PaymentScheduleClicked(val scheduleType: ScheduleType) : RequestDetailAction()
     object JoinSyndicateClicked : RequestDetailAction()
     data class BankItemClicked(val id: Int) : RequestDetailAction()
 }
@@ -29,7 +30,7 @@ sealed class RequestDetailEffect : Effect {
 
         object ToBack : Navigation()
 
-        data class ToPaymentSchedule(val id: Int) : Navigation()
+        data class ToPaymentSchedule(val schedule: Int, val id: Int) : Navigation()
 
         data class ToJoinSyndicate(val id: Int) : Navigation()
 

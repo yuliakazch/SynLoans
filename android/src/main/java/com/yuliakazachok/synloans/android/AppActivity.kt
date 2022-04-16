@@ -103,12 +103,16 @@ fun SynLoansApp() {
                         )
                     }
                     composable(
-                        route = "$PAYMENT_SCHEDULE/{requestId}",
-                        arguments = listOf(navArgument("requestId") { type = NavType.IntType }),
+                        route = "$PAYMENT_SCHEDULE/{requestId}/{schedule}",
+                        arguments = listOf(
+                            navArgument("schedule") { type = NavType.IntType },
+                            navArgument("requestId") { type = NavType.IntType },
+                        ),
                     ) { backStackEntry ->
                         PaymentScheduleDestination(
                             navController = navController,
-                            requestId = backStackEntry.arguments?.getInt("requestId") ?: throw NullPointerException("requestId is null")
+                            schedule = backStackEntry.arguments?.getInt("schedule") ?: throw NullPointerException("schedule is null"),
+                            requestId = backStackEntry.arguments?.getInt("requestId") ?: throw NullPointerException("requestId is null"),
                         )
                     }
                 }

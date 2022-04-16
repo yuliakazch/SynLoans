@@ -4,6 +4,7 @@ import com.yuliakazachok.synloans.android.features.bankdetail.presentation.BankD
 import com.yuliakazachok.synloans.android.features.editprofile.presentation.EditProfileViewModel
 import com.yuliakazachok.synloans.android.features.joinsyndicate.presentation.JoinSyndicateViewModel
 import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.PaymentScheduleViewModel
+import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.ScheduleType
 import com.yuliakazachok.synloans.android.features.profile.presentation.ProfileViewModel
 import com.yuliakazachok.synloans.android.features.requestcreate.presentation.RequestCreateViewModel
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailViewModel
@@ -31,8 +32,8 @@ val appModule = module {
     viewModel { (bankId: Int) ->
         BankDetailViewModel(get(), bankId)
     }
-    viewModel { (requestId: Int) ->
-        PaymentScheduleViewModel(get(), requestId)
+    viewModel { (scheduleType: ScheduleType, requestId: Int) ->
+        PaymentScheduleViewModel(get(), get(), scheduleType, requestId)
     }
     viewModel { SplashViewModel(get()) }
 }

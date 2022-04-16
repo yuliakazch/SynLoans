@@ -1,11 +1,11 @@
 package com.yuliakazachok.synloans.shared.request.data.repository
 
 import com.yuliakazachok.synloans.shared.request.data.datasource.RequestDataSource
-import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
 import com.yuliakazachok.synloans.shared.request.domain.entity.create.CreateRequestInfo
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCommon
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
-import com.yuliakazachok.synloans.shared.request.domain.entity.schedule.Payment
+import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.PaymentInfo
 import com.yuliakazachok.synloans.shared.request.domain.repository.RequestRepository
 import com.yuliakazachok.synloans.shared.token.data.datasource.TokenDataSource
 
@@ -31,10 +31,10 @@ class RequestRepositoryImpl(
         requestDataSource.join(data, tokenDataSource.get())
     }
 
-    override suspend fun getActualSchedule(id: Int): List<Payment> =
+    override suspend fun getActualSchedule(id: Int): List<PaymentInfo> =
         requestDataSource.getActualSchedule(id, tokenDataSource.get())
 
-    override suspend fun getPlannedSchedule(id: Int): List<Payment> =
+    override suspend fun getPlannedSchedule(id: Int): List<PaymentInfo> =
         requestDataSource.getPlannedSchedule(id, tokenDataSource.get())
 
     override suspend fun cancel(id: Int) {

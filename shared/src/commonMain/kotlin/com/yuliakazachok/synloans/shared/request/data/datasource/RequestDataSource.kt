@@ -1,10 +1,10 @@
 package com.yuliakazachok.synloans.shared.request.data.datasource
 
-import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
 import com.yuliakazachok.synloans.shared.request.domain.entity.create.CreateRequestInfo
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCommon
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
-import com.yuliakazachok.synloans.shared.request.domain.entity.schedule.Payment
+import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.PaymentInfo
 
 interface RequestDataSource {
 
@@ -18,9 +18,9 @@ interface RequestDataSource {
 
     suspend fun join(data: JoinSyndicateInfo, token: String)
 
-    suspend fun getActualSchedule(id: Int, token: String): List<Payment>
+    suspend fun getActualSchedule(id: Int, token: String): List<PaymentInfo>
 
-    suspend fun getPlannedSchedule(id: Int, token: String): List<Payment>
+    suspend fun getPlannedSchedule(id: Int, token: String): List<PaymentInfo>
 
     suspend fun cancel(id: Int, token: String)
 }

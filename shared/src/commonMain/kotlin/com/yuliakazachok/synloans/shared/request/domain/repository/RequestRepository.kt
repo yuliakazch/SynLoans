@@ -1,10 +1,10 @@
 package com.yuliakazachok.synloans.shared.request.domain.repository
 
-import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
 import com.yuliakazachok.synloans.shared.request.domain.entity.create.CreateRequestInfo
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCommon
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
-import com.yuliakazachok.synloans.shared.request.domain.entity.schedule.Payment
+import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.PaymentInfo
 
 interface RequestRepository {
 
@@ -18,9 +18,9 @@ interface RequestRepository {
 
     suspend fun join(data: JoinSyndicateInfo)
 
-    suspend fun getActualSchedule(id: Int): List<Payment>
+    suspend fun getActualSchedule(id: Int): List<PaymentInfo>
 
-    suspend fun getPlannedSchedule(id: Int): List<Payment>
+    suspend fun getPlannedSchedule(id: Int): List<PaymentInfo>
 
     suspend fun cancel(id: Int)
 }

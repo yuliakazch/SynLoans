@@ -27,6 +27,7 @@
 	<string name="requests_title">Заявки</string>
 	<string name="requests_date_create">Дата создания\u0020</string>
 	<string name="requests_date_issue">Дата выдачи\u0020</string>
+	<string name="requests_sum">\u0020руб</string>
 	<string name="requests_sum_billion">\u0020млрд руб</string>
 	<string name="requests_sum_million">\u0020млн руб</string>
 	<string name="requests_sum_thousand">\u0020тыс руб</string>
@@ -66,8 +67,10 @@
 
 	<string name="bank_detail_title">Информация о банке</string>
 
-	<string name="payment_paid">Платеж оплачен</string>
-	<string name="payment_not_paid">Платеж не оплачен</string>
+	<string name="payments">Платежи</string>
+	<string name="date_payment">Дата платежа:\u0020</string>
+	<string name="principal">Основной:\u0020</string>
+	<string name="percents">Проценты:\u0020</string>
 
 	<string name="edit_profile_title">Редактирование</string>
 	<string name="edit_profile_button">Сохранить</string>

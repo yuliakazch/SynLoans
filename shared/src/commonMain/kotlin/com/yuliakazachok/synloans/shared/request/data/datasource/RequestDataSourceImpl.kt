@@ -1,10 +1,10 @@
 package com.yuliakazachok.synloans.shared.request.data.datasource
 
-import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
 import com.yuliakazachok.synloans.shared.request.domain.entity.create.CreateRequestInfo
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCommon
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
-import com.yuliakazachok.synloans.shared.request.domain.entity.schedule.Payment
+import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.PaymentInfo
 import com.yuliakazachok.synloans.util.Config.BASE_URL
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -48,14 +48,14 @@ class RequestDataSourceImpl(
         }
     }
 
-    override suspend fun getActualSchedule(id: Int, token: String): List<Payment> =
-        httpClient.get<List<Payment>>("$BASE_URL/loans/$id/payments/actual") {
+    override suspend fun getActualSchedule(id: Int, token: String): List<PaymentInfo> =
+        httpClient.get<List<PaymentInfo>>("$BASE_URL/loans/$id/payments/actual") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, token)
         }
 
-    override suspend fun getPlannedSchedule(id: Int, token: String): List<Payment> =
-        httpClient.get<List<Payment>>("$BASE_URL/loans/$id/payments/plan") {
+    override suspend fun getPlannedSchedule(id: Int, token: String): List<PaymentInfo> =
+        httpClient.get<List<PaymentInfo>>("$BASE_URL/loans/$id/payments/plan") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, token)
         }

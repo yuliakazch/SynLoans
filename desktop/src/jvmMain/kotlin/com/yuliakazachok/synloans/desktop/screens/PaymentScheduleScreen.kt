@@ -19,12 +19,12 @@ import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
 import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.desktop.koin
-import com.yuliakazachok.synloans.shared.request.domain.entity.schedule.Payment
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.PaymentInfo
 import com.yuliakazachok.synloans.shared.request.domain.usecase.GetPlannedScheduleUseCase
 
 private sealed class PaymentScheduleUiState {
     object LoadingSchedule : PaymentScheduleUiState()
-    data class Content(val payments: List<Payment>) : PaymentScheduleUiState()
+    data class Content(val payments: List<PaymentInfo>) : PaymentScheduleUiState()
     object Error : PaymentScheduleUiState()
 }
 
@@ -69,7 +69,7 @@ class PaymentScheduleScreen(
 
 @Composable
 fun PaymentScheduleView(
-    payments: List<Payment>,
+    payments: List<PaymentInfo>,
     onBackClicked: () -> Unit,
 ) {
     val listState = rememberLazyListState()

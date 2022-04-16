@@ -2,6 +2,8 @@ package com.yuliakazachok.synloans.android.features.requestdetail.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
+import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.ScheduleType.ACTUAL
+import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.ScheduleType.PLANNED
 import com.yuliakazachok.synloans.shared.flag.domain.usecase.IsCreditOrganisationUseCase
 import com.yuliakazachok.synloans.shared.request.domain.usecase.CancelRequestUseCase
 import com.yuliakazachok.synloans.shared.request.domain.usecase.GetRequestDetailUseCase
@@ -32,7 +34,11 @@ class RequestDetailViewModel(
             }
 
             is RequestDetailAction.PaymentScheduleClicked -> {
-                setEffect { RequestDetailEffect.Navigation.ToPaymentSchedule(requestId) }
+                val schedule = when (action.scheduleType) {
+                    PLANNED -> 0
+                    ACTUAL -> 1
+                }
+                setEffect { RequestDetailEffect.Navigation.ToPaymentSchedule(schedule, requestId) }
             }
 
             is RequestDetailAction.JoinSyndicateClicked -> {
