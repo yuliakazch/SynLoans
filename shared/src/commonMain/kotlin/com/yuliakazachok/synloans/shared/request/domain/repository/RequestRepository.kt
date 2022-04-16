@@ -4,6 +4,7 @@ import com.yuliakazachok.synloans.shared.request.domain.entity.create.CreateRequ
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCommon
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
 import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.Payment
 import com.yuliakazachok.synloans.shared.request.domain.entity.payment.PaymentInfo
 
 interface RequestRepository {
@@ -23,4 +24,6 @@ interface RequestRepository {
     suspend fun getPlannedSchedule(id: Int): List<PaymentInfo>
 
     suspend fun cancel(id: Int)
+
+    suspend fun makePayment(id: Int, payment: Payment)
 }

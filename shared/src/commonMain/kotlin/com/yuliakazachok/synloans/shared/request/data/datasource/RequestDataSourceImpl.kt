@@ -4,6 +4,7 @@ import com.yuliakazachok.synloans.shared.request.domain.entity.create.CreateRequ
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCommon
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
 import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.Payment
 import com.yuliakazachok.synloans.shared.request.domain.entity.payment.PaymentInfo
 import com.yuliakazachok.synloans.util.Config.BASE_URL
 import io.ktor.client.*
@@ -64,6 +65,14 @@ class RequestDataSourceImpl(
         httpClient.delete<Unit>("$BASE_URL/loans/requests/$id") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, token)
+        }
+    }
+
+    override suspend fun makePayment(id: Int, data: Payment, token: String) {
+        httpClient.post<Unit>("$BASE_URL/loans/$id/pay") {
+            contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, token)
+            body = data
         }
     }
 }

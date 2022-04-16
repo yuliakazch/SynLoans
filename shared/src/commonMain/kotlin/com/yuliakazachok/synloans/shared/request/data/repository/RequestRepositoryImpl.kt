@@ -5,6 +5,7 @@ import com.yuliakazachok.synloans.shared.request.domain.entity.create.CreateRequ
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCommon
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
 import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.Payment
 import com.yuliakazachok.synloans.shared.request.domain.entity.payment.PaymentInfo
 import com.yuliakazachok.synloans.shared.request.domain.repository.RequestRepository
 import com.yuliakazachok.synloans.shared.token.data.datasource.TokenDataSource
@@ -39,5 +40,9 @@ class RequestRepositoryImpl(
 
     override suspend fun cancel(id: Int) {
         requestDataSource.cancel(id, tokenDataSource.get())
+    }
+
+    override suspend fun makePayment(id: Int, payment: Payment) {
+        requestDataSource.makePayment(id, payment, tokenDataSource.get())
     }
 }
