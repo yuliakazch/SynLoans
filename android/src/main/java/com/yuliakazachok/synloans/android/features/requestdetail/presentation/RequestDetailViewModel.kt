@@ -48,6 +48,10 @@ class RequestDetailViewModel(
             is RequestDetailAction.BankItemClicked -> {
                 setEffect { RequestDetailEffect.Navigation.ToBankItem(action.id) }
             }
+
+            is RequestDetailAction.MakePaymentClicked -> {
+                setEffect { RequestDetailEffect.Navigation.ToMakePayment(requestId) }
+            }
         }
     }
 

@@ -221,6 +221,17 @@ fun RequestInfoView(
                 ) {
                     Text(stringResource(R.string.payments))
                 }
+
+                if (!creditOrganisation) {
+                    Button(
+                        onClick = { onActionSent(RequestDetailAction.MakePaymentClicked) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                    ) {
+                        Text(stringResource(R.string.make_payment))
+                    }
+                }
             }
         } else {
             if (creditOrganisation) {

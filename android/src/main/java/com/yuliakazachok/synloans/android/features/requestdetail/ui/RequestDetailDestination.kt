@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
 import com.yuliakazachok.synloans.android.core.NavigationKeys.BANK_DETAIL
 import com.yuliakazachok.synloans.android.core.NavigationKeys.JOIN_SYNDICATE
+import com.yuliakazachok.synloans.android.core.NavigationKeys.MAKE_PAYMENT
 import com.yuliakazachok.synloans.android.core.NavigationKeys.PAYMENT_SCHEDULE
 import com.yuliakazachok.synloans.android.core.NavigationKeys.REQUESTS
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailEffect
@@ -42,6 +43,10 @@ fun RequestDetailDestination(navController: NavHostController, requestId: Int) {
 
                 is RequestDetailEffect.Navigation.ToBankItem -> {
                     navController.navigate("${BANK_DETAIL}/${navigationEffect.id}")
+                }
+
+                is RequestDetailEffect.Navigation.ToMakePayment -> {
+                    navController.navigate("${MAKE_PAYMENT}/${navigationEffect.id}")
                 }
             }
         }

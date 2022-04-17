@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.yuliakazachok.synloans.android.R
 import com.yuliakazachok.synloans.android.components.error.ErrorView
 import com.yuliakazachok.synloans.android.components.progress.LoadingView
+import com.yuliakazachok.synloans.android.components.text.TextFullScreenView
 import com.yuliakazachok.synloans.android.components.text.TextThreeLinesView
 import com.yuliakazachok.synloans.android.components.topbar.TopBarBackView
 import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
@@ -70,17 +71,21 @@ fun PaymentScheduleView(
     val textPrincipal = stringResource(R.string.principal)
     val textPercents = stringResource(R.string.percents)
 
-    LazyColumn(
-        state = listState,
-        modifier = Modifier.padding(top = 12.dp)
-    ) {
-        data.forEach { payment ->
-            item {
-                TextThreeLinesView(
-                    textOne = textDatePayment + payment.date,
-                    textTwo = textPrincipal + payment.principal.toString() + textSumUnit,
-                    textThree = textPercents + payment.percent + textSumUnit,
-                )
+    if (data.isEmpty()) {
+        TextFullScreenView(stringResource(R.string.no_payments))
+    } else {
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.padding(top = 12.dp)
+        ) {
+            data.forEach { payment ->
+                item {
+                    TextThreeLinesView(
+                        textOne = textDatePayment + payment.date,
+                        textTwo = textPrincipal + payment.principal.toString() + textSumUnit,
+                        textThree = textPercents + payment.percent + textSumUnit,
+                    )
+                }
             }
         }
     }

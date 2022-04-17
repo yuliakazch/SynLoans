@@ -16,4 +16,5 @@ object NavigationKeys {
 	const val JOIN_SYNDICATE = "joinSyndicate"
 	const val BANK_DETAIL = "bankDetail"
 	const val PAYMENT_SCHEDULE = "paymentSchedule"
+	const val MAKE_PAYMENT = "makePayment"
 }

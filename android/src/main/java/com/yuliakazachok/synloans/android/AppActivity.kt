@@ -15,6 +15,7 @@ import com.yuliakazachok.synloans.android.core.NavigationKeys.BANK_DETAIL
 import com.yuliakazachok.synloans.android.core.NavigationKeys.CREATE_REQUEST
 import com.yuliakazachok.synloans.android.core.NavigationKeys.EDIT_PROFILE
 import com.yuliakazachok.synloans.android.core.NavigationKeys.JOIN_SYNDICATE
+import com.yuliakazachok.synloans.android.core.NavigationKeys.MAKE_PAYMENT
 import com.yuliakazachok.synloans.android.core.NavigationKeys.PAYMENT_SCHEDULE
 import com.yuliakazachok.synloans.android.core.NavigationKeys.PROFILE
 import com.yuliakazachok.synloans.android.core.NavigationKeys.REQUESTS
@@ -28,6 +29,7 @@ import com.yuliakazachok.synloans.android.core.NavigationKeys.SPLASH
 import com.yuliakazachok.synloans.android.features.bankdetail.ui.BankDetailDestination
 import com.yuliakazachok.synloans.android.features.editprofile.ui.EditProfileDestination
 import com.yuliakazachok.synloans.android.features.joinsyndicate.ui.JoinSyndicateDestination
+import com.yuliakazachok.synloans.android.features.makepayment.ui.MakePaymentDestination
 import com.yuliakazachok.synloans.android.features.paymentschedule.ui.PaymentScheduleDestination
 import com.yuliakazachok.synloans.android.features.profile.ui.ProfileDestination
 import com.yuliakazachok.synloans.android.features.requestcreate.ui.RequestCreateDestination
@@ -113,6 +115,15 @@ fun SynLoansApp() {
                             navController = navController,
                             schedule = backStackEntry.arguments?.getInt("schedule") ?: throw NullPointerException("schedule is null"),
                             requestId = backStackEntry.arguments?.getInt("requestId") ?: throw NullPointerException("requestId is null"),
+                        )
+                    }
+                    composable(
+                        route = "$MAKE_PAYMENT/{requestId}",
+                        arguments = listOf(navArgument("requestId") { type = NavType.IntType }),
+                    ) { backStackEntry ->
+                        MakePaymentDestination(
+                            navController = navController,
+                            requestId = backStackEntry.arguments?.getInt("requestId") ?: throw NullPointerException("requestId is null")
                         )
                     }
                 }
