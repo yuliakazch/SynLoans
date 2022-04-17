@@ -49,6 +49,13 @@ class RequestDataSourceImpl(
         }
     }
 
+    override suspend fun exit(id: Int, token: String) {
+        httpClient.delete<Unit>("$BASE_URL/syndicates/$id") {
+            contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, token)
+        }
+    }
+
     override suspend fun getActualSchedule(id: Int, token: String): List<Payment> =
         httpClient.get<List<Payment>>("$BASE_URL/loans/$id/payments/actual") {
             contentType(ContentType.Application.Json)

@@ -6,12 +6,14 @@ import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.
 import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.ScheduleType.PLANNED
 import com.yuliakazachok.synloans.shared.flag.domain.usecase.IsCreditOrganisationUseCase
 import com.yuliakazachok.synloans.shared.request.domain.usecase.CancelRequestUseCase
+import com.yuliakazachok.synloans.shared.request.domain.usecase.ExitSyndicateUseCase
 import com.yuliakazachok.synloans.shared.request.domain.usecase.GetRequestDetailUseCase
 import kotlinx.coroutines.launch
 
 class RequestDetailViewModel(
     private val getRequestDetailUseCase: GetRequestDetailUseCase,
     private val cancelRequestUseCase: CancelRequestUseCase,
+    private val exitSyndicateUseCase: ExitSyndicateUseCase,
     private val isCreditOrganisationUseCase: IsCreditOrganisationUseCase,
     private val requestId: Int,
 ) : BaseViewModel<RequestDetailAction, RequestDetailState, RequestDetailEffect>() {
@@ -52,6 +54,10 @@ class RequestDetailViewModel(
             is RequestDetailAction.MakePaymentClicked -> {
                 setEffect { RequestDetailEffect.Navigation.ToMakePayment(requestId) }
             }
+
+            is RequestDetailAction.ExitSyndicateClicked -> {
+                exitSyndicate()
+            }
         }
     }
 
@@ -78,6 +84,19 @@ class RequestDetailViewModel(
             setState { copy(loading = true) }
             try {
                 cancelRequestUseCase(requestId)
+                setEffect { RequestDetailEffect.Navigation.ToBack }
+            } catch (e: Throwable) {
+                setState { copy(loading = false) }
+                setEffect { RequestDetailEffect.Error() }
+            }
+        }
+    }
+
+    private fun exitSyndicate() {
+        viewModelScope.launch {
+            setState { copy(loading = true) }
+            try {
+                exitSyndicateUseCase(requestId)
                 setEffect { RequestDetailEffect.Navigation.ToBack }
             } catch (e: Throwable) {
                 setState { copy(loading = false) }

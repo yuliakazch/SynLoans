@@ -15,6 +15,7 @@ sealed class RequestDetailAction : Action {
     object JoinSyndicateClicked : RequestDetailAction()
     data class BankItemClicked(val id: Int) : RequestDetailAction()
     object MakePaymentClicked : RequestDetailAction()
+    object ExitSyndicateClicked : RequestDetailAction()
 }
 
 data class RequestDetailState(

@@ -32,6 +32,10 @@ class RequestRepositoryImpl(
         requestDataSource.join(data, tokenDataSource.get())
     }
 
+    override suspend fun exit(id: Int) {
+        requestDataSource.exit(id, tokenDataSource.get())
+    }
+
     override suspend fun getActualSchedule(id: Int): List<Payment> =
         requestDataSource.getActualSchedule(id, tokenDataSource.get())
 

@@ -50,6 +50,7 @@
 	<string name="request_approve_bank_agent">Согласие на роль банка-агента</string>
 	<string name="request_payment_schedule">График платежей</string>
 	<string name="request_join_syndicate">Присоединиться к синдикату</string>
+	<string name="request_exit_syndicate">Выйти из синдиката</string>
 	<string name="request_cancel">Отменить заявку</string>
 	<string name="request_not_banks">Нет участников синдиката</string>
 	<string name="request_rate_units">\u0020%</string>

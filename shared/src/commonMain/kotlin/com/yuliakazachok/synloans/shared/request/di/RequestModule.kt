@@ -18,6 +18,7 @@ val requestModule = module {
     single { GetBankRequestsUseCase(get()) }
     single { GetRequestDetailUseCase(get()) }
     single { JoinSyndicateUseCase(get()) }
+    single { ExitSyndicateUseCase(get()) }
     single { GetActualScheduleUseCase(get()) }
     single { GetPlannedScheduleUseCase(get()) }
     single { CancelRequestUseCase(get()) }

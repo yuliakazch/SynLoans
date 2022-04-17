@@ -245,6 +245,16 @@ fun RequestInfoView(
                         Text(stringResource(R.string.request_join_syndicate))
                     }
                 }
+                item {
+                    Button(
+                        onClick = { onActionSent(RequestDetailAction.ExitSyndicateClicked) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, bottom = 12.dp),
+                    ) {
+                        Text(stringResource(R.string.request_exit_syndicate))
+                    }
+                }
             } else {
                 item {
                     Button(

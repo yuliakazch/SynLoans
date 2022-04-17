@@ -19,6 +19,8 @@ interface RequestRepository {
 
     suspend fun join(data: JoinSyndicateInfo)
 
+    suspend fun exit(id: Int)
+
     suspend fun getActualSchedule(id: Int): List<Payment>
 
     suspend fun getPlannedSchedule(id: Int): List<PaymentInfo>
