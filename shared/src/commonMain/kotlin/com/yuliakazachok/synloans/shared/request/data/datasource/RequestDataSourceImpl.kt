@@ -82,4 +82,11 @@ class RequestDataSourceImpl(
             body = data
         }
     }
+
+    override suspend fun startCredit(id: Int, token: String) {
+        httpClient.post<Unit>("$BASE_URL/loans/$id/start") {
+            contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, token)
+        }
+    }
 }

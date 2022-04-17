@@ -28,4 +28,6 @@ interface RequestRepository {
     suspend fun cancel(id: Int)
 
     suspend fun makePayment(id: Int, payment: Payment)
+
+    suspend fun startCredit(id: Int)
 }

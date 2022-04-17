@@ -265,6 +265,15 @@ fun RequestInfoView(
                     ) {
                         Text(stringResource(R.string.request_cancel))
                     }
+
+                    Button(
+                        onClick = { onActionSent(RequestDetailAction.StartCreditClicked) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, bottom = 12.dp),
+                    ) {
+                        Text(stringResource(R.string.request_start_credit))
+                    }
                 }
             }
         }

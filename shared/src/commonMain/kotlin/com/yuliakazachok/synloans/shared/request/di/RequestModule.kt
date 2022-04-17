@@ -23,4 +23,5 @@ val requestModule = module {
     single { GetPlannedScheduleUseCase(get()) }
     single { CancelRequestUseCase(get()) }
     single { MakePaymentUseCase(get()) }
+    single { StartCreditUseCase(get()) }
 }

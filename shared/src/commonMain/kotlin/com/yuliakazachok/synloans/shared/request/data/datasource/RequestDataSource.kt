@@ -28,4 +28,6 @@ interface RequestDataSource {
     suspend fun cancel(id: Int, token: String)
 
     suspend fun makePayment(id: Int, payment: Payment, token: String)
+
+    suspend fun startCredit(id: Int, token: String)
 }

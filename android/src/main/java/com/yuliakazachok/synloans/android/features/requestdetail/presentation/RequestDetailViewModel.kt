@@ -8,12 +8,14 @@ import com.yuliakazachok.synloans.shared.flag.domain.usecase.IsCreditOrganisatio
 import com.yuliakazachok.synloans.shared.request.domain.usecase.CancelRequestUseCase
 import com.yuliakazachok.synloans.shared.request.domain.usecase.ExitSyndicateUseCase
 import com.yuliakazachok.synloans.shared.request.domain.usecase.GetRequestDetailUseCase
+import com.yuliakazachok.synloans.shared.request.domain.usecase.StartCreditUseCase
 import kotlinx.coroutines.launch
 
 class RequestDetailViewModel(
     private val getRequestDetailUseCase: GetRequestDetailUseCase,
     private val cancelRequestUseCase: CancelRequestUseCase,
     private val exitSyndicateUseCase: ExitSyndicateUseCase,
+    private val startCreditUseCase: StartCreditUseCase,
     private val isCreditOrganisationUseCase: IsCreditOrganisationUseCase,
     private val requestId: Int,
 ) : BaseViewModel<RequestDetailAction, RequestDetailState, RequestDetailEffect>() {
@@ -58,6 +60,10 @@ class RequestDetailViewModel(
             is RequestDetailAction.ExitSyndicateClicked -> {
                 exitSyndicate()
             }
+
+            is RequestDetailAction.StartCreditClicked -> {
+                startCredit()
+            }
         }
     }
 
@@ -98,6 +104,19 @@ class RequestDetailViewModel(
             try {
                 exitSyndicateUseCase(requestId)
                 setEffect { RequestDetailEffect.Navigation.ToBack }
+            } catch (e: Throwable) {
+                setState { copy(loading = false) }
+                setEffect { RequestDetailEffect.Error() }
+            }
+        }
+    }
+
+    private fun startCredit() {
+        viewModelScope.launch {
+            setState { copy(loading = true) }
+            try {
+                startCreditUseCase(requestId)
+                loadInfoRequest()
             } catch (e: Throwable) {
                 setState { copy(loading = false) }
                 setEffect { RequestDetailEffect.Error() }

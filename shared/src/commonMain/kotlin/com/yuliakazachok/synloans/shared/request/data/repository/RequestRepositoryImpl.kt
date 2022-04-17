@@ -49,4 +49,8 @@ class RequestRepositoryImpl(
     override suspend fun makePayment(id: Int, payment: Payment) {
         requestDataSource.makePayment(id, payment, tokenDataSource.get())
     }
+
+    override suspend fun startCredit(id: Int) {
+        requestDataSource.startCredit(id, tokenDataSource.get())
+    }
 }
