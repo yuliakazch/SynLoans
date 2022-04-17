@@ -32,7 +32,7 @@ class RequestRepositoryImpl(
         requestDataSource.join(data, tokenDataSource.get())
     }
 
-    override suspend fun getActualSchedule(id: Int): List<PaymentInfo> =
+    override suspend fun getActualSchedule(id: Int): List<Payment> =
         requestDataSource.getActualSchedule(id, tokenDataSource.get())
 
     override suspend fun getPlannedSchedule(id: Int): List<PaymentInfo> =

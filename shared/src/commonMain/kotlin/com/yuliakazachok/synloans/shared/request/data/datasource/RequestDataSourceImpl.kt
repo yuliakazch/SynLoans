@@ -49,8 +49,8 @@ class RequestDataSourceImpl(
         }
     }
 
-    override suspend fun getActualSchedule(id: Int, token: String): List<PaymentInfo> =
-        httpClient.get<List<PaymentInfo>>("$BASE_URL/loans/$id/payments/actual") {
+    override suspend fun getActualSchedule(id: Int, token: String): List<Payment> =
+        httpClient.get<List<Payment>>("$BASE_URL/loans/$id/payments/actual") {
             contentType(ContentType.Application.Json)
             header(HttpHeaders.Authorization, token)
         }

@@ -72,6 +72,7 @@
 	<string name="date_payment">Дата платежа:\u0020</string>
 	<string name="principal">Основной:\u0020</string>
 	<string name="percents">Проценты:\u0020</string>
+	<string name="sum">Сумма:\u0020</string>
 	<string name="make_payment">Внести платеж</string>
 	<string name="send">Отправить</string>
 	<string name="no_payments">Нет платежей</string>

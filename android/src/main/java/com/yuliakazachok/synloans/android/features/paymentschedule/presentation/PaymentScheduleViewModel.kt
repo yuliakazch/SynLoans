@@ -15,7 +15,7 @@ class PaymentScheduleViewModel(
 ) : BaseViewModel<PaymentScheduleAction, PaymentScheduleState, PaymentScheduleEffect>() {
 
     override fun setInitialState(): PaymentScheduleState =
-        PaymentScheduleState(data = null, loading = false)
+        PaymentScheduleState(planned = null, actual = null, loading = false)
 
     override fun handleActions(action: PaymentScheduleAction) {
         when (action) {
@@ -37,13 +37,18 @@ class PaymentScheduleViewModel(
         viewModelScope.launch {
             setState { copy(loading = true) }
             try {
-                val data = when (scheduleType) {
-                    PLANNED -> getPlannedScheduleUseCase(requestId)
-                    ACTUAL -> getActualScheduleUseCase(requestId)
+                when (scheduleType) {
+                    PLANNED -> {
+                        val data = getPlannedScheduleUseCase(requestId)
+                        setState { copy(planned = data, loading = false) }
+                    }
+                    ACTUAL -> {
+                        val data = getActualScheduleUseCase(requestId)
+                        setState { copy(actual = data, loading = false) }
+                    }
                 }
-                setState { copy(data = data, loading = false) }
             } catch (e: Throwable) {
-                setState { copy(data = null, loading = false) }
+                setState { copy(planned = null, actual = null, loading = false) }
             }
         }
     }
