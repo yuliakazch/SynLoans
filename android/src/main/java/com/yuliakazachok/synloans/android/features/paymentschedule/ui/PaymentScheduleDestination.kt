@@ -5,7 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
 import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.PaymentScheduleEffect
 import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.PaymentScheduleViewModel
-import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.ScheduleType
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.ScheduleType
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 

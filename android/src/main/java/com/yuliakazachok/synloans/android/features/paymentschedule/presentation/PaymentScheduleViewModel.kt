@@ -2,7 +2,8 @@ package com.yuliakazachok.synloans.android.features.paymentschedule.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
-import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.ScheduleType.*
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.ScheduleType
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.ScheduleType.*
 import com.yuliakazachok.synloans.shared.request.domain.usecase.GetActualScheduleUseCase
 import com.yuliakazachok.synloans.shared.request.domain.usecase.GetPlannedScheduleUseCase
 import kotlinx.coroutines.launch

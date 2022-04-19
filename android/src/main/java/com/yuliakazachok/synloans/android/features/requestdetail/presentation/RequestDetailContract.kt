@@ -3,7 +3,7 @@ package com.yuliakazachok.synloans.android.features.requestdetail.presentation
 import com.yuliakazachok.synloans.android.core.Action
 import com.yuliakazachok.synloans.android.core.Effect
 import com.yuliakazachok.synloans.android.core.State
-import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.ScheduleType
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.ScheduleType
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCommon
 
 sealed class RequestDetailAction : Action {

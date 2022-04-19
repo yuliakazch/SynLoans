@@ -5,7 +5,7 @@ import com.yuliakazachok.synloans.android.features.editprofile.presentation.Edit
 import com.yuliakazachok.synloans.android.features.joinsyndicate.presentation.JoinSyndicateViewModel
 import com.yuliakazachok.synloans.android.features.makepayment.presentation.MakePaymentViewModel
 import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.PaymentScheduleViewModel
-import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.ScheduleType
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.ScheduleType
 import com.yuliakazachok.synloans.android.features.profile.presentation.ProfileViewModel
 import com.yuliakazachok.synloans.android.features.requestcreate.presentation.RequestCreateViewModel
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailViewModel

@@ -24,7 +24,7 @@ import com.yuliakazachok.synloans.android.components.text.TextTwoLinesView
 import com.yuliakazachok.synloans.android.components.topbar.TopBarBackView
 import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
 import com.yuliakazachok.synloans.android.core.getIndexMonthText
-import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.ScheduleType.*
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.ScheduleType.*
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailAction
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailEffect
 import com.yuliakazachok.synloans.android.features.requestdetail.presentation.RequestDetailState

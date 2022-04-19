@@ -2,8 +2,8 @@ package com.yuliakazachok.synloans.android.features.requestdetail.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.yuliakazachok.synloans.android.core.BaseViewModel
-import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.ScheduleType.ACTUAL
-import com.yuliakazachok.synloans.android.features.paymentschedule.presentation.ScheduleType.PLANNED
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.ScheduleType.ACTUAL
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.ScheduleType.PLANNED
 import com.yuliakazachok.synloans.shared.flag.domain.usecase.IsCreditOrganisationUseCase
 import com.yuliakazachok.synloans.shared.request.domain.usecase.CancelRequestUseCase
 import com.yuliakazachok.synloans.shared.request.domain.usecase.ExitSyndicateUseCase
