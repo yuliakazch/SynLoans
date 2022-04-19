@@ -49,7 +49,7 @@ class JoinSyndicateViewModel(
             setState { copy(loading = true) }
             try {
                 joinSyndicateUseCase(viewState.value.data.convertToJoinInfo())
-                setEffect { JoinSyndicateEffect.Navigation.ToBack }
+                setEffect { JoinSyndicateEffect.Navigation.ToBackWithUpdate(requestId, participant = true) }
             } catch (e: Throwable) {
                 setState { copy(loading = false, hasError = true) }
             }

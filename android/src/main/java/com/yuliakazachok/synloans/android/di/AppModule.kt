@@ -23,8 +23,8 @@ val appModule = module {
     viewModel { ProfileViewModel(get(), get()) }
     viewModel { EditProfileViewModel(get(), get()) }
     viewModel { RequestsViewModel(get(), get(), get()) }
-    viewModel { (requestId: Int) ->
-        RequestDetailViewModel(get(), get(), get(), get(), get(), requestId)
+    viewModel { (requestId: Int, participant: Boolean) ->
+        RequestDetailViewModel(get(), get(), get(), get(), get(), requestId, participant)
     }
     viewModel { RequestCreateViewModel(get()) }
     viewModel { (requestId: Int) ->

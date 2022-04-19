@@ -18,10 +18,11 @@ class RequestDetailViewModel(
     private val startCreditUseCase: StartCreditUseCase,
     private val isCreditOrganisationUseCase: IsCreditOrganisationUseCase,
     private val requestId: Int,
+    private val participant: Boolean,
 ) : BaseViewModel<RequestDetailAction, RequestDetailState, RequestDetailEffect>() {
 
     override fun setInitialState(): RequestDetailState =
-        RequestDetailState(request = null, creditOrganisation = false, loading = false)
+        RequestDetailState(request = null, creditOrganisation = false, loading = false, participantBank = false)
 
     override fun handleActions(action: RequestDetailAction) {
         when (action) {
@@ -68,7 +69,7 @@ class RequestDetailViewModel(
     }
 
     init {
-        setState { copy(creditOrganisation = isCreditOrganisationUseCase()) }
+        setState { copy(creditOrganisation = isCreditOrganisationUseCase(), participantBank = participant) }
 
         loadInfoRequest()
     }

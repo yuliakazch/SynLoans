@@ -78,12 +78,16 @@ fun SynLoansApp() {
                     composable(REQUESTS) { RequestsDestination(navController) }
                     composable(CREATE_REQUEST) { RequestCreateDestination(navController) }
                     composable(
-                        route = "$REQUEST_DETAIL/{requestId}",
-                        arguments = listOf(navArgument("requestId") { type = NavType.IntType }),
+                        route = "$REQUEST_DETAIL/{requestId}/{participant}",
+                        arguments = listOf(
+                            navArgument("requestId") { type = NavType.IntType },
+                            navArgument("participant") { type = NavType.BoolType },
+                        ),
                     ) { backStackEntry ->
                         RequestDetailDestination(
                             navController = navController,
-                            requestId = backStackEntry.arguments?.getInt("requestId") ?: throw NullPointerException("requestId is null")
+                            requestId = backStackEntry.arguments?.getInt("requestId") ?: throw NullPointerException("requestId is null"),
+                            participant = backStackEntry.arguments?.getBoolean("participant") ?: throw NullPointerException("participant is null"),
                         )
                     }
                     composable(
@@ -92,7 +96,7 @@ fun SynLoansApp() {
                     ) { backStackEntry ->
                         JoinSyndicateDestination(
                             navController = navController,
-                            requestId = backStackEntry.arguments?.getInt("requestId") ?: throw NullPointerException("requestId is null")
+                            requestId = backStackEntry.arguments?.getInt("requestId") ?: throw NullPointerException("requestId is null"),
                         )
                     }
                     composable(
@@ -123,7 +127,7 @@ fun SynLoansApp() {
                     ) { backStackEntry ->
                         MakePaymentDestination(
                             navController = navController,
-                            requestId = backStackEntry.arguments?.getInt("requestId") ?: throw NullPointerException("requestId is null")
+                            requestId = backStackEntry.arguments?.getInt("requestId") ?: throw NullPointerException("requestId is null"),
                         )
                     }
                 }

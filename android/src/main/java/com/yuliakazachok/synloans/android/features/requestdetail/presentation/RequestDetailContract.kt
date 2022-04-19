@@ -23,6 +23,7 @@ data class RequestDetailState(
     val request: RequestCommon?,
     val creditOrganisation: Boolean,
     val loading: Boolean,
+    val participantBank: Boolean,
 ) : State
 
 sealed class RequestDetailEffect : Effect {

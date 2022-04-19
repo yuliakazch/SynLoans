@@ -14,10 +14,10 @@ import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
-fun RequestDetailDestination(navController: NavHostController, requestId: Int) {
+fun RequestDetailDestination(navController: NavHostController, requestId: Int, participant: Boolean) {
 
     val viewModel = getViewModel<RequestDetailViewModel> {
-        parametersOf(requestId)
+        parametersOf(requestId, participant)
     }
     val state = viewModel.viewState.collectAsState().value
 

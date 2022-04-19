@@ -75,7 +75,7 @@ fun RequestDetailScreen(
                 onUpdateClicked = { onActionSent(RequestDetailAction.RepeatClicked) },
             )
 
-            else -> RequestDetailView(state.request, state.creditOrganisation, onActionSent)
+            else -> RequestDetailView(state.request, state.creditOrganisation, state.participantBank, onActionSent)
         }
     }
 }
@@ -85,6 +85,7 @@ fun RequestDetailScreen(
 fun RequestDetailView(
     request: RequestCommon,
     creditOrganisation: Boolean,
+    participantBank: Boolean,
     onActionSent: (action: RequestDetailAction) -> Unit,
 ) {
     val tabData = listOf(
@@ -128,7 +129,7 @@ fun RequestDetailView(
             state = pagerState,
         ) { index ->
             when (index) {
-                0 -> RequestInfoView(request.info, creditOrganisation, onActionSent)
+                0 -> RequestInfoView(request.info, creditOrganisation, participantBank, onActionSent)
 
                 1 -> BanksView(request.banks, onActionSent)
 
@@ -143,6 +144,7 @@ fun RequestDetailView(
 fun RequestInfoView(
     request: RequestInfo,
     creditOrganisation: Boolean,
+    participantBank: Boolean,
     onActionSent: (action: RequestDetailAction) -> Unit,
 ) {
     val monthsTexts = stringArrayResource(R.array.request_months)
@@ -203,39 +205,54 @@ fun RequestInfoView(
             )
         }
 
-        if (request.dateIssue != null) {
-            item {
-                Button(
-                    onClick = { onActionSent(RequestDetailAction.PaymentScheduleClicked(scheduleType = PLANNED)) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 12.dp),
-                ) {
-                    Text(stringResource(R.string.request_payment_schedule))
-                }
-
-                Button(
-                    onClick = { onActionSent(RequestDetailAction.PaymentScheduleClicked(scheduleType = ACTUAL)) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                ) {
-                    Text(stringResource(R.string.payments))
-                }
-
-                if (!creditOrganisation) {
+        when {
+            request.dateIssue != null -> {
+                item {
                     Button(
-                        onClick = { onActionSent(RequestDetailAction.MakePaymentClicked) },
+                        onClick = { onActionSent(RequestDetailAction.PaymentScheduleClicked(scheduleType = PLANNED)) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 12.dp),
                     ) {
-                        Text(stringResource(R.string.make_payment))
+                        Text(stringResource(R.string.request_payment_schedule))
+                    }
+
+                    Button(
+                        onClick = { onActionSent(RequestDetailAction.PaymentScheduleClicked(scheduleType = ACTUAL)) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                    ) {
+                        Text(stringResource(R.string.payments))
+                    }
+
+                    if (!creditOrganisation) {
+                        Button(
+                            onClick = { onActionSent(RequestDetailAction.MakePaymentClicked) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 12.dp),
+                        ) {
+                            Text(stringResource(R.string.make_payment))
+                        }
                     }
                 }
             }
-        } else {
-            if (creditOrganisation) {
+
+            creditOrganisation && participantBank -> {
+                item {
+                    Button(
+                        onClick = { onActionSent(RequestDetailAction.ExitSyndicateClicked) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                    ) {
+                        Text(stringResource(R.string.request_exit_syndicate))
+                    }
+                }
+            }
+
+            creditOrganisation && !participantBank -> {
                 item {
                     Button(
                         onClick = { onActionSent(RequestDetailAction.JoinSyndicateClicked) },
@@ -246,17 +263,9 @@ fun RequestInfoView(
                         Text(stringResource(R.string.request_join_syndicate))
                     }
                 }
-                item {
-                    Button(
-                        onClick = { onActionSent(RequestDetailAction.ExitSyndicateClicked) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp, end = 16.dp, bottom = 12.dp),
-                    ) {
-                        Text(stringResource(R.string.request_exit_syndicate))
-                    }
-                }
-            } else {
+            }
+
+            !creditOrganisation -> {
                 item {
                     Button(
                         onClick = { onActionSent(RequestDetailAction.CancelRequestClicked) },
@@ -267,13 +276,15 @@ fun RequestInfoView(
                         Text(stringResource(R.string.request_cancel))
                     }
 
-                    Button(
-                        onClick = { onActionSent(RequestDetailAction.StartCreditClicked) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp, end = 16.dp, bottom = 12.dp),
-                    ) {
-                        Text(stringResource(R.string.request_start_credit))
+                    if (request.status == StatusRequest.READY_TO_ISSUE) {
+                        Button(
+                            onClick = { onActionSent(RequestDetailAction.StartCreditClicked) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 16.dp, end = 16.dp, bottom = 12.dp),
+                        ) {
+                            Text(stringResource(R.string.request_start_credit))
+                        }
                     }
                 }
             }

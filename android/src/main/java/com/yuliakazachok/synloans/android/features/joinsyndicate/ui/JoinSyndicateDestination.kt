@@ -3,6 +3,7 @@ package com.yuliakazachok.synloans.android.features.joinsyndicate.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
+import com.yuliakazachok.synloans.android.core.NavigationKeys
 import com.yuliakazachok.synloans.android.features.joinsyndicate.presentation.JoinSyndicateEffect
 import com.yuliakazachok.synloans.android.features.joinsyndicate.presentation.JoinSyndicateViewModel
 import org.koin.androidx.compose.getViewModel
@@ -24,6 +25,12 @@ fun JoinSyndicateDestination(navController: NavHostController, requestId: Int) {
 			when (navigationEffect) {
 				is JoinSyndicateEffect.Navigation.ToBack -> {
 					navController.popBackStack()
+				}
+
+				is JoinSyndicateEffect.Navigation.ToBackWithUpdate -> {
+					navController.navigate("${NavigationKeys.REQUEST_DETAIL}/${navigationEffect.id}/${navigationEffect.participant}") {
+						popUpTo(NavigationKeys.JOIN_SYNDICATE) { inclusive = true }
+					}
 				}
 			}
 		}

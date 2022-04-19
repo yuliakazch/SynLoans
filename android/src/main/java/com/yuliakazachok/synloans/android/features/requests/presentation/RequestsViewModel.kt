@@ -23,7 +23,7 @@ class RequestsViewModel(
             }
 
             is RequestsAction.RequestClicked -> {
-                setEffect { RequestsEffect.Navigation.ToRequest(action.id) }
+                setEffect { RequestsEffect.Navigation.ToRequest(action.id, action.participant) }
             }
 
             is RequestsAction.ProfileClicked -> {

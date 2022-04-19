@@ -43,7 +43,7 @@
 	<string name="request_status_open">Открыта</string>
 	<string name="request_status_ready_to_issue">Готов к выдаче</string>
 	<string name="request_status_transfer">Банки отправляют переводы</string>
-	<string name="request_status_issue">Кредит выдан</string>
+	<string name="request_status_issue">Выдан</string>
 	<string name="request_status_close">Закрыта</string>
 	<string name="request_sum">Сумма</string>
 	<string name="request_max_rate">Максимальный процент</string>

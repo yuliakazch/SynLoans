@@ -23,5 +23,7 @@ sealed class JoinSyndicateEffect : Effect {
 	sealed class Navigation : JoinSyndicateEffect() {
 
 		object ToBack : Navigation()
+
+		data class ToBackWithUpdate(val id: Int, val participant: Boolean) : Navigation()
 	}
 }

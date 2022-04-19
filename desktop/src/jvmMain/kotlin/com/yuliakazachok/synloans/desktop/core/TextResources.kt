@@ -41,7 +41,7 @@ object TextResources {
     const val status = "Статус"
     const val statusOpen = "Открыта"
     const val statusTransfer = "Банки отправляют переводы"
-    const val statusIssue = "Кредит выдан"
+    const val statusIssue = "Выдан"
     const val statusClose = "Закрыта"
     const val sum = "Сумма"
     const val sumThousand = "Сумма, тыс"

@@ -115,9 +115,9 @@ fun BankRequestsView(
             state = pagerState,
         ) { index ->
             when (index) {
-                0 -> ListRequestsView(data.own, onActionSent)
+                0 -> ListRequestsView(data.own, participant = true, onActionSent)
 
-                1 -> ListRequestsView(data.other, onActionSent)
+                1 -> ListRequestsView(data.other, participant = false, onActionSent)
             }
         }
     }
@@ -126,6 +126,7 @@ fun BankRequestsView(
 @Composable
 fun ListRequestsView(
     data: List<RequestCommon>,
+    participant: Boolean,
     onActionSent: (action: RequestsAction) -> Unit,
 ) {
     if (data.isEmpty()) {
@@ -147,7 +148,7 @@ fun ListRequestsView(
                     TextTwoLinesClickableView(
                         textOne = request.borrower.shortName,
                         textTwo = request.info.sum.value.toString() + textSumUnit,
-                        onClicked = { onActionSent(RequestsAction.RequestClicked(request.info.id)) }
+                        onClicked = { onActionSent(RequestsAction.RequestClicked(request.info.id, participant)) }
                     )
                 }
             }

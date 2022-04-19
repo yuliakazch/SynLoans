@@ -63,7 +63,7 @@ fun BorrowerRequestsScreen(
             state.borrowRequests.isEmpty() -> TextFullScreenView(stringResource(R.string.requests_empty))
 
             else -> BorrowerRequestsView(state.borrowRequests) { id ->
-                onActionSent(RequestsAction.RequestClicked(id))
+                onActionSent(RequestsAction.RequestClicked(id = id, participant = false))
             }
         }
     }
