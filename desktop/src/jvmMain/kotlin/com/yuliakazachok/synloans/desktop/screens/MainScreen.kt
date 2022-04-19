@@ -30,7 +30,6 @@ import com.yuliakazachok.synloans.desktop.core.getTextResource
 import com.yuliakazachok.synloans.desktop.koin
 import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCommon
-import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequest
 import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
 import com.yuliakazachok.synloans.shared.request.domain.usecase.GetBankRequestsUseCase
 import com.yuliakazachok.synloans.shared.request.domain.usecase.GetBorrowRequestsUseCase
@@ -184,7 +183,7 @@ private fun BankRequestsView(
 @Composable
 fun ListRequestView(
     headerText: String,
-    requests: List<BankRequest>,
+    requests: List<RequestCommon>,
     navigator: Navigator,
 ) {
     Divider(modifier = Modifier.padding(all = 16.dp))
@@ -200,10 +199,10 @@ fun ListRequestView(
                 .fillMaxWidth(),
         ) {
             requests.forEach { request ->
-                val requestDetailScreen = rememberScreen(NavigationScreen.RequestDetail(request.id))
+                val requestDetailScreen = rememberScreen(NavigationScreen.RequestDetail(request.info.id))
                 TextTwoLinesClickableView(
-                    textOne = request.name,
-                    textTwo = request.sum.value.toString() + request.sum.unit.getTextResource(),
+                    textOne = request.borrower.shortName,
+                    textTwo = request.info.sum.value.toString() + request.info.sum.unit.getTextResource(),
                     onClicked = { navigator.push(requestDetailScreen) },
                 )
             }

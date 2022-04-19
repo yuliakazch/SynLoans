@@ -11,12 +11,12 @@ import com.yuliakazachok.synloans.desktop.core.LARGE_WIDTH_VIEW
 
 @Composable
 fun EditLargeTextView(
-    text: String,
+    text: String?,
     label: String,
     onTextChange: (String) -> Unit,
 ) {
     OutlinedTextField(
-        value = text,
+        value = text ?: "",
         onValueChange = onTextChange,
         label = { Text(label) },
         singleLine = true,

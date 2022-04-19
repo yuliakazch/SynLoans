@@ -142,9 +142,10 @@ class RequestDetailScreen(
                         onBackClicked = { navigator.replaceAll(mainScreen) },
                         onUpdateClicked = {
                             uiState.value = when (state.errorType) {
-                                ErrorType.Detail -> RequestDetailUiState.LoadingRequest
                                 ErrorType.Cancel -> RequestDetailUiState.CancelRequest
+                                ErrorType.Detail -> RequestDetailUiState.LoadingRequest
                                 ErrorType.JoinSyndicate -> RequestDetailUiState.JoinSyndicateRequest
+                                else -> throw IllegalArgumentException("${state.errorType} is not support")
                             }
                         },
                     )
@@ -171,6 +172,7 @@ fun RequestInfoView(
             textOne = TextResources.status,
             textTwo = when (request.status) {
                 StatusRequest.OPEN -> TextResources.statusOpen
+                StatusRequest.READY_TO_ISSUE -> TextResources.statusReadyToIssue
                 StatusRequest.TRANSFER -> TextResources.statusTransfer
                 StatusRequest.ISSUE -> TextResources.statusIssue
                 StatusRequest.CLOSE -> TextResources.statusClose

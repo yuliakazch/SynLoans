@@ -44,7 +44,6 @@ class EditProfileScreen(
                     kpp = profile.kpp,
                     legalAddress = profile.legalAddress,
                     actualAddress = profile.actualAddress,
-                    email = profile.email,
                 )
             )
         }
@@ -75,7 +74,6 @@ class EditProfileScreen(
                         onKppChanged = { editProfileInfo.value = editProfileInfo.value.copy(kpp = it) },
                         onLegalAddressChanged = { editProfileInfo.value = editProfileInfo.value.copy(legalAddress = it) },
                         onActualAddressChanged = { editProfileInfo.value = editProfileInfo.value.copy(actualAddress = it) },
-                        onEmailChanged = { editProfileInfo.value = editProfileInfo.value.copy(email = it) },
                         onSaveClicked = { data ->
                             uiState.value = EditProfileUiState.SendingRequest(data)
                         },
@@ -105,7 +103,6 @@ fun EditProfileView(
     onKppChanged: (String) -> Unit,
     onLegalAddressChanged: (String) -> Unit,
     onActualAddressChanged: (String) -> Unit,
-    onEmailChanged: (String) -> Unit,
     onSaveClicked: (EditProfileInfo) -> Unit,
     onCancelClicked: () -> Unit,
 ) {
@@ -152,13 +149,6 @@ fun EditProfileView(
                 text = data.actualAddress,
                 label = TextResources.actualAddress,
                 onTextChange = onActualAddressChanged,
-            )
-        }
-        item {
-            EditLargeTextView(
-                text = data.email,
-                label = TextResources.email,
-                onTextChange = onEmailChanged,
             )
         }
         item {
