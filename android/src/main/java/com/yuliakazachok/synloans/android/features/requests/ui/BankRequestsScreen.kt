@@ -25,7 +25,7 @@ import com.yuliakazachok.synloans.android.core.LAUNCH_LISTEN_FOR_EFFECTS
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsAction
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsEffect
 import com.yuliakazachok.synloans.android.features.requests.presentation.RequestsState
-import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequest
+import com.yuliakazachok.synloans.shared.request.domain.entity.detail.RequestCommon
 import com.yuliakazachok.synloans.shared.request.domain.entity.list.BankRequests
 import com.yuliakazachok.synloans.shared.request.domain.entity.sum.SumUnit
 import kotlinx.coroutines.flow.Flow
@@ -125,7 +125,7 @@ fun BankRequestsView(
 
 @Composable
 fun ListRequestsView(
-    data: List<BankRequest>,
+    data: List<RequestCommon>,
     onActionSent: (action: RequestsAction) -> Unit,
 ) {
     if (data.isEmpty()) {
@@ -138,16 +138,16 @@ fun ListRequestsView(
         ) {
             data.forEach { request ->
                 item {
-                    val textSumUnit = when (request.sum.unit) {
+                    val textSumUnit = when (request.info.sum.unit) {
                         SumUnit.BILLION -> stringResource(R.string.requests_sum_billion)
                         SumUnit.MILLION -> stringResource(R.string.requests_sum_million)
                         SumUnit.THOUSAND -> stringResource(R.string.requests_sum_thousand)
                     }
 
                     TextTwoLinesClickableView(
-                        textOne = request.name,
-                        textTwo = request.sum.value.toString() + textSumUnit,
-                        onClicked = { onActionSent(RequestsAction.RequestClicked(request.id)) }
+                        textOne = request.borrower.shortName,
+                        textTwo = request.info.sum.value.toString() + textSumUnit,
+                        onClicked = { onActionSent(RequestsAction.RequestClicked(request.info.id)) }
                     )
                 }
             }

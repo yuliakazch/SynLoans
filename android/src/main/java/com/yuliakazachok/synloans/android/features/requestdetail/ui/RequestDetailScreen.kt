@@ -157,6 +157,7 @@ fun RequestInfoView(
                 textOne = stringResource(R.string.request_status),
                 textTwo = when (request.status) {
                     StatusRequest.OPEN -> stringResource(R.string.request_status_open)
+                    StatusRequest.READY_TO_ISSUE -> stringResource(R.string.request_status_ready_to_issue)
                     StatusRequest.TRANSFER -> stringResource(R.string.request_status_transfer)
                     StatusRequest.ISSUE -> stringResource(R.string.request_status_issue)
                     StatusRequest.CLOSE -> stringResource(R.string.request_status_close)
