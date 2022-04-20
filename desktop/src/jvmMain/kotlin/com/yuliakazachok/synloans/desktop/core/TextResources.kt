@@ -61,6 +61,7 @@ object TextResources {
     const val datePayment = "Дата платежа: "
     const val principal = "Основной: "
     const val percents = "Проценты: "
+    const val notBanks = "Нет участников синдиката"
 
     const val billionSum = " млрд руб"
     const val millionSum = " млн руб"

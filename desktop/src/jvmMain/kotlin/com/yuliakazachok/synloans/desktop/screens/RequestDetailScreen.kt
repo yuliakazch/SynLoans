@@ -216,19 +216,27 @@ fun BanksView(
             modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
         )
 
-        banks.forEach { bank ->
-            val bankDetailScreen = rememberScreen(NavigationScreen.BankDetail(bank.id))
-            val textSumUnit = bank.sum.unit.getTextResource()
-
-            TextTwoLinesClickableView(
-                textOne = bank.name,
-                textTwo = if (bank.approveBankAgent) {
-                    bank.sum.value.toString() + textSumUnit + TextResources.divider + TextResources.approveBankAgent
-                } else {
-                    bank.sum.value.toString() + textSumUnit
-                },
-                onClicked = { navigator.push(bankDetailScreen) }
+        if (banks.isEmpty()) {
+            Text(
+                text = TextResources.notBanks,
+                fontWeight = FontWeight.Light,
+                modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp)
             )
+        } else {
+            banks.forEach { bank ->
+                val bankDetailScreen = rememberScreen(NavigationScreen.BankDetail(bank.id))
+                val textSumUnit = bank.sum.unit.getTextResource()
+
+                TextTwoLinesClickableView(
+                    textOne = bank.name,
+                    textTwo = if (bank.approveBankAgent) {
+                        bank.sum.value.toString() + textSumUnit + TextResources.divider + TextResources.approveBankAgent
+                    } else {
+                        bank.sum.value.toString() + textSumUnit
+                    },
+                    onClicked = { navigator.push(bankDetailScreen) }
+                )
+            }
         }
     }
 }
