@@ -32,27 +32,9 @@ class EditProfileViewModel(
                 loadProfile()
             }
 
-            is EditProfileAction.FullNameChanged -> {
-                setState {
-                    copy(data = data?.copy(fullName = action.newValue))
-                }
-            }
-
             is EditProfileAction.ShortNameChanged -> {
                 setState {
                     copy(data = data?.copy(shortName = action.newValue))
-                }
-            }
-
-            is EditProfileAction.TinChanged -> {
-                setState {
-                    copy(data = data?.copy(inn = action.newValue))
-                }
-            }
-
-            is EditProfileAction.IecChanged -> {
-                setState {
-                    copy(data = data?.copy(kpp = action.newValue))
                 }
             }
 
@@ -87,15 +69,16 @@ class EditProfileViewModel(
     }
 
     private fun Profile.convertToEditInfo(): EditProfileInfo =
-        EditProfileInfo(fullName, shortName, inn, kpp, legalAddress, actualAddress)
+        EditProfileInfo(
+            shortName = shortName,
+            legalAddress = legalAddress,
+            actualAddress = actualAddress,
+        )
 
     private fun saveChanges() {
         viewState.value.data?.let { data ->
             val changeProfile = EditProfileInfo(
-                fullName = if (data.fullName != profile.fullName) data.fullName else null,
                 shortName = if (data.shortName != profile.shortName) data.shortName else null,
-                inn = if (data.inn != profile.inn) data.inn else null,
-                kpp = if (data.kpp != profile.kpp) data.kpp else null,
                 legalAddress = if (data.legalAddress != profile.legalAddress) data.legalAddress else null,
                 actualAddress = if (data.actualAddress != profile.actualAddress) data.actualAddress else null,
             )

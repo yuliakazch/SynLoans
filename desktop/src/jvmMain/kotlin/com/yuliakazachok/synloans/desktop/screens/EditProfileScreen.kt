@@ -38,10 +38,7 @@ class EditProfileScreen(
         val editProfileInfo = remember {
             mutableStateOf(
                 EditProfileInfo(
-                    fullName = profile.fullName,
                     shortName = profile.shortName,
-                    inn = profile.inn,
-                    kpp = profile.kpp,
                     legalAddress = profile.legalAddress,
                     actualAddress = profile.actualAddress,
                 )
@@ -68,10 +65,7 @@ class EditProfileScreen(
                     }
                     EditProfileView(
                         data = editProfileInfo.value,
-                        onFullNameChanged = { editProfileInfo.value = editProfileInfo.value.copy(fullName = it) },
                         onShortNameChanged = { editProfileInfo.value = editProfileInfo.value.copy(shortName = it) },
-                        onInnChanged = { editProfileInfo.value = editProfileInfo.value.copy(inn = it) },
-                        onKppChanged = { editProfileInfo.value = editProfileInfo.value.copy(kpp = it) },
                         onLegalAddressChanged = { editProfileInfo.value = editProfileInfo.value.copy(legalAddress = it) },
                         onActualAddressChanged = { editProfileInfo.value = editProfileInfo.value.copy(actualAddress = it) },
                         onSaveClicked = { data ->
@@ -97,10 +91,7 @@ class EditProfileScreen(
 @Composable
 fun EditProfileView(
     data: EditProfileInfo,
-    onFullNameChanged: (String) -> Unit,
     onShortNameChanged: (String) -> Unit,
-    onInnChanged: (String) -> Unit,
-    onKppChanged: (String) -> Unit,
     onLegalAddressChanged: (String) -> Unit,
     onActualAddressChanged: (String) -> Unit,
     onSaveClicked: (EditProfileInfo) -> Unit,
@@ -111,30 +102,9 @@ fun EditProfileView(
     ) {
         item {
             EditLargeTextView(
-                text = data.fullName,
-                label = TextResources.fullName,
-                onTextChange = onFullNameChanged,
-            )
-        }
-        item {
-            EditLargeTextView(
                 text = data.shortName,
                 label = TextResources.shortName,
                 onTextChange = onShortNameChanged,
-            )
-        }
-        item {
-            EditLargeTextView(
-                text = data.inn,
-                label = TextResources.inn,
-                onTextChange = onInnChanged,
-            )
-        }
-        item {
-            EditLargeTextView(
-                text = data.kpp,
-                label = TextResources.kpp,
-                onTextChange = onKppChanged,
             )
         }
         item {

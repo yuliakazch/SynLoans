@@ -83,30 +83,9 @@ fun EditProfileView(
     ) {
         item {
             EditTextView(
-                text = data.fullName.orEmpty(),
-                label = stringResource(R.string.field_full_name_company),
-                onTextChange = { onActionSent(EditProfileAction.FullNameChanged(it)) },
-            )
-        }
-        item {
-            EditTextView(
                 text = data.shortName.orEmpty(),
                 label = stringResource(R.string.field_short_name_company),
                 onTextChange = { onActionSent(EditProfileAction.ShortNameChanged(it)) },
-            )
-        }
-        item {
-            EditTextView(
-                text = data.inn.orEmpty(),
-                label = stringResource(R.string.field_tin),
-                onTextChange = { onActionSent(EditProfileAction.TinChanged(it)) },
-            )
-        }
-        item {
-            EditTextView(
-                text = data.kpp.orEmpty(),
-                label = stringResource(R.string.field_iec),
-                onTextChange = { onActionSent(EditProfileAction.IecChanged(it)) },
             )
         }
         item {

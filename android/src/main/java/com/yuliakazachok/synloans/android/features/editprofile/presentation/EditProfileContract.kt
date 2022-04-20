@@ -13,10 +13,7 @@ sealed class EditProfileAction : Action {
 
 	object RepeatClicked : EditProfileAction()
 
-	data class FullNameChanged(val newValue: String) : EditProfileAction()
 	data class ShortNameChanged(val newValue: String) : EditProfileAction()
-	data class TinChanged(val newValue: String) : EditProfileAction()
-	data class IecChanged(val newValue: String) : EditProfileAction()
 	data class LegalAddressChanged(val newValue: String) : EditProfileAction()
 	data class ActualAddressChanged(val newValue: String) : EditProfileAction()
 }
