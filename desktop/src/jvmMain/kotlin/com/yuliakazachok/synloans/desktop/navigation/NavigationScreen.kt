@@ -1,6 +1,7 @@
 package com.yuliakazachok.synloans.desktop.navigation
 
 import cafe.adriel.voyager.core.registry.ScreenProvider
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.ScheduleType
 import com.yuliakazachok.synloans.shared.user.domain.entity.Profile
 
 sealed class NavigationScreen : ScreenProvider {
@@ -11,5 +12,5 @@ sealed class NavigationScreen : ScreenProvider {
     data class RequestDetail(val requestId: Int, val participantBank: Boolean) : NavigationScreen()
     object RequestCreate : NavigationScreen()
     data class BankDetail(val bankId: Int) : NavigationScreen()
-    data class PaymentSchedule(val requestId: Int) : NavigationScreen()
+    data class PaymentSchedule(val requestId: Int, val scheduleType: ScheduleType) : NavigationScreen()
 }

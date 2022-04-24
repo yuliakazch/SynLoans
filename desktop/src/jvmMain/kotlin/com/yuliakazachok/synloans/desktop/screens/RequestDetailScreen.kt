@@ -30,6 +30,7 @@ import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
 import com.yuliakazachok.synloans.shared.flag.domain.usecase.IsCreditOrganisationUseCase
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.*
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.ScheduleType
 import com.yuliakazachok.synloans.shared.request.domain.usecase.*
 
 private sealed class RequestDetailUiState {
@@ -357,13 +358,20 @@ fun ButtonsRequestDetail(
 ) {
     when {
         request.dateIssue != null -> {
-            val paymentScheduleScreen = rememberScreen(NavigationScreen.PaymentSchedule(request.id))
+            val plannedPaymentScheduleScreen = rememberScreen(NavigationScreen.PaymentSchedule(request.id, ScheduleType.PLANNED))
+            val actualPaymentScheduleScreen = rememberScreen(NavigationScreen.PaymentSchedule(request.id, ScheduleType.ACTUAL))
 
             Button(
-                onClick = { navigator.push(paymentScheduleScreen) },
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                onClick = { navigator.push(plannedPaymentScheduleScreen) },
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 0.dp),
             ) {
                 Text(TextResources.paymentSchedule)
+            }
+            Button(
+                onClick = { navigator.push(actualPaymentScheduleScreen) },
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+            ) {
+                Text(TextResources.payments)
             }
         }
 
