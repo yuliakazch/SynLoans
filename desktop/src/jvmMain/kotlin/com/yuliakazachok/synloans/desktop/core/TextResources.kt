@@ -45,7 +45,6 @@ object TextResources {
     const val statusIssue = "Выдан"
     const val statusClose = "Закрыта"
     const val sum = "Сумма"
-    const val sumThousand = "Сумма, тыс"
     const val maxRate = "Максимальный процент"
     const val term = "Срок"
     const val join = "Присоединиться"
@@ -67,6 +66,8 @@ object TextResources {
     const val exitSyndicate = "Выйти из синдиката"
     const val startCredit = "Получить кредит"
     const val notPayments = "Нет платежей"
+    const val makePayment = "Внести платеж"
+    const val send = "Отправить"
 
     const val billionSum = " млрд руб"
     const val millionSum = " млн руб"

@@ -114,7 +114,7 @@ fun RequestCreateView(
         item {
             EditTextView(
                 text = sum,
-                label = TextResources.sumThousand,
+                label = TextResources.sum,
                 onTextChange = onSumChanged,
             )
         }

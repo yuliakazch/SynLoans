@@ -30,6 +30,7 @@ import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
 import com.yuliakazachok.synloans.shared.flag.domain.usecase.IsCreditOrganisationUseCase
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.*
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
+import com.yuliakazachok.synloans.shared.request.domain.entity.payment.Payment
 import com.yuliakazachok.synloans.shared.request.domain.entity.payment.ScheduleType
 import com.yuliakazachok.synloans.shared.request.domain.usecase.*
 
@@ -40,6 +41,7 @@ private sealed class RequestDetailUiState {
     object JoinSyndicateRequest : RequestDetailUiState()
     object ExitSyndicateRequest : RequestDetailUiState()
     object StartCreditRequest : RequestDetailUiState()
+    object MakePaymentRequest : RequestDetailUiState()
     data class Error(val errorType: ErrorType) : RequestDetailUiState()
 }
 
@@ -49,6 +51,7 @@ private sealed class ErrorType {
     object JoinSyndicate : ErrorType()
     object ExitSyndicate : ErrorType()
     object StartCredit : ErrorType()
+    object MakePayment : ErrorType()
 }
 
 class RequestDetailScreen(
@@ -73,8 +76,10 @@ class RequestDetailScreen(
         val joinSyndicateUseCase = koin.get<JoinSyndicateUseCase>()
         val exitSyndicateUseCase = koin.get<ExitSyndicateUseCase>()
         val startCreditUseCase = koin.get<StartCreditUseCase>()
+        val makePaymentUseCase = koin.get<MakePaymentUseCase>()
 
         val sumJoinSyndicate = remember { mutableStateOf("") }
+        val sumMakePayment = remember { mutableStateOf("") }
         val approveBankAgentJoinSyndicate = remember { mutableStateOf(false) }
 
         Scaffold(
@@ -103,6 +108,19 @@ class RequestDetailScreen(
                                     onJoinClicked = {
                                         if (sumJoinSyndicate.value.matches(DIGIT_REGEX)) {
                                             uiState.value = RequestDetailUiState.JoinSyndicateRequest
+                                        }
+                                    },
+                                )
+                            }
+                        }
+                        if (!state.creditOrganisation && state.request.info.dateIssue != null) {
+                            item {
+                                MakePaymentView(
+                                    sum = sumMakePayment.value,
+                                    onSumChanged = { sumMakePayment.value = it },
+                                    onMakePaymentClicked = {
+                                        if (sumMakePayment.value.matches(DIGIT_REGEX)) {
+                                            uiState.value = RequestDetailUiState.MakePaymentRequest
                                         }
                                     },
                                 )
@@ -163,6 +181,19 @@ class RequestDetailScreen(
                     ).value
                 }
 
+                is RequestDetailUiState.MakePaymentRequest -> {
+                    LoadingView()
+                    uiState.value = makePayment(
+                        makePaymentUseCase = makePaymentUseCase,
+                        requestId = requestId,
+                        payment = Payment(sumMakePayment.value.toLong()),
+                        onUpdateDetail = {
+                            sumMakePayment.value = ""
+                            uiState.value = RequestDetailUiState.LoadingRequest
+                        },
+                    ).value
+                }
+
                 is RequestDetailUiState.Error -> {
                     ErrorBackView(
                         textBack = TextResources.backMain,
@@ -174,6 +205,7 @@ class RequestDetailScreen(
                                 ErrorType.JoinSyndicate -> RequestDetailUiState.JoinSyndicateRequest
                                 ErrorType.ExitSyndicate -> RequestDetailUiState.ExitSyndicateRequest
                                 ErrorType.StartCredit -> RequestDetailUiState.StartCreditRequest
+                                ErrorType.MakePayment -> RequestDetailUiState.MakePaymentRequest
                                 else -> throw IllegalArgumentException("${state.errorType} is not support")
                             }
                         },
@@ -328,7 +360,7 @@ fun JoinSyndicateView(
         )
         EditTextView(
             text = sum,
-            label = TextResources.sumThousand,
+            label = TextResources.sum,
             onTextChange = onSumChanged,
         )
         TextWithCheckboxView(
@@ -342,6 +374,35 @@ fun JoinSyndicateView(
         ) {
             Text(TextResources.join)
         }
+    }
+}
+
+@Composable
+fun MakePaymentView(
+    sum: String,
+    onSumChanged: (String) -> Unit,
+    onMakePaymentClicked: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+    ) {
+        Divider(modifier = Modifier.padding(vertical = 16.dp))
+        Text(
+            text = TextResources.makePayment,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+        )
+        EditTextView(
+            text = sum,
+            label = TextResources.sum,
+            onTextChange = onSumChanged,
+        )
+        Button(
+            onClick = onMakePaymentClicked,
+        ) {
+            Text(TextResources.send)
+        }
+        Divider(modifier = Modifier.padding(top = 12.dp, bottom = 8.dp))
     }
 }
 
@@ -484,5 +545,21 @@ private fun startCredit(
             onMainRoute()
         } catch (throwable: Throwable) {
             value = RequestDetailUiState.Error(errorType = ErrorType.StartCredit)
+        }
+    }
+
+@Composable
+private fun makePayment(
+    makePaymentUseCase: MakePaymentUseCase,
+    requestId: Int,
+    payment: Payment,
+    onUpdateDetail: () -> Unit,
+): State<RequestDetailUiState> =
+    produceState<RequestDetailUiState>(initialValue = RequestDetailUiState.MakePaymentRequest, makePaymentUseCase) {
+        try {
+            makePaymentUseCase(requestId, payment)
+            onUpdateDetail()
+        } catch (throwable: Throwable) {
+            value = RequestDetailUiState.Error(errorType = ErrorType.MakePayment)
         }
     }
