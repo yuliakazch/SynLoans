@@ -8,7 +8,7 @@ val appScreenModule = screenModule {
     register<NavigationScreen.SignUp> { SignUpScreen() }
     register<NavigationScreen.Main> { MainScreen() }
     register<NavigationScreen.EditProfile> { EditProfileScreen(it.profile) }
-    register<NavigationScreen.RequestDetail> { RequestDetailScreen(it.requestId) }
+    register<NavigationScreen.RequestDetail> { RequestDetailScreen(it.requestId, it.participantBank) }
     register<NavigationScreen.RequestCreate> { RequestCreateScreen() }
     register<NavigationScreen.BankDetail> { BankDetailScreen(it.bankId) }
     register<NavigationScreen.PaymentSchedule> { PaymentScheduleScreen(it.requestId) }

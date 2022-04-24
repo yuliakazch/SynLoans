@@ -171,11 +171,13 @@ private fun BankRequestsView(
     ListRequestView(
         headerText = TextResources.ownRequests,
         requests = data.own,
+        participantBank = true,
         navigator = navigator,
     )
     ListRequestView(
         headerText = TextResources.otherRequests,
         requests = data.other,
+        participantBank = false,
         navigator = navigator,
     )
 }
@@ -184,6 +186,7 @@ private fun BankRequestsView(
 fun ListRequestView(
     headerText: String,
     requests: List<RequestCommon>,
+    participantBank: Boolean,
     navigator: Navigator,
 ) {
     Divider(modifier = Modifier.padding(all = 16.dp))
@@ -199,7 +202,7 @@ fun ListRequestView(
                 .fillMaxWidth(),
         ) {
             requests.forEach { request ->
-                val requestDetailScreen = rememberScreen(NavigationScreen.RequestDetail(request.info.id))
+                val requestDetailScreen = rememberScreen(NavigationScreen.RequestDetail(request.info.id, participantBank = participantBank))
                 TextTwoLinesClickableView(
                     textOne = request.borrower.shortName,
                     textTwo = request.info.sum.value.toString() + request.info.sum.unit.getTextResource(),
@@ -229,7 +232,7 @@ fun BorrowerRequestsView(
             modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         )
         requests.forEach { request ->
-            val requestDetailScreen = rememberScreen(NavigationScreen.RequestDetail(request.info.id))
+            val requestDetailScreen = rememberScreen(NavigationScreen.RequestDetail(request.info.id, participantBank = false))
             TextTwoLinesClickableView(
                 textOne = if (request.info.dateIssue.isNullOrEmpty()) {
                     TextResources.dateCreate + request.info.dateCreate

@@ -62,6 +62,8 @@ object TextResources {
     const val principal = "Основной: "
     const val percents = "Проценты: "
     const val notBanks = "Нет участников синдиката"
+    const val exitSyndicate = "Выйти из синдиката"
+    const val startCredit = "Получить кредит"
 
     const val billionSum = " млрд руб"
     const val millionSum = " млн руб"

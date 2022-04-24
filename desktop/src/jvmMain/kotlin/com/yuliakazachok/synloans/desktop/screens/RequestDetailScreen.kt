@@ -30,15 +30,15 @@ import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
 import com.yuliakazachok.synloans.shared.flag.domain.usecase.IsCreditOrganisationUseCase
 import com.yuliakazachok.synloans.shared.request.domain.entity.detail.*
 import com.yuliakazachok.synloans.shared.request.domain.entity.join.JoinSyndicateInfo
-import com.yuliakazachok.synloans.shared.request.domain.usecase.CancelRequestUseCase
-import com.yuliakazachok.synloans.shared.request.domain.usecase.GetRequestDetailUseCase
-import com.yuliakazachok.synloans.shared.request.domain.usecase.JoinSyndicateUseCase
+import com.yuliakazachok.synloans.shared.request.domain.usecase.*
 
 private sealed class RequestDetailUiState {
     object LoadingRequest : RequestDetailUiState()
-    data class Content(val request: RequestCommon, val creditOrganisation: Boolean) : RequestDetailUiState()
+    data class Content(val request: RequestCommon, val creditOrganisation: Boolean, val participantBank: Boolean) : RequestDetailUiState()
     object CancelRequest : RequestDetailUiState()
     object JoinSyndicateRequest : RequestDetailUiState()
+    object ExitSyndicateRequest : RequestDetailUiState()
+    object StartCreditRequest : RequestDetailUiState()
     data class Error(val errorType: ErrorType) : RequestDetailUiState()
 }
 
@@ -46,10 +46,13 @@ private sealed class ErrorType {
     object Detail : ErrorType()
     object Cancel : ErrorType()
     object JoinSyndicate : ErrorType()
+    object ExitSyndicate : ErrorType()
+    object StartCredit : ErrorType()
 }
 
 class RequestDetailScreen(
     private val requestId: Int,
+    private val participantBank: Boolean,
 ) : Screen {
 
     private companion object {
@@ -67,6 +70,8 @@ class RequestDetailScreen(
         val isCreditOrganisationUseCase = koin.get<IsCreditOrganisationUseCase>()
         val cancelRequestUseCase = koin.get<CancelRequestUseCase>()
         val joinSyndicateUseCase = koin.get<JoinSyndicateUseCase>()
+        val exitSyndicateUseCase = koin.get<ExitSyndicateUseCase>()
+        val startCreditUseCase = koin.get<StartCreditUseCase>()
 
         val sumJoinSyndicate = remember { mutableStateOf("") }
         val approveBankAgentJoinSyndicate = remember { mutableStateOf(false) }
@@ -79,7 +84,7 @@ class RequestDetailScreen(
             when (val state = uiState.value) {
                 is RequestDetailUiState.LoadingRequest -> {
                     LoadingView()
-                    uiState.value = loadRequestDetail(getRequestDetailUseCase, isCreditOrganisationUseCase, requestId).value
+                    uiState.value = loadRequestDetail(getRequestDetailUseCase, isCreditOrganisationUseCase, requestId, participantBank).value
                 }
 
                 is RequestDetailUiState.Content -> {
@@ -87,7 +92,7 @@ class RequestDetailScreen(
                         item { RequestInfoView(state.request.info) }
                         item { BanksView(state.request.banks, navigator) }
                         item { BorrowerView(state.request.borrower) }
-                        if (state.creditOrganisation && state.request.info.dateIssue == null) {
+                        if (state.creditOrganisation && state.request.info.dateIssue == null && !state.participantBank) {
                             item {
                                 JoinSyndicateView(
                                     sum = sumJoinSyndicate.value,
@@ -106,6 +111,9 @@ class RequestDetailScreen(
                             ButtonsRequestDetail(
                                 request = state.request.info,
                                 creditOrganisation = state.creditOrganisation,
+                                participantBank = state.participantBank,
+                                onExitSyndicateClicked = { uiState.value = RequestDetailUiState.ExitSyndicateRequest },
+                                onStartCreditClicked = { uiState.value = RequestDetailUiState.StartCreditRequest },
                                 onCancelClicked = { uiState.value = RequestDetailUiState.CancelRequest },
                                 onBackClicked = { navigator.replaceAll(mainScreen) },
                                 navigator = navigator,
@@ -136,6 +144,24 @@ class RequestDetailScreen(
                     ).value
                 }
 
+                is RequestDetailUiState.ExitSyndicateRequest -> {
+                    LoadingView()
+                    uiState.value = exitSyndicate(
+                        exitSyndicateUseCase = exitSyndicateUseCase,
+                        requestId = requestId,
+                        onMainRoute = { navigator.replaceAll(mainScreen) },
+                    ).value
+                }
+
+                is RequestDetailUiState.StartCreditRequest -> {
+                    LoadingView()
+                    uiState.value = startCredit(
+                        startCreditUseCase = startCreditUseCase,
+                        requestId = requestId,
+                        onMainRoute = { navigator.replaceAll(mainScreen) },
+                    ).value
+                }
+
                 is RequestDetailUiState.Error -> {
                     ErrorBackView(
                         textBack = TextResources.backMain,
@@ -145,6 +171,8 @@ class RequestDetailScreen(
                                 ErrorType.Cancel -> RequestDetailUiState.CancelRequest
                                 ErrorType.Detail -> RequestDetailUiState.LoadingRequest
                                 ErrorType.JoinSyndicate -> RequestDetailUiState.JoinSyndicateRequest
+                                ErrorType.ExitSyndicate -> RequestDetailUiState.ExitSyndicateRequest
+                                ErrorType.StartCredit -> RequestDetailUiState.StartCreditRequest
                                 else -> throw IllegalArgumentException("${state.errorType} is not support")
                             }
                         },
@@ -320,6 +348,9 @@ fun JoinSyndicateView(
 fun ButtonsRequestDetail(
     request: RequestInfo,
     creditOrganisation: Boolean,
+    participantBank: Boolean,
+    onExitSyndicateClicked: () -> Unit,
+    onStartCreditClicked: () -> Unit,
     onCancelClicked: () -> Unit,
     onBackClicked: () -> Unit,
     navigator: Navigator,
@@ -336,12 +367,30 @@ fun ButtonsRequestDetail(
             }
         }
 
+        creditOrganisation && participantBank -> {
+            Button(
+                onClick = onExitSyndicateClicked,
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+            ) {
+                Text(TextResources.exitSyndicate)
+            }
+        }
+
         !creditOrganisation -> {
             Button(
                 onClick = onCancelClicked,
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
             ) {
                 Text(TextResources.cancelRequest)
+            }
+
+            if (request.status == StatusRequest.READY_TO_ISSUE) {
+                Button(
+                    onClick = onStartCreditClicked,
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                ) {
+                    Text(TextResources.startCredit)
+                }
             }
         }
     }
@@ -358,12 +407,13 @@ private fun loadRequestDetail(
     getRequestDetailUseCase: GetRequestDetailUseCase,
     isCreditOrganisationUseCase: IsCreditOrganisationUseCase,
     requestId: Int,
+    participantBank: Boolean,
 ): State<RequestDetailUiState> =
     produceState<RequestDetailUiState>(initialValue = RequestDetailUiState.LoadingRequest, getRequestDetailUseCase, isCreditOrganisationUseCase) {
         value = try {
             val request = getRequestDetailUseCase(requestId)
             val isCreditOrganisation = isCreditOrganisationUseCase()
-            RequestDetailUiState.Content(request, isCreditOrganisation)
+            RequestDetailUiState.Content(request, isCreditOrganisation, participantBank)
         } catch (throwable: Throwable) {
             RequestDetailUiState.Error(errorType = ErrorType.Detail)
         }
@@ -396,5 +446,35 @@ private fun joinSyndicate(
             onMainRoute()
         } catch (throwable: Throwable) {
             value = RequestDetailUiState.Error(errorType = ErrorType.JoinSyndicate)
+        }
+    }
+
+@Composable
+private fun exitSyndicate(
+    exitSyndicateUseCase: ExitSyndicateUseCase,
+    requestId: Int,
+    onMainRoute: () -> Unit,
+): State<RequestDetailUiState> =
+    produceState<RequestDetailUiState>(initialValue = RequestDetailUiState.ExitSyndicateRequest, exitSyndicateUseCase) {
+        try {
+            exitSyndicateUseCase(requestId)
+            onMainRoute()
+        } catch (throwable: Throwable) {
+            value = RequestDetailUiState.Error(errorType = ErrorType.ExitSyndicate)
+        }
+    }
+
+@Composable
+private fun startCredit(
+    startCreditUseCase: StartCreditUseCase,
+    requestId: Int,
+    onMainRoute: () -> Unit,
+): State<RequestDetailUiState> =
+    produceState<RequestDetailUiState>(initialValue = RequestDetailUiState.StartCreditRequest, startCreditUseCase) {
+        try {
+            startCreditUseCase(requestId)
+            onMainRoute()
+        } catch (throwable: Throwable) {
+            value = RequestDetailUiState.Error(errorType = ErrorType.StartCredit)
         }
     }
