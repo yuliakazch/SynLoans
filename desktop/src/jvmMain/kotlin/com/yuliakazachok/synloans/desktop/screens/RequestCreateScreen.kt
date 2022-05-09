@@ -1,10 +1,8 @@
 package com.yuliakazachok.synloans.desktop.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -19,7 +17,7 @@ import com.yuliakazachok.synloans.desktop.components.error.ErrorBackView
 import com.yuliakazachok.synloans.desktop.components.navigation.SurfaceNavigation
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.EditTextView
-import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
+import com.yuliakazachok.synloans.desktop.components.topbar.TopBarBackView
 import com.yuliakazachok.synloans.desktop.core.DIGIT_REGEX
 import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.desktop.koin
@@ -64,7 +62,10 @@ fun RequestCreateContent(navigator: Navigator) {
 
     Scaffold(
         topBar = {
-            TopBarView(title = TextResources.creationRequest)
+            TopBarBackView(
+                title = TextResources.creationRequest,
+                onIconClicked = { navigator.pop() },
+            )
         }
     ) {
         when (uiState.value) {
@@ -81,7 +82,6 @@ fun RequestCreateContent(navigator: Navigator) {
                             uiState.value = RequestCreateUiState.CreatingRequest
                         }
                     },
-                    onBackClicked = { navigator.replaceAll(requestsScreen) },
                 )
             }
 
@@ -118,7 +118,6 @@ fun RequestCreateView(
     onRateChanged: (String) -> Unit,
     onTermChanged: (String) -> Unit,
     onSendClicked: () -> Unit,
-    onBackClicked: () -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp),
@@ -151,11 +150,6 @@ fun RequestCreateView(
             ) {
                 Text(TextResources.sendRequest)
             }
-            Text(
-                text = TextResources.backMain,
-                color = MaterialTheme.colors.primary,
-                modifier = Modifier.padding(bottom = 8.dp).clickable { onBackClicked() },
-            )
         }
     }
 }

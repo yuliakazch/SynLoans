@@ -1,12 +1,10 @@
 package com.yuliakazachok.synloans.desktop.screens
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -22,7 +20,7 @@ import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.EditTextView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesClickableView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesView
-import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
+import com.yuliakazachok.synloans.desktop.components.topbar.TopBarBackView
 import com.yuliakazachok.synloans.desktop.core.DIGIT_REGEX
 import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.desktop.core.getIndexMonthText
@@ -100,7 +98,10 @@ fun RequestDetailContent(
 
     Scaffold(
         topBar = {
-            TopBarView(title = TextResources.infoRequest)
+            TopBarBackView(
+                title = TextResources.infoRequest,
+                onIconClicked = { navigator.pop() },
+            )
         }
     ) {
         when (val state = uiState.value) {
@@ -150,7 +151,6 @@ fun RequestDetailContent(
                             onExitSyndicateClicked = { uiState.value = RequestDetailUiState.ExitSyndicateRequest },
                             onStartCreditClicked = { uiState.value = RequestDetailUiState.StartCreditRequest },
                             onCancelClicked = { uiState.value = RequestDetailUiState.CancelRequest },
-                            onBackClicked = { navigator.replaceAll(requestsScreen) },
                             navigator = navigator,
                         )
                     }
@@ -429,7 +429,6 @@ fun ButtonsRequestDetail(
     onExitSyndicateClicked: () -> Unit,
     onStartCreditClicked: () -> Unit,
     onCancelClicked: () -> Unit,
-    onBackClicked: () -> Unit,
     navigator: Navigator,
 ) {
     when {
@@ -437,17 +436,20 @@ fun ButtonsRequestDetail(
             val plannedPaymentScheduleScreen = rememberScreen(NavigationScreen.PaymentSchedule(request.id, ScheduleType.PLANNED))
             val actualPaymentScheduleScreen = rememberScreen(NavigationScreen.PaymentSchedule(request.id, ScheduleType.ACTUAL))
 
-            Button(
-                onClick = { navigator.push(plannedPaymentScheduleScreen) },
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 0.dp),
+            Row(
+                modifier = Modifier.padding(bottom = 8.dp),
             ) {
-                Text(TextResources.paymentSchedule)
-            }
-            Button(
-                onClick = { navigator.push(actualPaymentScheduleScreen) },
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-            ) {
-                Text(TextResources.payments)
+                Button(
+                    onClick = { navigator.push(plannedPaymentScheduleScreen) },
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                ) {
+                    Text(TextResources.paymentSchedule)
+                }
+                Button(
+                    onClick = { navigator.push(actualPaymentScheduleScreen) },
+                ) {
+                    Text(TextResources.payments)
+                }
             }
         }
 
@@ -478,12 +480,6 @@ fun ButtonsRequestDetail(
             }
         }
     }
-
-    Text(
-        text = TextResources.backMain,
-        color = MaterialTheme.colors.primary,
-        modifier = Modifier.padding(start = 16.dp, bottom = 12.dp).clickable { onBackClicked() },
-    )
 }
 
 @Composable

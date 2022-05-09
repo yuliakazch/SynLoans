@@ -1,11 +1,8 @@
 package com.yuliakazachok.synloans.desktop.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -18,7 +15,7 @@ import com.yuliakazachok.synloans.desktop.components.error.ErrorBackView
 import com.yuliakazachok.synloans.desktop.components.navigation.SurfaceNavigation
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesView
-import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
+import com.yuliakazachok.synloans.desktop.components.topbar.TopBarBackView
 import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.desktop.koin
 import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
@@ -61,7 +58,10 @@ fun BankDetailContent(
 
     Scaffold(
         topBar = {
-            TopBarView(title = TextResources.infoBank)
+            TopBarBackView(
+                title = TextResources.infoBank,
+                onIconClicked = { navigator.pop() },
+            )
         }
     ) {
         when (val state = uiState.value) {
@@ -73,7 +73,6 @@ fun BankDetailContent(
             is BankDetailUiState.Content -> {
                 BankDetailView(
                     bank = state.bank,
-                    onBackClicked = { navigator.pop() },
                 )
             }
 
@@ -91,7 +90,6 @@ fun BankDetailContent(
 @Composable
 fun BankDetailView(
     bank: Bank,
-    onBackClicked: () -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.padding(top = 12.dp),
@@ -130,15 +128,6 @@ fun BankDetailView(
             TextTwoLinesView(
                 textOne = TextResources.actualAddress,
                 textTwo = bank.actualAddress,
-            )
-        }
-        item {
-            Text(
-                text = TextResources.backRequest,
-                color = MaterialTheme.colors.primary,
-                modifier = Modifier
-                    .padding(vertical = 12.dp, horizontal = 16.dp)
-                    .clickable { onBackClicked() },
             )
         }
     }

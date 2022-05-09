@@ -1,6 +1,5 @@
 package com.yuliakazachok.synloans.desktop.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -15,7 +14,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.navigation.SurfaceNavigation
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.EditLargeTextView
-import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
+import com.yuliakazachok.synloans.desktop.components.topbar.TopBarBackView
 import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.desktop.koin
 import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
@@ -71,7 +70,10 @@ fun EditProfileContent(
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            TopBarView(title = TextResources.editProfile)
+            TopBarBackView(
+                title = TextResources.editProfile,
+                onIconClicked = { navigator.pop() },
+            )
         }
     ) {
         when (val state = uiState.value) {
@@ -148,13 +150,6 @@ fun EditProfileView(
             ) {
                 Text(TextResources.save)
             }
-        }
-        item {
-            Text(
-                text = TextResources.cancel,
-                color = MaterialTheme.colors.primary,
-                modifier = Modifier.padding(bottom = 8.dp).clickable { onCancelClicked() },
-            )
         }
     }
 }
