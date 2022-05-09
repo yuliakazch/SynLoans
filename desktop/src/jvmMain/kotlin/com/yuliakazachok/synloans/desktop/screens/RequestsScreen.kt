@@ -5,12 +5,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.registry.rememberScreen
@@ -19,7 +15,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.error.ErrorView
-import com.yuliakazachok.synloans.desktop.components.navigation.NavigationTab
 import com.yuliakazachok.synloans.desktop.components.navigation.SurfaceNavigation
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesClickableView
@@ -49,20 +44,9 @@ class RequestsScreen : Screen {
         val profileScreen = rememberScreen(NavigationScreen.ProfileInfo)
 
         SurfaceNavigation(
-            tabs = {
-                NavigationTab(
-                    label = TextResources.requests,
-                    icon = painterResource("assignment.svg"),
-                    selected = true,
-                )
-                NavigationTab(
-                    label = TextResources.profile,
-                    icon = rememberVectorPainter(Icons.Filled.AccountBox),
-                    selected = false,
-                    onClicked = { navigator.replaceAll(profileScreen) },
-                )
-            },
             mainContent = { RequestsContent(navigator) },
+            selectedRequests = true,
+            onClickedProfile = { navigator.replaceAll(profileScreen) },
         )
     }
 }

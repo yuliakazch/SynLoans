@@ -17,11 +17,13 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.checkbox.TextWithCheckboxView
 import com.yuliakazachok.synloans.desktop.components.error.ErrorBackView
+import com.yuliakazachok.synloans.desktop.components.navigation.SurfaceNavigation
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.EditTextView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesClickableView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
+import com.yuliakazachok.synloans.desktop.core.DIGIT_REGEX
 import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.desktop.core.getIndexMonthText
 import com.yuliakazachok.synloans.desktop.core.getTextResource
@@ -59,158 +61,171 @@ class RequestDetailScreen(
     private val participantBank: Boolean,
 ) : Screen {
 
-    private companion object {
-        val DIGIT_REGEX = """([0-9])+""".toRegex()
-    }
-
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val uiState = remember { mutableStateOf<RequestDetailUiState>(RequestDetailUiState.LoadingRequest) }
-
         val requestsScreen = rememberScreen(NavigationScreen.Requests)
+        val profileScreen = rememberScreen(NavigationScreen.ProfileInfo)
 
-        val getRequestDetailUseCase = koin.get<GetRequestDetailUseCase>()
-        val isCreditOrganisationUseCase = koin.get<IsCreditOrganisationUseCase>()
-        val cancelRequestUseCase = koin.get<CancelRequestUseCase>()
-        val joinSyndicateUseCase = koin.get<JoinSyndicateUseCase>()
-        val exitSyndicateUseCase = koin.get<ExitSyndicateUseCase>()
-        val startCreditUseCase = koin.get<StartCreditUseCase>()
-        val makePaymentUseCase = koin.get<MakePaymentUseCase>()
+        SurfaceNavigation(
+            mainContent = { RequestDetailContent(navigator, requestId, participantBank) },
+            selectedRequests = true,
+            onClickedRequests = { navigator.replaceAll(requestsScreen) },
+            onClickedProfile = { navigator.replaceAll(profileScreen) },
+        )
+    }
+}
 
-        val sumJoinSyndicate = remember { mutableStateOf("") }
-        val sumMakePayment = remember { mutableStateOf("") }
-        val approveBankAgentJoinSyndicate = remember { mutableStateOf(false) }
+@Composable
+fun RequestDetailContent(
+    navigator: Navigator,
+    requestId: Int,
+    participantBank: Boolean,
+) {
+    val uiState = remember { mutableStateOf<RequestDetailUiState>(RequestDetailUiState.LoadingRequest) }
 
-        Scaffold(
-            topBar = {
-                TopBarView(title = TextResources.infoRequest)
+    val requestsScreen = rememberScreen(NavigationScreen.Requests)
+
+    val getRequestDetailUseCase = koin.get<GetRequestDetailUseCase>()
+    val isCreditOrganisationUseCase = koin.get<IsCreditOrganisationUseCase>()
+    val cancelRequestUseCase = koin.get<CancelRequestUseCase>()
+    val joinSyndicateUseCase = koin.get<JoinSyndicateUseCase>()
+    val exitSyndicateUseCase = koin.get<ExitSyndicateUseCase>()
+    val startCreditUseCase = koin.get<StartCreditUseCase>()
+    val makePaymentUseCase = koin.get<MakePaymentUseCase>()
+
+    val sumJoinSyndicate = remember { mutableStateOf("") }
+    val sumMakePayment = remember { mutableStateOf("") }
+    val approveBankAgentJoinSyndicate = remember { mutableStateOf(false) }
+
+    Scaffold(
+        topBar = {
+            TopBarView(title = TextResources.infoRequest)
+        }
+    ) {
+        when (val state = uiState.value) {
+            is RequestDetailUiState.LoadingRequest -> {
+                LoadingView()
+                uiState.value = loadRequestDetail(getRequestDetailUseCase, isCreditOrganisationUseCase, requestId, participantBank).value
             }
-        ) {
-            when (val state = uiState.value) {
-                is RequestDetailUiState.LoadingRequest -> {
-                    LoadingView()
-                    uiState.value = loadRequestDetail(getRequestDetailUseCase, isCreditOrganisationUseCase, requestId, participantBank).value
-                }
 
-                is RequestDetailUiState.Content -> {
-                    LazyColumn {
-                        item { RequestInfoView(state.request.info) }
-                        item { BanksView(state.request.banks, navigator) }
-                        item { BorrowerView(state.request.borrower) }
-                        if (state.creditOrganisation && state.request.info.dateIssue == null && !state.participantBank) {
-                            item {
-                                JoinSyndicateView(
-                                    sum = sumJoinSyndicate.value,
-                                    approveBankAgent = approveBankAgentJoinSyndicate.value,
-                                    onSumChanged = { sumJoinSyndicate.value = it },
-                                    onApproveBankAgentChanged = { approveBankAgentJoinSyndicate.value = it },
-                                    onJoinClicked = {
-                                        if (sumJoinSyndicate.value.matches(DIGIT_REGEX)) {
-                                            uiState.value = RequestDetailUiState.JoinSyndicateRequest
-                                        }
-                                    },
-                                )
-                            }
-                        }
-                        if (!state.creditOrganisation && state.request.info.dateIssue != null) {
-                            item {
-                                MakePaymentView(
-                                    sum = sumMakePayment.value,
-                                    onSumChanged = { sumMakePayment.value = it },
-                                    onMakePaymentClicked = {
-                                        if (sumMakePayment.value.matches(DIGIT_REGEX)) {
-                                            uiState.value = RequestDetailUiState.MakePaymentRequest
-                                        }
-                                    },
-                                )
-                            }
-                        }
+            is RequestDetailUiState.Content -> {
+                LazyColumn {
+                    item { RequestInfoView(state.request.info) }
+                    item { BanksView(state.request.banks, navigator) }
+                    item { BorrowerView(state.request.borrower) }
+                    if (state.creditOrganisation && state.request.info.dateIssue == null && !state.participantBank) {
                         item {
-                            ButtonsRequestDetail(
-                                request = state.request.info,
-                                creditOrganisation = state.creditOrganisation,
-                                participantBank = state.participantBank,
-                                onExitSyndicateClicked = { uiState.value = RequestDetailUiState.ExitSyndicateRequest },
-                                onStartCreditClicked = { uiState.value = RequestDetailUiState.StartCreditRequest },
-                                onCancelClicked = { uiState.value = RequestDetailUiState.CancelRequest },
-                                onBackClicked = { navigator.replaceAll(requestsScreen) },
-                                navigator = navigator,
+                            JoinSyndicateView(
+                                sum = sumJoinSyndicate.value,
+                                approveBankAgent = approveBankAgentJoinSyndicate.value,
+                                onSumChanged = { sumJoinSyndicate.value = it },
+                                onApproveBankAgentChanged = { approveBankAgentJoinSyndicate.value = it },
+                                onJoinClicked = {
+                                    if (sumJoinSyndicate.value.matches(DIGIT_REGEX)) {
+                                        uiState.value = RequestDetailUiState.JoinSyndicateRequest
+                                    }
+                                },
                             )
                         }
                     }
+                    if (!state.creditOrganisation && state.request.info.dateIssue != null) {
+                        item {
+                            MakePaymentView(
+                                sum = sumMakePayment.value,
+                                onSumChanged = { sumMakePayment.value = it },
+                                onMakePaymentClicked = {
+                                    if (sumMakePayment.value.matches(DIGIT_REGEX)) {
+                                        uiState.value = RequestDetailUiState.MakePaymentRequest
+                                    }
+                                },
+                            )
+                        }
+                    }
+                    item {
+                        ButtonsRequestDetail(
+                            request = state.request.info,
+                            creditOrganisation = state.creditOrganisation,
+                            participantBank = state.participantBank,
+                            onExitSyndicateClicked = { uiState.value = RequestDetailUiState.ExitSyndicateRequest },
+                            onStartCreditClicked = { uiState.value = RequestDetailUiState.StartCreditRequest },
+                            onCancelClicked = { uiState.value = RequestDetailUiState.CancelRequest },
+                            onBackClicked = { navigator.replaceAll(requestsScreen) },
+                            navigator = navigator,
+                        )
+                    }
                 }
+            }
 
-                is RequestDetailUiState.CancelRequest -> {
-                    LoadingView()
-                    uiState.value = cancelRequest(
-                        cancelRequestUseCase = cancelRequestUseCase,
+            is RequestDetailUiState.CancelRequest -> {
+                LoadingView()
+                uiState.value = cancelRequest(
+                    cancelRequestUseCase = cancelRequestUseCase,
+                    requestId = requestId,
+                    onMainRoute = { navigator.replaceAll(requestsScreen) },
+                ).value
+            }
+
+            is RequestDetailUiState.JoinSyndicateRequest -> {
+                LoadingView()
+                uiState.value = joinSyndicate(
+                    joinSyndicateUseCase = joinSyndicateUseCase,
+                    joinSyndicateInfo = JoinSyndicateInfo(
                         requestId = requestId,
-                        onMainRoute = { navigator.replaceAll(requestsScreen) },
-                    ).value
-                }
+                        sum = sumJoinSyndicate.value.toLong(),
+                        approveBankAgent = approveBankAgentJoinSyndicate.value,
+                    ),
+                    onMainRoute = { navigator.replaceAll(requestsScreen) },
+                ).value
+            }
 
-                is RequestDetailUiState.JoinSyndicateRequest -> {
-                    LoadingView()
-                    uiState.value = joinSyndicate(
-                        joinSyndicateUseCase = joinSyndicateUseCase,
-                        joinSyndicateInfo = JoinSyndicateInfo(
-                            requestId = requestId,
-                            sum = sumJoinSyndicate.value.toLong(),
-                            approveBankAgent = approveBankAgentJoinSyndicate.value,
-                        ),
-                        onMainRoute = { navigator.replaceAll(requestsScreen) },
-                    ).value
-                }
+            is RequestDetailUiState.ExitSyndicateRequest -> {
+                LoadingView()
+                uiState.value = exitSyndicate(
+                    exitSyndicateUseCase = exitSyndicateUseCase,
+                    requestId = requestId,
+                    onMainRoute = { navigator.replaceAll(requestsScreen) },
+                ).value
+            }
 
-                is RequestDetailUiState.ExitSyndicateRequest -> {
-                    LoadingView()
-                    uiState.value = exitSyndicate(
-                        exitSyndicateUseCase = exitSyndicateUseCase,
-                        requestId = requestId,
-                        onMainRoute = { navigator.replaceAll(requestsScreen) },
-                    ).value
-                }
+            is RequestDetailUiState.StartCreditRequest -> {
+                LoadingView()
+                uiState.value = startCredit(
+                    startCreditUseCase = startCreditUseCase,
+                    requestId = requestId,
+                    onMainRoute = { navigator.replaceAll(requestsScreen) },
+                ).value
+            }
 
-                is RequestDetailUiState.StartCreditRequest -> {
-                    LoadingView()
-                    uiState.value = startCredit(
-                        startCreditUseCase = startCreditUseCase,
-                        requestId = requestId,
-                        onMainRoute = { navigator.replaceAll(requestsScreen) },
-                    ).value
-                }
+            is RequestDetailUiState.MakePaymentRequest -> {
+                LoadingView()
+                uiState.value = makePayment(
+                    makePaymentUseCase = makePaymentUseCase,
+                    requestId = requestId,
+                    payment = Payment(sumMakePayment.value.toLong()),
+                    onUpdateDetail = {
+                        sumMakePayment.value = ""
+                        uiState.value = RequestDetailUiState.LoadingRequest
+                    },
+                ).value
+            }
 
-                is RequestDetailUiState.MakePaymentRequest -> {
-                    LoadingView()
-                    uiState.value = makePayment(
-                        makePaymentUseCase = makePaymentUseCase,
-                        requestId = requestId,
-                        payment = Payment(sumMakePayment.value.toLong()),
-                        onUpdateDetail = {
-                            sumMakePayment.value = ""
-                            uiState.value = RequestDetailUiState.LoadingRequest
-                        },
-                    ).value
-                }
-
-                is RequestDetailUiState.Error -> {
-                    ErrorBackView(
-                        textBack = TextResources.backMain,
-                        onBackClicked = { navigator.replaceAll(requestsScreen) },
-                        onUpdateClicked = {
-                            uiState.value = when (state.errorType) {
-                                ErrorType.Cancel -> RequestDetailUiState.CancelRequest
-                                ErrorType.Detail -> RequestDetailUiState.LoadingRequest
-                                ErrorType.JoinSyndicate -> RequestDetailUiState.JoinSyndicateRequest
-                                ErrorType.ExitSyndicate -> RequestDetailUiState.ExitSyndicateRequest
-                                ErrorType.StartCredit -> RequestDetailUiState.StartCreditRequest
-                                ErrorType.MakePayment -> RequestDetailUiState.MakePaymentRequest
-                                else -> throw IllegalArgumentException("${state.errorType} is not support")
-                            }
-                        },
-                    )
-                }
+            is RequestDetailUiState.Error -> {
+                ErrorBackView(
+                    textBack = TextResources.backMain,
+                    onBackClicked = { navigator.replaceAll(requestsScreen) },
+                    onUpdateClicked = {
+                        uiState.value = when (state.errorType) {
+                            ErrorType.Cancel -> RequestDetailUiState.CancelRequest
+                            ErrorType.Detail -> RequestDetailUiState.LoadingRequest
+                            ErrorType.JoinSyndicate -> RequestDetailUiState.JoinSyndicateRequest
+                            ErrorType.ExitSyndicate -> RequestDetailUiState.ExitSyndicateRequest
+                            ErrorType.StartCredit -> RequestDetailUiState.StartCreditRequest
+                            ErrorType.MakePayment -> RequestDetailUiState.MakePaymentRequest
+                            else -> throw IllegalArgumentException("${state.errorType} is not support")
+                        }
+                    },
+                )
             }
         }
     }

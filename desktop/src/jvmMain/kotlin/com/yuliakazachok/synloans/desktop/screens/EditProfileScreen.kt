@@ -7,14 +7,18 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.yuliakazachok.synloans.desktop.components.navigation.SurfaceNavigation
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.EditLargeTextView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
 import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.desktop.koin
+import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
 import com.yuliakazachok.synloans.shared.user.domain.entity.EditProfileInfo
 import com.yuliakazachok.synloans.shared.user.domain.entity.Profile
 import com.yuliakazachok.synloans.shared.user.domain.usecase.UpdateProfileUseCase
@@ -31,58 +35,74 @@ class EditProfileScreen(
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val uiState = remember { mutableStateOf<EditProfileUiState>(EditProfileUiState.Content()) }
+        val requestsScreen = rememberScreen(NavigationScreen.Requests)
+        val profileScreen = rememberScreen(NavigationScreen.ProfileInfo)
 
-        val updateProfileUseCase = koin.get<UpdateProfileUseCase>()
+        SurfaceNavigation(
+            mainContent = { EditProfileContent(navigator, profile) },
+            selectedRequests = false,
+            onClickedRequests = { navigator.replaceAll(requestsScreen) },
+            onClickedProfile = { navigator.replaceAll(profileScreen) },
+        )
+    }
+}
 
-        val editProfileInfo = remember {
-            mutableStateOf(
-                EditProfileInfo(
-                    shortName = profile.shortName,
-                    legalAddress = profile.legalAddress,
-                    actualAddress = profile.actualAddress,
-                )
+@Composable
+fun EditProfileContent(
+    navigator: Navigator,
+    profile: Profile,
+) {
+    val uiState = remember { mutableStateOf<EditProfileUiState>(EditProfileUiState.Content()) }
+
+    val updateProfileUseCase = koin.get<UpdateProfileUseCase>()
+
+    val editProfileInfo = remember {
+        mutableStateOf(
+            EditProfileInfo(
+                shortName = profile.shortName,
+                legalAddress = profile.legalAddress,
+                actualAddress = profile.actualAddress,
             )
+        )
+    }
+
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            TopBarView(title = TextResources.editProfile)
         }
-
-        val scaffoldState: ScaffoldState = rememberScaffoldState()
-
-        Scaffold(
-            scaffoldState = scaffoldState,
-            topBar = {
-                TopBarView(title = TextResources.editProfile)
-            }
-        ) {
-            when (val state = uiState.value) {
-                is EditProfileUiState.Content -> {
-                    if (state.hasError) {
-                        LaunchedEffect(scaffoldState.snackbarHostState) {
-                            scaffoldState.snackbarHostState.showSnackbar(
-                                message = TextResources.error,
-                                duration = SnackbarDuration.Short
-                            )
-                        }
+    ) {
+        when (val state = uiState.value) {
+            is EditProfileUiState.Content -> {
+                if (state.hasError) {
+                    LaunchedEffect(scaffoldState.snackbarHostState) {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = TextResources.error,
+                            duration = SnackbarDuration.Short
+                        )
                     }
-                    EditProfileView(
-                        data = editProfileInfo.value,
-                        onShortNameChanged = { editProfileInfo.value = editProfileInfo.value.copy(shortName = it) },
-                        onLegalAddressChanged = { editProfileInfo.value = editProfileInfo.value.copy(legalAddress = it) },
-                        onActualAddressChanged = { editProfileInfo.value = editProfileInfo.value.copy(actualAddress = it) },
-                        onSaveClicked = { data ->
-                            uiState.value = EditProfileUiState.SendingRequest(data)
-                        },
-                        onCancelClicked = { navigator.pop() },
-                    )
                 }
+                EditProfileView(
+                    data = editProfileInfo.value,
+                    onShortNameChanged = { editProfileInfo.value = editProfileInfo.value.copy(shortName = it) },
+                    onLegalAddressChanged = { editProfileInfo.value = editProfileInfo.value.copy(legalAddress = it) },
+                    onActualAddressChanged = { editProfileInfo.value = editProfileInfo.value.copy(actualAddress = it) },
+                    onSaveClicked = { data ->
+                        uiState.value = EditProfileUiState.SendingRequest(data)
+                    },
+                    onCancelClicked = { navigator.pop() },
+                )
+            }
 
-                is EditProfileUiState.SendingRequest -> {
-                    LoadingView()
-                    uiState.value = updateProfile(
-                        updateProfileUseCase = updateProfileUseCase,
-                        data = state.data,
-                        onMainRoute = { navigator.pop() },
-                    ).value
-                }
+            is EditProfileUiState.SendingRequest -> {
+                LoadingView()
+                uiState.value = updateProfile(
+                    updateProfileUseCase = updateProfileUseCase,
+                    data = state.data,
+                    onMainRoute = { navigator.pop() },
+                ).value
             }
         }
     }

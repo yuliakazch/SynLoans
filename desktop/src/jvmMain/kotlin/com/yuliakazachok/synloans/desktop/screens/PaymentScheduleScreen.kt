@@ -11,16 +11,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.error.ErrorBackView
+import com.yuliakazachok.synloans.desktop.components.navigation.SurfaceNavigation
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.TextThreeLinesView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
 import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.desktop.koin
+import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
 import com.yuliakazachok.synloans.shared.request.domain.entity.payment.Payment
 import com.yuliakazachok.synloans.shared.request.domain.entity.payment.PaymentInfo
 import com.yuliakazachok.synloans.shared.request.domain.entity.payment.ScheduleType
@@ -41,52 +45,69 @@ class PaymentScheduleScreen(
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val uiState = remember { mutableStateOf<PaymentScheduleUiState>(PaymentScheduleUiState.LoadingSchedule) }
+        val requestsScreen = rememberScreen(NavigationScreen.Requests)
+        val profileScreen = rememberScreen(NavigationScreen.ProfileInfo)
 
-        val getPlannedScheduleUseCase = koin.get<GetPlannedScheduleUseCase>()
-        val getActualScheduleUseCase = koin.get<GetActualScheduleUseCase>()
+        SurfaceNavigation(
+            mainContent = { PaymentScheduleContent(navigator, requestId, scheduleType) },
+            selectedRequests = true,
+            onClickedRequests = { navigator.replaceAll(requestsScreen) },
+            onClickedProfile = { navigator.replaceAll(profileScreen) },
+        )
+    }
+}
 
-        Scaffold(
-            topBar = { TopBarView(title = TextResources.paymentSchedule) },
-        ) {
-            when (val state = uiState.value) {
-                is PaymentScheduleUiState.LoadingSchedule -> {
-                    LoadingView()
-                    uiState.value = when (scheduleType) {
-                        ScheduleType.PLANNED -> {
-                            loadPlannedSchedule(getPlannedScheduleUseCase, requestId).value
-                        }
-                        ScheduleType.ACTUAL -> {
-                            loadActualSchedule(getActualScheduleUseCase, requestId).value
-                        }
+@Composable
+fun PaymentScheduleContent(
+    navigator: Navigator,
+    requestId: Int,
+    scheduleType: ScheduleType,
+) {
+    val uiState = remember { mutableStateOf<PaymentScheduleUiState>(PaymentScheduleUiState.LoadingSchedule) }
+
+    val getPlannedScheduleUseCase = koin.get<GetPlannedScheduleUseCase>()
+    val getActualScheduleUseCase = koin.get<GetActualScheduleUseCase>()
+
+    Scaffold(
+        topBar = { TopBarView(title = TextResources.paymentSchedule) },
+    ) {
+        when (val state = uiState.value) {
+            is PaymentScheduleUiState.LoadingSchedule -> {
+                LoadingView()
+                uiState.value = when (scheduleType) {
+                    ScheduleType.PLANNED -> {
+                        loadPlannedSchedule(getPlannedScheduleUseCase, requestId).value
+                    }
+                    ScheduleType.ACTUAL -> {
+                        loadActualSchedule(getActualScheduleUseCase, requestId).value
                     }
                 }
+            }
 
-                is PaymentScheduleUiState.Content -> {
-                    when {
-                        state.plannedPayments != null -> {
-                            PlannedPaymentScheduleView(
-                                payments = state.plannedPayments,
-                                onBackClicked = { navigator.pop() },
-                            )
-                        }
+            is PaymentScheduleUiState.Content -> {
+                when {
+                    state.plannedPayments != null -> {
+                        PlannedPaymentScheduleView(
+                            payments = state.plannedPayments,
+                            onBackClicked = { navigator.pop() },
+                        )
+                    }
 
-                        state.actualPayments != null -> {
-                            ActualPaymentScheduleView(
-                                payments = state.actualPayments,
-                                onBackClicked = { navigator.pop() },
-                            )
-                        }
+                    state.actualPayments != null -> {
+                        ActualPaymentScheduleView(
+                            payments = state.actualPayments,
+                            onBackClicked = { navigator.pop() },
+                        )
                     }
                 }
+            }
 
-                is PaymentScheduleUiState.Error -> {
-                    ErrorBackView(
-                        textBack = TextResources.backRequest,
-                        onBackClicked = { navigator.pop() },
-                        onUpdateClicked = { uiState.value = PaymentScheduleUiState.LoadingSchedule },
-                    )
-                }
+            is PaymentScheduleUiState.Error -> {
+                ErrorBackView(
+                    textBack = TextResources.backRequest,
+                    onBackClicked = { navigator.pop() },
+                    onUpdateClicked = { uiState.value = PaymentScheduleUiState.LoadingSchedule },
+                )
             }
         }
     }

@@ -13,11 +13,14 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.error.ErrorBackView
+import com.yuliakazachok.synloans.desktop.components.navigation.SurfaceNavigation
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.EditTextView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
+import com.yuliakazachok.synloans.desktop.core.DIGIT_REGEX
 import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.desktop.koin
 import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
@@ -32,66 +35,75 @@ private sealed class RequestCreateUiState {
 
 class RequestCreateScreen : Screen {
 
-    private companion object {
-        val DIGIT_REGEX = """([0-9])+""".toRegex()
-    }
-
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val uiState = remember { mutableStateOf<RequestCreateUiState>(RequestCreateUiState.Content) }
-
         val requestsScreen = rememberScreen(NavigationScreen.Requests)
+        val profileScreen = rememberScreen(NavigationScreen.ProfileInfo)
 
-        val createRequestUseCase = koin.get<CreateRequestUseCase>()
+        SurfaceNavigation(
+            mainContent = { RequestCreateContent(navigator) },
+            selectedRequests = true,
+            onClickedRequests = { navigator.replaceAll(requestsScreen) },
+            onClickedProfile = { navigator.replaceAll(profileScreen) },
+        )
+    }
+}
 
-        val sum = remember { mutableStateOf("") }
-        val rate = remember { mutableStateOf("") }
-        val term = remember { mutableStateOf("") }
+@Composable
+fun RequestCreateContent(navigator: Navigator) {
+    val uiState = remember { mutableStateOf<RequestCreateUiState>(RequestCreateUiState.Content) }
 
-        Scaffold(
-            topBar = {
-                TopBarView(title = TextResources.creationRequest)
+    val requestsScreen = rememberScreen(NavigationScreen.Requests)
+
+    val createRequestUseCase = koin.get<CreateRequestUseCase>()
+
+    val sum = remember { mutableStateOf("") }
+    val rate = remember { mutableStateOf("") }
+    val term = remember { mutableStateOf("") }
+
+    Scaffold(
+        topBar = {
+            TopBarView(title = TextResources.creationRequest)
+        }
+    ) {
+        when (uiState.value) {
+            is RequestCreateUiState.Content -> {
+                RequestCreateView(
+                    sum = sum.value,
+                    rate = rate.value,
+                    term = term.value,
+                    onSumChanged = { sum.value = it },
+                    onRateChanged = { rate.value = it },
+                    onTermChanged = { term.value = it },
+                    onSendClicked = {
+                        if (sum.value.matches(DIGIT_REGEX) && rate.value.matches(DIGIT_REGEX) && term.value.matches(DIGIT_REGEX)) {
+                            uiState.value = RequestCreateUiState.CreatingRequest
+                        }
+                    },
+                    onBackClicked = { navigator.replaceAll(requestsScreen) },
+                )
             }
-        ) {
-            when (uiState.value) {
-                is RequestCreateUiState.Content -> {
-                    RequestCreateView(
-                        sum = sum.value,
-                        rate = rate.value,
-                        term = term.value,
-                        onSumChanged = { sum.value = it },
-                        onRateChanged = { rate.value = it },
-                        onTermChanged = { term.value = it },
-                        onSendClicked = {
-                            if (sum.value.matches(DIGIT_REGEX) && rate.value.matches(DIGIT_REGEX) && term.value.matches(DIGIT_REGEX)) {
-                                uiState.value = RequestCreateUiState.CreatingRequest
-                            }
-                        },
-                        onBackClicked = { navigator.replaceAll(requestsScreen) },
-                    )
-                }
 
-                is RequestCreateUiState.CreatingRequest -> {
-                    LoadingView()
-                    uiState.value = createRequest(
-                        createRequestUseCase = createRequestUseCase,
-                        createRequestInfo = CreateRequestInfo(
-                            sum = sum.value.toLong(),
-                            maxRate = rate.value.toFloat(),
-                            term = term.value.toInt(),
-                        ),
-                        onMainRoute = { navigator.replaceAll(requestsScreen) },
-                    ).value
-                }
+            is RequestCreateUiState.CreatingRequest -> {
+                LoadingView()
+                uiState.value = createRequest(
+                    createRequestUseCase = createRequestUseCase,
+                    createRequestInfo = CreateRequestInfo(
+                        sum = sum.value.toLong(),
+                        maxRate = rate.value.toFloat(),
+                        term = term.value.toInt(),
+                    ),
+                    onMainRoute = { navigator.replaceAll(requestsScreen) },
+                ).value
+            }
 
-                is RequestCreateUiState.Error -> {
-                    ErrorBackView(
-                        textBack = TextResources.backMain,
-                        onBackClicked = { navigator.replaceAll(requestsScreen) },
-                        onUpdateClicked = { uiState.value = RequestCreateUiState.CreatingRequest },
-                    )
-                }
+            is RequestCreateUiState.Error -> {
+                ErrorBackView(
+                    textBack = TextResources.backMain,
+                    onBackClicked = { navigator.replaceAll(requestsScreen) },
+                    onUpdateClicked = { uiState.value = RequestCreateUiState.CreatingRequest },
+                )
             }
         }
     }

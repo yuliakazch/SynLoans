@@ -9,15 +9,19 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.error.ErrorBackView
+import com.yuliakazachok.synloans.desktop.components.navigation.SurfaceNavigation
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarView
 import com.yuliakazachok.synloans.desktop.core.TextResources
 import com.yuliakazachok.synloans.desktop.koin
+import com.yuliakazachok.synloans.desktop.navigation.NavigationScreen
 import com.yuliakazachok.synloans.shared.bank.domain.entity.Bank
 import com.yuliakazachok.synloans.shared.bank.domain.usecase.GetBankDetailUseCase
 
@@ -34,35 +38,51 @@ class BankDetailScreen(
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val uiState = remember { mutableStateOf<BankDetailUiState>(BankDetailUiState.LoadingDetail) }
+        val requestsScreen = rememberScreen(NavigationScreen.Requests)
+        val profileScreen = rememberScreen(NavigationScreen.ProfileInfo)
 
-        val getBankDetailUseCase = koin.get<GetBankDetailUseCase>()
+        SurfaceNavigation(
+            mainContent = { BankDetailContent(navigator, bankId) },
+            selectedRequests = true,
+            onClickedRequests = { navigator.replaceAll(requestsScreen) },
+            onClickedProfile = { navigator.replaceAll(profileScreen) },
+        )
+    }
+}
 
-        Scaffold(
-            topBar = {
-                TopBarView(title = TextResources.infoBank)
+@Composable
+fun BankDetailContent(
+    navigator: Navigator,
+    bankId: Int,
+) {
+    val uiState = remember { mutableStateOf<BankDetailUiState>(BankDetailUiState.LoadingDetail) }
+
+    val getBankDetailUseCase = koin.get<GetBankDetailUseCase>()
+
+    Scaffold(
+        topBar = {
+            TopBarView(title = TextResources.infoBank)
+        }
+    ) {
+        when (val state = uiState.value) {
+            is BankDetailUiState.LoadingDetail -> {
+                LoadingView()
+                uiState.value = loadBankDetail(getBankDetailUseCase, bankId).value
             }
-        ) {
-            when (val state = uiState.value) {
-                is BankDetailUiState.LoadingDetail -> {
-                    LoadingView()
-                    uiState.value = loadBankDetail(getBankDetailUseCase, bankId).value
-                }
 
-                is BankDetailUiState.Content -> {
-                    BankDetailView(
-                        bank = state.bank,
-                        onBackClicked = { navigator.pop() },
-                    )
-                }
+            is BankDetailUiState.Content -> {
+                BankDetailView(
+                    bank = state.bank,
+                    onBackClicked = { navigator.pop() },
+                )
+            }
 
-                is BankDetailUiState.Error -> {
-                    ErrorBackView(
-                        textBack = TextResources.backRequest,
-                        onBackClicked = { navigator.pop() },
-                        onUpdateClicked = { uiState.value = BankDetailUiState.LoadingDetail },
-                    )
-                }
+            is BankDetailUiState.Error -> {
+                ErrorBackView(
+                    textBack = TextResources.backRequest,
+                    onBackClicked = { navigator.pop() },
+                    onUpdateClicked = { uiState.value = BankDetailUiState.LoadingDetail },
+                )
             }
         }
     }

@@ -4,13 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
@@ -19,7 +16,6 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.yuliakazachok.synloans.desktop.components.error.ErrorView
 import com.yuliakazachok.synloans.desktop.components.progress.LoadingView
-import com.yuliakazachok.synloans.desktop.components.navigation.NavigationTab
 import com.yuliakazachok.synloans.desktop.components.navigation.SurfaceNavigation
 import com.yuliakazachok.synloans.desktop.components.text.TextTwoLinesView
 import com.yuliakazachok.synloans.desktop.components.topbar.TopBarTwoEndIconView
@@ -44,20 +40,9 @@ class ProfileScreen : Screen {
         val requestsScreen = rememberScreen(NavigationScreen.Requests)
 
         SurfaceNavigation(
-            tabs = {
-                NavigationTab(
-                    label = TextResources.requests,
-                    icon = painterResource("assignment.svg"),
-                    selected = false,
-                    onClicked = { navigator.replaceAll(requestsScreen) },
-                )
-                NavigationTab(
-                    label = TextResources.profile,
-                    icon = rememberVectorPainter(Icons.Filled.AccountBox),
-                    selected = true,
-                )
-            },
             mainContent = { ProfileContent(navigator) },
+            selectedRequests = false,
+            onClickedRequests = { navigator.replaceAll(requestsScreen) },
         )
     }
 }
