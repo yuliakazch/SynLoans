@@ -2,6 +2,8 @@ package com.yuliakazachok.synloans.desktop.core
 
 object TextResources {
 
+    const val appTitle = "Синдицированные кредиты"
+
     const val error = "Произошла ошибка"
     const val repeat = "Повторить"
     const val cancel = "Отмена"

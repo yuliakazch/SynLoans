@@ -6,7 +6,8 @@ import com.yuliakazachok.synloans.desktop.screens.*
 val appScreenModule = screenModule {
     register<NavigationScreen.SignIn> { SignInScreen() }
     register<NavigationScreen.SignUp> { SignUpScreen() }
-    register<NavigationScreen.Main> { MainScreen() }
+    register<NavigationScreen.ProfileInfo> { ProfileScreen() }
+    register<NavigationScreen.Requests> { RequestsScreen() }
     register<NavigationScreen.EditProfile> { EditProfileScreen(it.profile) }
     register<NavigationScreen.RequestDetail> { RequestDetailScreen(it.requestId, it.participantBank) }
     register<NavigationScreen.RequestCreate> { RequestCreateScreen() }

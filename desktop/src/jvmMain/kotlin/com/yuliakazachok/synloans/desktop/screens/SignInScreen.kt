@@ -33,7 +33,7 @@ class SignInScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val signUpScreen = rememberScreen(NavigationScreen.SignUp)
-        val mainScreen = rememberScreen(NavigationScreen.Main)
+        val profileScreen = rememberScreen(NavigationScreen.ProfileInfo)
 
         val signInUseCase = koin.get<SignInUseCase>()
 
@@ -76,7 +76,7 @@ class SignInScreen : Screen {
                     uiState.value = signIn(
                         signInUseCase = signInUseCase,
                         credentials = state.credentials,
-                        onMainRoute = { navigator.replace(mainScreen) },
+                        onMainRoute = { navigator.replace(profileScreen) },
                     ).value
                 }
             }

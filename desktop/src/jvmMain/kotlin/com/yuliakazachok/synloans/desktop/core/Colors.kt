@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Color
 private val Orange = Color(0xfff8873c)
 private val Purple = Color(0xff6b70fc)
 
-private val LightColors = lightColors(
+private val Colors = lightColors(
     primary = Orange,
     primaryVariant = Orange,
     onPrimary = Color.White,
@@ -22,7 +22,7 @@ fun AppTheme(
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colors = LightColors,
+        colors = Colors,
         content = {
             Surface(content = content)
         }

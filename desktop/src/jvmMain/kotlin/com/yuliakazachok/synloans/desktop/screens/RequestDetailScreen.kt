@@ -68,7 +68,7 @@ class RequestDetailScreen(
         val navigator = LocalNavigator.currentOrThrow
         val uiState = remember { mutableStateOf<RequestDetailUiState>(RequestDetailUiState.LoadingRequest) }
 
-        val mainScreen = rememberScreen(NavigationScreen.Main)
+        val requestsScreen = rememberScreen(NavigationScreen.Requests)
 
         val getRequestDetailUseCase = koin.get<GetRequestDetailUseCase>()
         val isCreditOrganisationUseCase = koin.get<IsCreditOrganisationUseCase>()
@@ -134,7 +134,7 @@ class RequestDetailScreen(
                                 onExitSyndicateClicked = { uiState.value = RequestDetailUiState.ExitSyndicateRequest },
                                 onStartCreditClicked = { uiState.value = RequestDetailUiState.StartCreditRequest },
                                 onCancelClicked = { uiState.value = RequestDetailUiState.CancelRequest },
-                                onBackClicked = { navigator.replaceAll(mainScreen) },
+                                onBackClicked = { navigator.replaceAll(requestsScreen) },
                                 navigator = navigator,
                             )
                         }
@@ -146,7 +146,7 @@ class RequestDetailScreen(
                     uiState.value = cancelRequest(
                         cancelRequestUseCase = cancelRequestUseCase,
                         requestId = requestId,
-                        onMainRoute = { navigator.replaceAll(mainScreen) },
+                        onMainRoute = { navigator.replaceAll(requestsScreen) },
                     ).value
                 }
 
@@ -159,7 +159,7 @@ class RequestDetailScreen(
                             sum = sumJoinSyndicate.value.toLong(),
                             approveBankAgent = approveBankAgentJoinSyndicate.value,
                         ),
-                        onMainRoute = { navigator.replaceAll(mainScreen) },
+                        onMainRoute = { navigator.replaceAll(requestsScreen) },
                     ).value
                 }
 
@@ -168,7 +168,7 @@ class RequestDetailScreen(
                     uiState.value = exitSyndicate(
                         exitSyndicateUseCase = exitSyndicateUseCase,
                         requestId = requestId,
-                        onMainRoute = { navigator.replaceAll(mainScreen) },
+                        onMainRoute = { navigator.replaceAll(requestsScreen) },
                     ).value
                 }
 
@@ -177,7 +177,7 @@ class RequestDetailScreen(
                     uiState.value = startCredit(
                         startCreditUseCase = startCreditUseCase,
                         requestId = requestId,
-                        onMainRoute = { navigator.replaceAll(mainScreen) },
+                        onMainRoute = { navigator.replaceAll(requestsScreen) },
                     ).value
                 }
 
@@ -197,7 +197,7 @@ class RequestDetailScreen(
                 is RequestDetailUiState.Error -> {
                     ErrorBackView(
                         textBack = TextResources.backMain,
-                        onBackClicked = { navigator.replaceAll(mainScreen) },
+                        onBackClicked = { navigator.replaceAll(requestsScreen) },
                         onUpdateClicked = {
                             uiState.value = when (state.errorType) {
                                 ErrorType.Cancel -> RequestDetailUiState.CancelRequest

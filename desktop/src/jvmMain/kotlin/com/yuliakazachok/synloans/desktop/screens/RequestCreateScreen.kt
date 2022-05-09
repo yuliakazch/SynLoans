@@ -41,7 +41,7 @@ class RequestCreateScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val uiState = remember { mutableStateOf<RequestCreateUiState>(RequestCreateUiState.Content) }
 
-        val mainScreen = rememberScreen(NavigationScreen.Main)
+        val requestsScreen = rememberScreen(NavigationScreen.Requests)
 
         val createRequestUseCase = koin.get<CreateRequestUseCase>()
 
@@ -68,7 +68,7 @@ class RequestCreateScreen : Screen {
                                 uiState.value = RequestCreateUiState.CreatingRequest
                             }
                         },
-                        onBackClicked = { navigator.replaceAll(mainScreen) },
+                        onBackClicked = { navigator.replaceAll(requestsScreen) },
                     )
                 }
 
@@ -81,14 +81,14 @@ class RequestCreateScreen : Screen {
                             maxRate = rate.value.toFloat(),
                             term = term.value.toInt(),
                         ),
-                        onMainRoute = { navigator.replaceAll(mainScreen) },
+                        onMainRoute = { navigator.replaceAll(requestsScreen) },
                     ).value
                 }
 
                 is RequestCreateUiState.Error -> {
                     ErrorBackView(
                         textBack = TextResources.backMain,
-                        onBackClicked = { navigator.replaceAll(mainScreen) },
+                        onBackClicked = { navigator.replaceAll(requestsScreen) },
                         onUpdateClicked = { uiState.value = RequestCreateUiState.CreatingRequest },
                     )
                 }
